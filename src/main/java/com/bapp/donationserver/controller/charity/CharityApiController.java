@@ -13,16 +13,16 @@ public class CharityApiController {
 
     @GetMapping
     public String welcomeCharity(){
-        return null;
+        return "ok";
     }
 
     @PostMapping("/request")
     public String requestCampaign(){
-        return null;
+        return "ok";
     }
 
     @PostMapping("/withdraw")
     public String withdrawFromCampaign(){
-        return null;
+        return "ok";
     }
 }

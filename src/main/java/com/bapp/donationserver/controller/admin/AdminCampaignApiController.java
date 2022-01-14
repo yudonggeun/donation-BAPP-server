@@ -10,37 +10,37 @@ public class AdminCampaignApiController {
 
     @GetMapping
     public String getCampaignList(){
-        return null;
+        return "ok";
     }
 
     @PostMapping
     public String registerCampaign(){
-        return null;
+        return "ok";
     }
 
     @GetMapping("/{campaignId}")
     public String inquiredCampaign(@PathVariable Long campaignId){
-        return null;
+        return "ok";
     }
 
     @PostMapping("/{campaignId}")
     public String editCampaign(@PathVariable Long campaignId){
-        return null;
+        return "ok";
     }
 
     @DeleteMapping("/{campaignId}")
     public String deleteCampaign(@PathVariable Long campaignId){
-        return null;
+        return "ok";
     }
 
     @GetMapping("/request")
     public String requestCampaign(){
-        return null;
+        return "ok";
     }
 
     @GetMapping("/{campaignId}/limit")
     public String limitCampaign(@PathVariable Long campaignId){
-        return null;
+        return "ok";
     }
 
 }
