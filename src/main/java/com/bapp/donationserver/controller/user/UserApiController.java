@@ -11,27 +11,27 @@ public class UserApiController {
 
     @GetMapping
     public String getMyPage(){
-        return null;
+        return "ok";
     }
 
     @PostMapping
     public String editMyPage(){
-        return null;
+        return "ok";
     }
 
     @PutMapping
     public String newUser(@ModelAttribute NewUserForm newUserForm){
-        return null;
+        return "ok";
     }
 
     @PostMapping("/login")
     public String login(@RequestParam String id,
                         @RequestParam String password){
-        return null;
+        return "ok";
     }
 
     @PostMapping("/pay")
     public String payComplete(){
-        return null;
+        return "ok";
     }
 }

@@ -12,16 +12,16 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserInfoApiController {
     @GetMapping
     public String checkDonationHistory(){
-        return null;
+        return "ok";
     }
 
     @GetMapping("{userId}")
     public String myDonationList(@PathVariable Long userId){
-        return null;
+        return "ok";
     }
 
     @GetMapping("{campaignId}")
     public String checkCampaignHistory(@PathVariable Long campaignId){
-        return null;
+        return "ok";
     }
 }

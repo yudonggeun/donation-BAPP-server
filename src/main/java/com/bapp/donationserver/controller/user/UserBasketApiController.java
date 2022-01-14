@@ -11,11 +11,11 @@ public class UserBasketApiController {
     @GetMapping
     public String addBasket(@RequestParam Long campaignId,
                             @RequestParam Long price){
-        return null;
+        return "ok";
     }
 
     @PostMapping
     public String deleteBasket(@RequestParam Long campaignId){
-        return null;
+        return "ok";
     }
 }

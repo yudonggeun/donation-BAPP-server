@@ -9,16 +9,16 @@ import org.springframework.web.bind.annotation.*;
 public class UserCampaignApiController {
     @GetMapping
     public String getCampaignList(){
-        return null;
+        return "ok";
     }
 
     @PostMapping
     public String searchCampaign(@ModelAttribute SearchCondition searchCondition){
-        return null;
+        return "ok";
     }
 
     @GetMapping("/{campaignId}")
     public String getCampaignDetail(@PathVariable Long campaignId){
-        return null;
+        return "ok";
     }
 }

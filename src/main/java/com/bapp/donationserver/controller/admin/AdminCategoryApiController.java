@@ -10,22 +10,22 @@ public class AdminCategoryApiController {
 
     @GetMapping
     public String getCategoryList(){
-        return null;
+        return "ok";
     }
 
     @PostMapping
     public String registerCategory(){
-        return null;
+        return "ok";
     }
 
     @PostMapping("/{categoryName}")
     public String editCategory(@PathVariable Long categoryName){
-        return null;
+        return "ok";
     }
 
     @DeleteMapping("/{categoryName}")
     public String deleteCategory(@PathVariable Long categoryName){
-        return null;
+        return "ok";
     }
 
 }
