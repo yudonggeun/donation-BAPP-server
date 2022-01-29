@@ -4,9 +4,11 @@ import com.bapp.donationserver.data.CampaignInfo;
 import com.bapp.donationserver.data.CampaignSearchCondition;
 import com.bapp.donationserver.data.MemberInfo;
 import com.bapp.donationserver.data.Transaction;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class NormalUserServiceImpl implements NormalUserService{
     @Override
     public void joinMemberShip(MemberInfo newMember) {
