@@ -1,4 +1,4 @@
-package com.bapp.donationserver.controller.user;
+package com.bapp.donationserver.user.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,7 +21,7 @@ public class UserInfoApiController {
     }
 
     @GetMapping("{campaignId}")
-    public String checkCampaignHistory(@PathVariable Long campaignId){
+    public String checkCampaignHistory(@PathVariable String campaignId){
         return "ok";
     }
 }

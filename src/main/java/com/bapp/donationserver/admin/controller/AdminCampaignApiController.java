@@ -1,4 +1,4 @@
-package com.bapp.donationserver.controller.admin;
+package com.bapp.donationserver.admin.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -19,17 +19,17 @@ public class AdminCampaignApiController {
     }
 
     @GetMapping("/{campaignId}")
-    public String inquiredCampaign(@PathVariable Long campaignId){
+    public String inquiredCampaign(@PathVariable String campaignId){
         return "ok";
     }
 
     @PostMapping("/{campaignId}")
-    public String editCampaign(@PathVariable Long campaignId){
+    public String editCampaign(@PathVariable String campaignId){
         return "ok";
     }
 
     @DeleteMapping("/{campaignId}")
-    public String deleteCampaign(@PathVariable Long campaignId){
+    public String deleteCampaign(@PathVariable String campaignId){
         return "ok";
     }
 
@@ -39,7 +39,7 @@ public class AdminCampaignApiController {
     }
 
     @GetMapping("/{campaignId}/limit")
-    public String limitCampaign(@PathVariable Long campaignId){
+    public String limitCampaign(@PathVariable String campaignId){
         return "ok";
     }
 

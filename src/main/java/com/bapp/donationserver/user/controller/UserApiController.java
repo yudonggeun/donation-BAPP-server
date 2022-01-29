@@ -1,6 +1,6 @@
-package com.bapp.donationserver.controller.user;
+package com.bapp.donationserver.user.controller;
 
-import lombok.Getter;
+import com.bapp.donationserver.user.NewUserForm;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
