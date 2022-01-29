@@ -1,4 +1,4 @@
-package com.bapp.donationserver.controller.user;
+package com.bapp.donationserver.user;
 
 import lombok.Data;
 

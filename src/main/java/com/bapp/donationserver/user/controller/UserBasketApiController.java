@@ -1,4 +1,4 @@
-package com.bapp.donationserver.controller.user;
+package com.bapp.donationserver.user.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -9,13 +9,13 @@ import org.springframework.web.bind.annotation.*;
 public class UserBasketApiController {
 
     @GetMapping
-    public String addBasket(@RequestParam Long campaignId,
+    public String addBasket(@RequestParam String campaignId,
                             @RequestParam Long price){
         return "ok";
     }
 
     @PostMapping
-    public String deleteBasket(@RequestParam Long campaignId){
+    public String deleteBasket(@RequestParam String campaignId){
         return "ok";
     }
 }

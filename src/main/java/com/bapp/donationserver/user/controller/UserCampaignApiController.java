@@ -1,5 +1,6 @@
-package com.bapp.donationserver.controller.user;
+package com.bapp.donationserver.user.controller;
 
+import com.bapp.donationserver.user.SearchCondition;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,7 +19,7 @@ public class UserCampaignApiController {
     }
 
     @GetMapping("/{campaignId}")
-    public String getCampaignDetail(@PathVariable Long campaignId){
+    public String getCampaignDetail(@PathVariable String campaignId){
         return "ok";
     }
 }
