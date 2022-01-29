@@ -3,9 +3,11 @@ package com.bapp.donationserver.user.service;
 import com.bapp.donationserver.data.CampaignInfo;
 import com.bapp.donationserver.data.Cart;
 import com.bapp.donationserver.data.MemberInfo;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class MemberServiceImpl implements MemberService {
     @Override
     public MemberInfo getMemberInformation(String memberId) {
