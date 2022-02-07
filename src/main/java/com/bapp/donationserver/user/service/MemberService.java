@@ -9,9 +9,9 @@ import java.util.List;
 public interface MemberService {
 
     //개인 정보 조회
-    MemberInfo getMemberInformation(String memberId);
+    MemberInfo getMemberInformation(String email);
     //개인 정보 수정
-    void updateMemberInformation(String memberId, MemberInfo updateMemberInformation);
+    void updateMemberInformation(String email, MemberInfo updateMemberInformation);
     //장바구니 담기
     void putCampaignAtCart(String campaignId);
     //장바구니 삭제
