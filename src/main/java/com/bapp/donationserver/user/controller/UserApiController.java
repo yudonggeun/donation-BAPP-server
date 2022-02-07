@@ -1,24 +1,43 @@
 package com.bapp.donationserver.user.controller;
 
-import com.bapp.donationserver.user.NewUserForm;
+import com.bapp.donationserver.data.MemberInfo;
+import com.bapp.donationserver.data.MemberType;
+import com.bapp.donationserver.data.url.MyPageDto;
+import com.bapp.donationserver.user.service.MemberService;
+import com.bapp.donationserver.user.service.NormalUserService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
 
 @RequestMapping("/api/user")
 @Slf4j
 @RestController
+@RequiredArgsConstructor
 public class UserApiController {
+
+    private final MemberService memberService;
+    private final NormalUserService normalUserService;
+
     /**
      * 클라이언트 정보 : 사용자 id
      * 내 정보, 후원 이력 조회
+     *
+     * 서버 응답 : 처리 결과 응답
+     * @return
      */
     @GetMapping
-    public String getMyPage(){
-        return "ok";
+    public MyPageDto getMyPage(HttpServletRequest request, @RequestParam String email){
+        return memberService.getMemberInformation(email).getMyPageDto();
     }
 
     @PostMapping
-    public String editMyPage(){
+    public String editMyPage(@RequestBody MyPageDto data){
+        log.info("전달된 데이터 {}", data);
+        MemberInfo memberInfo = new MemberInfo();
+        memberInfo.setMyPageDto(data);
+        memberService.updateMemberInformation(memberInfo.getEmail(), memberInfo);
         return "ok";
     }
 
@@ -28,7 +47,12 @@ public class UserApiController {
      * 단체 사용자 : 단체이름, 번호, 이메일, 패스워드, 닉네임, 프로필 사진 -> 승인 후 가입
      */
     @PutMapping
-    public String newUser(@ModelAttribute NewUserForm newUserForm){
+    public String newUser(@RequestBody MyPageDto data){
+
+        log.info("전달된 데이터 {}", data);
+        MemberInfo memberInfo = new MemberInfo();
+        memberInfo.setMyPageDto(data);
+        normalUserService.joinMember(memberInfo);
         return "ok";
     }
 
@@ -48,6 +72,6 @@ public class UserApiController {
      */
     @PostMapping("/pay")
     public String payComplete(){
-        return "ok";
+        return "success";
     }
 }

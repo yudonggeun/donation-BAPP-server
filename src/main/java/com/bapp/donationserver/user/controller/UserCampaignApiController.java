@@ -13,7 +13,8 @@ public class UserCampaignApiController {
      *
      */
     @GetMapping
-    public String getCampaignList(){
+    public String getCampaignList(String campaignId){
+        log.info("get /api/user/campaign : 캠페인 모금 id={}", campaignId);
         return "ok";
     }
 

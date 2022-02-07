@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface NormalUserService {
     //회원 가입
-    void joinMemberShip(MemberInfo newMember);
+    void joinMember(MemberInfo newMember);
     //캠페인 목록 조회 //켐페인 검색
     List<CampaignInfo> checkCampaignList(CampaignSearchCondition condition);
     //켐페인 상세 조회
