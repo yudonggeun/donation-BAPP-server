@@ -3,6 +3,7 @@ package com.bapp.donationserver.user.service;
 import com.bapp.donationserver.data.CampaignInfo;
 import com.bapp.donationserver.data.Cart;
 import com.bapp.donationserver.data.MemberInfo;
+import com.bapp.donationserver.user.repository.CampaignRepository;
 import com.bapp.donationserver.user.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,6 +17,7 @@ import java.util.List;
 public class MemberServiceImpl implements MemberService {
 
     private final MemberRepository memberRepository;
+    private final CampaignRepository campaignRepository;
 
     @Override
     public MemberInfo getMemberInformation(String email) {

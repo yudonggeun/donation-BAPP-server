@@ -1,6 +1,9 @@
 package com.bapp.donationserver.user.repository;
 
 import com.bapp.donationserver.data.CampaignInfo;
+import com.bapp.donationserver.data.CampaignSearchCondition;
+
+import java.util.List;
 
 public interface CampaignRepository {
 
@@ -10,5 +13,9 @@ public interface CampaignRepository {
 
     void delete(String campaignId);
 
-    void findById(String campaignId);
+    CampaignInfo findById(String campaignId);
+
+    List<CampaignInfo> findAll();
+
+    List<CampaignInfo> findCampaignListByCondition(CampaignSearchCondition condition);
 }
