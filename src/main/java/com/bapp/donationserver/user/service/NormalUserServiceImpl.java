@@ -1,12 +1,12 @@
 package com.bapp.donationserver.user.service;
 
-import com.bapp.donationserver.data.CampaignInfo;
+import com.bapp.donationserver.data.Campaign;
 import com.bapp.donationserver.data.CampaignSearchCondition;
-import com.bapp.donationserver.data.MemberInfo;
+import com.bapp.donationserver.data.Member;
 import com.bapp.donationserver.data.Transaction;
-import com.bapp.donationserver.user.repository.CampaignRepository;
-import com.bapp.donationserver.user.repository.DonationTransactionRepository;
-import com.bapp.donationserver.user.repository.MemberRepository;
+import com.bapp.donationserver.repository.CampaignRepository;
+import com.bapp.donationserver.repository.DonationTransactionRepository;
+import com.bapp.donationserver.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -23,14 +23,14 @@ public class NormalUserServiceImpl implements NormalUserService{
     private final DonationTransactionRepository transactionRepository;
 
     @Override
-    public void joinMember(MemberInfo newMember) {
+    public void joinMember(Member newMember) {
         log.info("서비스 호출");
         memberRepository.save(newMember);
     }
 
     @Override
-    public List<CampaignInfo> checkCampaignList(CampaignSearchCondition condition) {
-        List<CampaignInfo> campaignInfos = campaignRepository.findCampaignListByCondition(condition);
+    public List<Campaign> checkCampaignList(CampaignSearchCondition condition) {
+        List<Campaign> campaignInfos = campaignRepository.findCampaignListByCondition(condition);
 
         if(condition == null)
             return campaignInfos;
@@ -42,7 +42,7 @@ public class NormalUserServiceImpl implements NormalUserService{
     }
 
     @Override
-    public CampaignInfo checkDetailsOfCampaign(String campaignId) {
+    public Campaign checkDetailsOfCampaign(String campaignId) {
         return campaignRepository.findById(campaignId);
     }
 

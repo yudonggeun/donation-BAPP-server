@@ -1,6 +1,6 @@
 package com.bapp.donationserver.user.controller;
 
-import com.bapp.donationserver.data.MemberInfo;
+import com.bapp.donationserver.data.Member;
 import com.bapp.donationserver.data.dto.MyPageDto;
 import com.bapp.donationserver.user.service.MemberService;
 import com.bapp.donationserver.user.service.NormalUserService;
@@ -33,7 +33,7 @@ public class UserApiController {
     @PostMapping
     public String editMyPage(@RequestBody MyPageDto data){
         log.info("전달된 데이터 {}", data);
-        MemberInfo memberInfo = new MemberInfo();
+        Member memberInfo = new Member();
         memberInfo.setMyPageDto(data);
         memberService.updateMemberInformation(memberInfo.getEmail(), memberInfo);
         return "ok";
@@ -48,7 +48,7 @@ public class UserApiController {
     public String newUser(@RequestBody MyPageDto data){
 
         log.info("전달된 데이터 {}", data);
-        MemberInfo memberInfo = new MemberInfo();
+        Member memberInfo = new Member();
         memberInfo.setMyPageDto(data);
         normalUserService.joinMember(memberInfo);
         return "ok";

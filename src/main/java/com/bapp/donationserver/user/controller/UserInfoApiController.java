@@ -1,9 +1,6 @@
 package com.bapp.donationserver.user.controller;
 
-import com.bapp.donationserver.data.CampaignInfo;
-import com.bapp.donationserver.data.MemberInfo;
-import com.bapp.donationserver.data.Transaction;
-import com.bapp.donationserver.data.dto.CampaignInfoSampleDto;
+import com.bapp.donationserver.data.dto.CampaignSimpleDto;
 import com.bapp.donationserver.data.dto.TransactionDto;
 import com.bapp.donationserver.user.service.MemberService;
 import com.bapp.donationserver.user.service.NormalUserService;
@@ -33,15 +30,12 @@ public class UserInfoApiController {
      * 응답 정보 : 표지이미지, 켐페인 제목, 재단 이름, 마감일, 현재 모금 금액, 목표 금액
      */
     @GetMapping("/{email}")
-    public List<CampaignInfoSampleDto> myDonationList(@PathVariable String email){
+    public List<CampaignSimpleDto> myDonationList(@PathVariable String email){
 
-        List<CampaignInfoSampleDto> donationList = new ArrayList<>();
+        List<CampaignSimpleDto> donationList = new ArrayList<>();
         memberService.getMemberInformation(email).getDonatedCampaigns()
-                .forEach(campaignInfo -> {
-                    CampaignInfoSampleDto dto = new CampaignInfoSampleDto();
-                    dto.setCampaignInfo(campaignInfo);
-                    donationList.add(dto);
-                });
+                .forEach(campaignInfo ->
+                        donationList.add(campaignInfo.getCampaignSimpleDto()));
 
         return donationList;
     }

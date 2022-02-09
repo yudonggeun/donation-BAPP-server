@@ -6,7 +6,7 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class MemberInfo {
+public class Member {
     private MemberType memberType;
     private String name;
     private String phoneNumber;
@@ -14,8 +14,8 @@ public class MemberInfo {
     private String password;
     private String nickname;
     private String profilePhotoName;
-    private List<CampaignInfo> interestCampaigns;
-    private List<CampaignInfo> donatedCampaigns;
+    private List<Campaign> interestCampaigns;//기부 단체의 경우에 관심 켐패인이 아닌 등록한 켐패인 리스트
+    private List<Campaign> donatedCampaigns;
 
     public void setMyPageDto(MyPageDto data){
         setMemberType(data.getMemberType());

@@ -17,4 +17,9 @@ public class CampaignSearchCondition {
     private List<String> categories;
     private Boolean interest;
     private String userId;
+
+    public CampaignSearchCondition() {
+        this.startIndex = 0;
+        this.endIndex = 4;
+    }
 }

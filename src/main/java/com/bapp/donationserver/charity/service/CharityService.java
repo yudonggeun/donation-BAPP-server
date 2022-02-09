@@ -1,14 +1,18 @@
 package com.bapp.donationserver.charity.service;
 
-import com.bapp.donationserver.data.CampaignInfo;
+import com.bapp.donationserver.data.Campaign;
+import com.bapp.donationserver.data.dto.CampaignFullDto;
+import com.bapp.donationserver.data.dto.TransactionDto;
 
 import java.util.List;
 
 public interface CharityService {
     //캠패인 등록 요청
-    void requestToRegisterCampaign(CampaignInfo campaignInfo);
+    void registerCampaign(CampaignFullDto campaignInfo);
+    //켐패인 수정 요청
+    void modifyCampaign(String campaignId, CampaignFullDto campaignInfo);
     //캠패인 자금 출금
-    void withdraw(String CampaignId, Integer money);
+    void withdraw(String campaignId, TransactionDto dto);
     //캠패인 리스트 조회
-    List<CampaignInfo> checkCampaignList(String memberId);
+    List<Campaign> checkCampaignList(String memberId);
 }

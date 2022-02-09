@@ -1,10 +1,10 @@
 package com.bapp.donationserver.user.service;
 
-import com.bapp.donationserver.data.CampaignInfo;
+import com.bapp.donationserver.data.Campaign;
 import com.bapp.donationserver.data.Cart;
-import com.bapp.donationserver.data.MemberInfo;
-import com.bapp.donationserver.user.repository.CampaignRepository;
-import com.bapp.donationserver.user.repository.MemberRepository;
+import com.bapp.donationserver.data.Member;
+import com.bapp.donationserver.repository.CampaignRepository;
+import com.bapp.donationserver.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -20,12 +20,12 @@ public class MemberServiceImpl implements MemberService {
     private final CampaignRepository campaignRepository;
 
     @Override
-    public MemberInfo getMemberInformation(String email) {
+    public Member getMemberInformation(String email) {
         return memberRepository.findByEmail(email);
     }
 
     @Override
-    public void updateMemberInformation(String email, MemberInfo updateMemberInformation) {
+    public void updateMemberInformation(String email, Member updateMemberInformation) {
         memberRepository.update(email, updateMemberInformation);
     }
 
@@ -50,7 +50,7 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public List<CampaignInfo> checkMyDonationList(String memberId) {
+    public List<Campaign> checkMyDonationList(String memberId) {
         return null;
     }
 

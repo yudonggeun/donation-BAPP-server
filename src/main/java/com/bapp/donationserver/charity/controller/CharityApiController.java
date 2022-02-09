@@ -1,12 +1,19 @@
 package com.bapp.donationserver.charity.controller;
 
+import com.bapp.donationserver.charity.service.CharityService;
+import com.bapp.donationserver.data.dto.CampaignFullDto;
+import com.bapp.donationserver.data.dto.TransactionDto;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 @RequestMapping("/api/charity")
 @Slf4j
 @RestController
+@RequiredArgsConstructor
 public class CharityApiController {
+
+    private final CharityService charityService;
 /*
     @GetMapping
     public String welcomeCharity(){
@@ -18,8 +25,10 @@ public class CharityApiController {
      * 서버 응답 : success fail
      */
     @PostMapping
-    public String registerCampaign() {
-        return "ok";
+    public String registerCampaign(@RequestBody CampaignFullDto dto) {
+        log.info("CampaignFullDto={}",dto);
+        charityService.registerCampaign(dto);
+        return "success";
     }
 
     /**
@@ -27,8 +36,9 @@ public class CharityApiController {
      * 서버 응답 : success fail
      */
     @PostMapping("/{campaignId}")
-    public String modifyCampaign(@PathVariable String campaignId) {
-        return "ok";
+    public String modifyCampaign(@PathVariable String campaignId, @RequestBody CampaignFullDto dto) {
+        charityService.modifyCampaign(campaignId, dto);
+        return "success";
     }
 
     /**
@@ -36,7 +46,9 @@ public class CharityApiController {
      * 서버 응답 : success fail
      */
     @PostMapping("/withdraw/{campaignId}")
-    public String withdrawFromCampaign(@PathVariable String campaignId) {
-        return "ok";
+    public String withdrawFromCampaign(@PathVariable String campaignId,
+                                       @RequestBody TransactionDto dto) {
+        charityService.withdraw(campaignId, dto);
+        return "success";
     }
 }
