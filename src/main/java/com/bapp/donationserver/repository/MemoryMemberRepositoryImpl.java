@@ -1,6 +1,6 @@
-package com.bapp.donationserver.user.repository;
+package com.bapp.donationserver.repository;
 
-import com.bapp.donationserver.data.MemberInfo;
+import com.bapp.donationserver.data.Member;
 import com.bapp.donationserver.data.MemberType;
 import com.bapp.donationserver.data.dto.MyPageDto;
 import lombok.RequiredArgsConstructor;
@@ -18,9 +18,9 @@ public class MemoryMemberRepositoryImpl implements MemberRepository {
 
     private final CampaignRepository campaignRepository;
 
-    private final Map<String ,MemberInfo> db = new HashMap<>();
+    private final Map<String , Member> db = new HashMap<>();
     @Override
-    public void save(MemberInfo memberInfo) {
+    public void save(Member memberInfo) {
         if(db.get(memberInfo.getEmail()) != null){
             throw new IllegalStateException("존재하는 멤버입니다. 업데이트를 해주세요");
         }
@@ -29,7 +29,7 @@ public class MemoryMemberRepositoryImpl implements MemberRepository {
     }
 
     @Override
-    public void update(String email, MemberInfo memberInfo) {
+    public void update(String email, Member memberInfo) {
         log.info("멤버 정보 수정 ={}", memberInfo);
         db.replace(email, memberInfo);
     }
@@ -41,7 +41,7 @@ public class MemoryMemberRepositoryImpl implements MemberRepository {
     }
 
     @Override
-    public MemberInfo findByEmail(String email) {
+    public Member findByEmail(String email) {
         log.info("멤버 조회={}", email);
         return db.get(email);
     }
@@ -57,7 +57,7 @@ public class MemoryMemberRepositoryImpl implements MemberRepository {
         myPageDto.setMemberType(MemberType.USER);
         myPageDto.setProfilePhotoName("picture");
 
-        MemberInfo memberInfo = new MemberInfo();
+        Member memberInfo = new Member();
         memberInfo.setMyPageDto(myPageDto);
         memberInfo.setInterestCampaigns(campaignRepository.findCampaignListByCondition(null));
         memberInfo.setDonatedCampaigns(campaignRepository.findCampaignListByCondition(null));

@@ -1,6 +1,6 @@
-package com.bapp.donationserver.user.repository;
+package com.bapp.donationserver.repository;
 
-import com.bapp.donationserver.data.CampaignInfo;
+import com.bapp.donationserver.data.Campaign;
 import com.bapp.donationserver.data.CampaignSearchCondition;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
@@ -13,16 +13,16 @@ import java.util.*;
 @Repository
 public class MemoryCampaignRepository implements CampaignRepository{
 
-    private final Map<String , CampaignInfo> db = new HashMap<>();
+    private final Map<String , Campaign> db = new HashMap<>();
 
     @Override
-    public void save(CampaignInfo campaignInfo) {
+    public void save(Campaign campaignInfo) {
         campaignInfo.setCampaignId(UUID.randomUUID().toString());
         db.put(campaignInfo.getCampaignId(), campaignInfo);
     }
 
     @Override
-    public void update(String campaignId, CampaignInfo updateCampaignInfo) {
+    public void update(String campaignId, Campaign updateCampaignInfo) {
         db.replace(campaignId, updateCampaignInfo);
     }
 
@@ -32,21 +32,22 @@ public class MemoryCampaignRepository implements CampaignRepository{
     }
 
     @Override
-    public CampaignInfo findById(String campaignId) {
+    public Campaign findById(String campaignId) {
         return db.get(campaignId);
     }
 
     @Override
-    public List<CampaignInfo> findAll() {
+    public List<Campaign> findAll() {
         return null;
     }
 
     @Override
-    public List<CampaignInfo> findCampaignListByCondition(CampaignSearchCondition condition) {
-        List<CampaignInfo> list = new ArrayList<>();
+    public List<Campaign> findCampaignListByCondition(CampaignSearchCondition condition) {
+        List<Campaign> list = new ArrayList<>();
 
+        log.info("조건={}", condition);
         for (String s : db.keySet()) {
-            CampaignInfo target = db.get(s);
+            Campaign target = db.get(s);
 
             if(condition == null)
                 continue;
@@ -57,7 +58,10 @@ public class MemoryCampaignRepository implements CampaignRepository{
             if ((condition.getSubject() != null) && (!target.getSubject().contains(condition.getSubject())))
                 continue;
 
-            if ((condition.getCategories() != null) && (!target.getCategories().containsAll(condition.getCategories())))
+            if (condition.getCategories() != null
+                    && !(target.getCategories() == null)
+                    && !target.getCategories().containsAll(condition.getCategories())
+            )
                 continue;
 
             list.add(target);
@@ -74,7 +78,7 @@ public class MemoryCampaignRepository implements CampaignRepository{
     }
 
     private void addSampleCampaign(String subject) {
-        CampaignInfo campaignInfo = new CampaignInfo();
+        Campaign campaignInfo = new Campaign();
 
         campaignInfo.setCampaignId(UUID.randomUUID().toString());
         campaignInfo.setSubject(subject);
