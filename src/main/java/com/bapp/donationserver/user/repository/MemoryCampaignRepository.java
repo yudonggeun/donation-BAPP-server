@@ -47,6 +47,10 @@ public class MemoryCampaignRepository implements CampaignRepository{
 
         for (String s : db.keySet()) {
             CampaignInfo target = db.get(s);
+
+            if(condition == null)
+                continue;
+
             if ((condition.getCharityName() != null) && (!target.getCharityName().contains(condition.getCharityName())))
                 continue;
 

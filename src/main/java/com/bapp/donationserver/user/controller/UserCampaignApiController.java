@@ -2,7 +2,7 @@ package com.bapp.donationserver.user.controller;
 
 import com.bapp.donationserver.data.CampaignInfo;
 import com.bapp.donationserver.data.CampaignSearchCondition;
-import com.bapp.donationserver.data.url.CampaignInfoSampleDto;
+import com.bapp.donationserver.data.dto.CampaignInfoSampleDto;
 import com.bapp.donationserver.user.service.MemberService;
 import com.bapp.donationserver.user.service.NormalUserService;
 import lombok.RequiredArgsConstructor;
@@ -10,7 +10,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 @RequestMapping("/api/user/campaign")

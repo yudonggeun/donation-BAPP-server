@@ -1,4 +1,4 @@
-package com.bapp.donationserver.data.url;
+package com.bapp.donationserver.data.dto;
 
 import com.bapp.donationserver.data.MemberType;
 import lombok.Data;

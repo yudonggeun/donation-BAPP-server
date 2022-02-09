@@ -20,7 +20,7 @@ public class NormalUserServiceImpl implements NormalUserService{
 
     private final MemberRepository memberRepository;
     private final CampaignRepository campaignRepository;
-    //private final DonationTransactionRepository transactionRepository;
+    private final DonationTransactionRepository transactionRepository;
 
     @Override
     public void joinMember(MemberInfo newMember) {
@@ -53,6 +53,6 @@ public class NormalUserServiceImpl implements NormalUserService{
 
     @Override
     public List<Transaction> checkDonationHistory(String campaignId) {
-        return null;
+        return transactionRepository.findByCampaignId(campaignId);
     }
 }
