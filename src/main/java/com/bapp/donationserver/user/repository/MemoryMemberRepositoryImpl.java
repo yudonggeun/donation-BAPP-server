@@ -2,7 +2,8 @@ package com.bapp.donationserver.user.repository;
 
 import com.bapp.donationserver.data.MemberInfo;
 import com.bapp.donationserver.data.MemberType;
-import com.bapp.donationserver.data.url.MyPageDto;
+import com.bapp.donationserver.data.dto.MyPageDto;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
@@ -12,9 +13,12 @@ import java.util.Map;
 
 @Repository
 @Slf4j
+@RequiredArgsConstructor
 public class MemoryMemberRepositoryImpl implements MemberRepository {
 
-    private Map<String ,MemberInfo> db = new HashMap<>();
+    private final CampaignRepository campaignRepository;
+
+    private final Map<String ,MemberInfo> db = new HashMap<>();
     @Override
     public void save(MemberInfo memberInfo) {
         if(db.get(memberInfo.getEmail()) != null){
@@ -55,6 +59,8 @@ public class MemoryMemberRepositoryImpl implements MemberRepository {
 
         MemberInfo memberInfo = new MemberInfo();
         memberInfo.setMyPageDto(myPageDto);
+        memberInfo.setInterestCampaigns(campaignRepository.findCampaignListByCondition(null));
+        memberInfo.setDonatedCampaigns(campaignRepository.findCampaignListByCondition(null));
         db.put(memberInfo.getEmail(), memberInfo);
     }
 }

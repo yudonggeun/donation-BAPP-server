@@ -1,7 +1,9 @@
 package com.bapp.donationserver.data;
 
-import com.bapp.donationserver.data.url.MyPageDto;
+import com.bapp.donationserver.data.dto.MyPageDto;
 import lombok.Data;
+
+import java.util.List;
 
 @Data
 public class MemberInfo {
@@ -12,6 +14,8 @@ public class MemberInfo {
     private String password;
     private String nickname;
     private String profilePhotoName;
+    private List<CampaignInfo> interestCampaigns;
+    private List<CampaignInfo> donatedCampaigns;
 
     public void setMyPageDto(MyPageDto data){
         setMemberType(data.getMemberType());

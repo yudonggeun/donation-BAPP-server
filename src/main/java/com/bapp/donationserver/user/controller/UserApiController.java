@@ -1,8 +1,7 @@
 package com.bapp.donationserver.user.controller;
 
 import com.bapp.donationserver.data.MemberInfo;
-import com.bapp.donationserver.data.MemberType;
-import com.bapp.donationserver.data.url.MyPageDto;
+import com.bapp.donationserver.data.dto.MyPageDto;
 import com.bapp.donationserver.user.service.MemberService;
 import com.bapp.donationserver.user.service.NormalUserService;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +24,6 @@ public class UserApiController {
      * 내 정보, 후원 이력 조회
      *
      * 서버 응답 : 처리 결과 응답
-     * @return
      */
     @GetMapping
     public MyPageDto getMyPage(HttpServletRequest request, @RequestParam String email){
