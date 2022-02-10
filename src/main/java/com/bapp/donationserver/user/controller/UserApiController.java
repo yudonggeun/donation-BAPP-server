@@ -1,7 +1,6 @@
 package com.bapp.donationserver.user.controller;
 
-import com.bapp.donationserver.data.Member;
-import com.bapp.donationserver.data.dto.MyPageDto;
+import com.bapp.donationserver.data.dto.MemberDto;
 import com.bapp.donationserver.user.service.MemberService;
 import com.bapp.donationserver.user.service.NormalUserService;
 import lombok.RequiredArgsConstructor;
@@ -22,20 +21,19 @@ public class UserApiController {
     /**
      * 클라이언트 정보 : 사용자 id
      * 내 정보, 후원 이력 조회
-     *
+     * <p>
      * 서버 응답 : 처리 결과 응답
      */
     @GetMapping
-    public MyPageDto getMyPage(HttpServletRequest request, @RequestParam String email){
-        return memberService.getMemberInformation(email).getMyPageDto();
+    public MemberDto getMyPage(HttpServletRequest request, @RequestParam String email) {
+        log.info("내 정보 조회 : email={}", email);
+        return memberService.getMemberInformation(email);
     }
 
     @PostMapping
-    public String editMyPage(@RequestBody MyPageDto data){
-        log.info("전달된 데이터 {}", data);
-        Member memberInfo = new Member();
-        memberInfo.setMyPageDto(data);
-        memberService.updateMemberInformation(memberInfo.getEmail(), memberInfo);
+    public String editMyPage(@RequestBody MemberDto data) {
+        log.info("내 정보 수정 : 전달된 데이터 {}", data);
+        memberService.updateMemberInformation(data.getEmail(), data);
         return "ok";
     }
 
@@ -45,12 +43,10 @@ public class UserApiController {
      * 단체 사용자 : 단체이름, 번호, 이메일, 패스워드, 닉네임, 프로필 사진 -> 승인 후 가입
      */
     @PutMapping
-    public String newUser(@RequestBody MyPageDto data){
+    public String newUser(@RequestBody MemberDto data) {
 
-        log.info("전달된 데이터 {}", data);
-        Member memberInfo = new Member();
-        memberInfo.setMyPageDto(data);
-        normalUserService.joinMember(memberInfo);
+        log.info("회원가입 : 전달된 데이터 {}", data);
+        normalUserService.joinMember(data);
         return "ok";
     }
 
@@ -59,9 +55,10 @@ public class UserApiController {
      * 서버 응답 : 세션 아이디, fail
      */
     @PostMapping("/login")
-    public String login(@RequestParam String id,
-                        @RequestParam String password){
-        return "ok";
+    public String login(@RequestParam String email,
+                        @RequestParam String password) {
+        MemberDto member = memberService.getMemberInformation(email);
+        return member.getPassword().equals(password) ? "success" : "fail";
     }
 
     /**
@@ -69,7 +66,9 @@ public class UserApiController {
      * 서버 응답 : success fail
      */
     @PostMapping("/pay")
-    public String payComplete(){
+    public String payComplete(@RequestParam String email, @RequestParam Long amount) {
+        log.info("email={}, amount={}", email, amount);
+        normalUserService.pay(email, amount);
         return "success";
     }
 }

@@ -4,6 +4,7 @@ import com.bapp.donationserver.data.Campaign;
 import com.bapp.donationserver.data.Member;
 import com.bapp.donationserver.data.Transaction;
 import com.bapp.donationserver.data.dto.CampaignFullDto;
+import com.bapp.donationserver.data.dto.CampaignSimpleDto;
 import com.bapp.donationserver.data.dto.TransactionDto;
 import com.bapp.donationserver.repository.CampaignRepository;
 import com.bapp.donationserver.repository.DonationTransactionRepository;
@@ -12,7 +13,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -25,7 +28,7 @@ public class CharityServiceImpl implements CharityService {
 
     @Override
     public void registerCampaign(CampaignFullDto campaignInfo) {
-        Campaign campaign = new Campaign();
+        Campaign campaign = new Campaign(UUID.randomUUID().toString());
         campaign.setCampaignFullDto(campaignInfo);
         campaignRepository.save(campaign);
     }
@@ -64,9 +67,10 @@ public class CharityServiceImpl implements CharityService {
     }
 
     @Override
-    public List<Campaign> checkCampaignList(String email) {
+    public List<CampaignSimpleDto> checkCampaignList(String email) {
         Member member = memberRepository.findByEmail(email);
-
-        return member.getInterestCampaigns();
+        List<CampaignSimpleDto> dtoList = new ArrayList<>();
+        member.getInterestCampaigns().forEach(campaign -> dtoList.add(campaign.getCampaignSimpleDto()));
+        return dtoList;
     }
 }

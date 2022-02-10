@@ -1,8 +1,9 @@
-package com.bapp.donationserver.repository;
+package com.bapp.donationserver.repository.memory;
 
 import com.bapp.donationserver.data.Member;
 import com.bapp.donationserver.data.MemberType;
-import com.bapp.donationserver.data.dto.MyPageDto;
+import com.bapp.donationserver.data.dto.MemberDto;
+import com.bapp.donationserver.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
@@ -16,22 +17,23 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class MemoryMemberRepositoryImpl implements MemberRepository {
 
-    private final CampaignRepository campaignRepository;
-
     private final Map<String , Member> db = new HashMap<>();
     @Override
-    public void save(Member memberInfo) {
+    public void save(MemberDto memberInfo) {
+        Member member = new Member();
+        member.setMyPageDto(memberInfo);
         if(db.get(memberInfo.getEmail()) != null){
-            throw new IllegalStateException("존재하는 멤버입니다. 업데이트를 해주세요");
+            throw new IllegalStateException("해당 이메일로 가입한 멤버가 존재합니다.");
         }
-        db.put(memberInfo.getEmail(), memberInfo);
-        log.info("새로운 멤버 등록 class={}", memberInfo);
+        db.put(memberInfo.getEmail(), member);
+        log.info("새로운 멤버 등록 class={}", member);
     }
 
     @Override
-    public void update(String email, Member memberInfo) {
+    public void update(String email, MemberDto memberInfo) {
         log.info("멤버 정보 수정 ={}", memberInfo);
-        db.replace(email, memberInfo);
+        Member member = db.get(email);
+        member.setMyPageDto(memberInfo);
     }
 
     @Override
@@ -48,7 +50,7 @@ public class MemoryMemberRepositoryImpl implements MemberRepository {
 
     @PostConstruct
     public void init(){
-        MyPageDto myPageDto = new MyPageDto();
+        MemberDto myPageDto = new MemberDto();
         myPageDto.setEmail("ydong98@gmail.com");
         myPageDto.setName("유동근");
         myPageDto.setPassword("psasdflskdj");
@@ -59,8 +61,6 @@ public class MemoryMemberRepositoryImpl implements MemberRepository {
 
         Member memberInfo = new Member();
         memberInfo.setMyPageDto(myPageDto);
-        memberInfo.setInterestCampaigns(campaignRepository.findCampaignListByCondition(null));
-        memberInfo.setDonatedCampaigns(campaignRepository.findCampaignListByCondition(null));
         db.put(memberInfo.getEmail(), memberInfo);
     }
 }

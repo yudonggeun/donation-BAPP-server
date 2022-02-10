@@ -1,6 +1,7 @@
-package com.bapp.donationserver.user.repository;
+package com.bapp.donationserver.repository.memory;
 
 import com.bapp.donationserver.data.Transaction;
+import com.bapp.donationserver.repository.DonationTransactionRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
@@ -9,7 +10,7 @@ import java.util.*;
 
 @Repository
 @Slf4j
-public class MemoryDonationTransactionRepository implements DonationTransactionRepository{
+public class MemoryDonationTransactionRepository implements DonationTransactionRepository {
 
     private final Map<String, Transaction> db = new HashMap<>();
 
@@ -34,8 +35,8 @@ public class MemoryDonationTransactionRepository implements DonationTransactionR
                 "test",
                 "me",
                 "you",
-                10000,
-                20000
+                10000L,
+                20000L
         ));
     }
 }
