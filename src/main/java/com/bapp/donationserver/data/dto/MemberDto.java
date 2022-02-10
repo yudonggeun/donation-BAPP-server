@@ -9,7 +9,7 @@ import lombok.Data;
  * 단체 사용자 : 단체이름, 번호, 이메일, 패스워드, 닉네임, 프로필 사진 -> 승인 후 가입
  */
 @Data
-public class MyPageDto {
+public class MemberDto {
 
     private MemberType memberType;
     private String name;
@@ -18,5 +18,6 @@ public class MyPageDto {
     private String password;
     private String nickname;
     private String profilePhotoName;
+    private Long pointAmount;
 
 }

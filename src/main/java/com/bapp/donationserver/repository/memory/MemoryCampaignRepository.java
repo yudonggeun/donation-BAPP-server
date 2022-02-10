@@ -1,7 +1,8 @@
-package com.bapp.donationserver.repository;
+package com.bapp.donationserver.repository.memory;
 
 import com.bapp.donationserver.data.Campaign;
 import com.bapp.donationserver.data.CampaignSearchCondition;
+import com.bapp.donationserver.repository.CampaignRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
@@ -11,7 +12,7 @@ import java.util.*;
 
 @Slf4j
 @Repository
-public class MemoryCampaignRepository implements CampaignRepository{
+public class MemoryCampaignRepository implements CampaignRepository {
 
     private final Map<String , Campaign> db = new HashMap<>();
 
@@ -78,9 +79,8 @@ public class MemoryCampaignRepository implements CampaignRepository{
     }
 
     private void addSampleCampaign(String subject) {
-        Campaign campaignInfo = new Campaign();
+        Campaign campaignInfo = new Campaign(UUID.randomUUID().toString());
 
-        campaignInfo.setCampaignId(UUID.randomUUID().toString());
         campaignInfo.setSubject(subject);
         campaignInfo.setCharityName("몬스터주식회사");
         campaignInfo.setDeadline(LocalDate.now());

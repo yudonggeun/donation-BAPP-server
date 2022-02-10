@@ -1,7 +1,5 @@
-package com.bapp.donationserver.user.repository;
+package com.bapp.donationserver.repository;
 
-import com.bapp.donationserver.data.CampaignInfo;
-import com.bapp.donationserver.data.CampaignSearchCondition;
 import com.bapp.donationserver.data.Transaction;
 
 import java.util.List;

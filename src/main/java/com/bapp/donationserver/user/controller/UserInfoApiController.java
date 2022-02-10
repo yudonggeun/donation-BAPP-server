@@ -30,14 +30,9 @@ public class UserInfoApiController {
      * 응답 정보 : 표지이미지, 켐페인 제목, 재단 이름, 마감일, 현재 모금 금액, 목표 금액
      */
     @GetMapping("/{email}")
-    public List<CampaignSimpleDto> myDonationList(@PathVariable String email){
+    public List<CampaignSimpleDto> myDonationList(@PathVariable String email) {
 
-        List<CampaignSimpleDto> donationList = new ArrayList<>();
-        memberService.getMemberInformation(email).getDonatedCampaigns()
-                .forEach(campaignInfo ->
-                        donationList.add(campaignInfo.getCampaignSimpleDto()));
-
-        return donationList;
+        return memberService.checkMyDonationList(email);
     }
 
     /**
@@ -45,11 +40,8 @@ public class UserInfoApiController {
      * 기부 내역 배열 전송
      */
     @GetMapping
-    public List<TransactionDto> checkCampaignHistory(@RequestParam String campaignId){
+    public List<TransactionDto> checkCampaignHistory(@RequestParam String campaignId) {
 
-        List<TransactionDto> list = new ArrayList<>();
-        normalUserService.checkDonationHistory(campaignId).forEach(transaction -> list.add(transaction.getDto()));
-
-        return list;
+        return normalUserService.checkDonationHistory(campaignId);
     }
 }
