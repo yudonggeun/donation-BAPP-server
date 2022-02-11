@@ -32,7 +32,7 @@ public class AdminCampaignApiController {
     public String registerCampaign(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) MemberDto memberDto,
                                    @RequestBody CampaignFullDto dto){
 
-        if(memberDto == null || memberDto.getMemberType() != MemberType.ADMIN){
+        if(memberDto.getMemberType() != MemberType.ADMIN){
             return "fail";
         }
 
@@ -49,9 +49,6 @@ public class AdminCampaignApiController {
     public String editCampaign(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) MemberDto memberDto,
                                @PathVariable String campaignId,
                                @RequestBody CampaignFullDto dto) {
-        if(memberDto == null){
-            return "fail";
-        }
 
         charityService.modifyCampaign(campaignId, dto);
         return "ok";
@@ -66,7 +63,7 @@ public class AdminCampaignApiController {
     @GetMapping("/request")
     public String getRequestCampaignList(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) MemberDto memberDto){
 
-        if(memberDto == null || memberDto.getMemberType() != MemberType.ADMIN){
+        if(memberDto.getMemberType() != MemberType.ADMIN){
             return "fail";
         }
 
@@ -82,7 +79,7 @@ public class AdminCampaignApiController {
                                       @PathVariable String campaignId,
                                       @RequestParam("accept") Boolean isAccept){
 
-        if(memberDto == null || memberDto.getMemberType() != MemberType.ADMIN){
+        if(memberDto.getMemberType() != MemberType.ADMIN){
             return "fail";
         }
 

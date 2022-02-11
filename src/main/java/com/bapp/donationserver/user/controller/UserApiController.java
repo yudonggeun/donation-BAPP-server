@@ -34,10 +34,6 @@ public class UserApiController {
         //log
         log.info("내 정보 조회 : email={}", memberDto.getEmail());
 
-        if(memberDto == null){
-            return null;
-        }
-
         return memberService.getMemberInformation(memberDto.getEmail());
     }
 
@@ -47,9 +43,6 @@ public class UserApiController {
 
         log.info("내 정보 수정 : 전달된 데이터 {}", data);
 
-        if(memberDto == null){
-            return "fail";
-        }
         memberService.updateMemberInformation(memberDto.getEmail(), data);
         return "ok";
     }
@@ -74,11 +67,8 @@ public class UserApiController {
      */
     @PostMapping("/login")
     public String login(@RequestBody LoginDto loginForm, HttpServletRequest request) {
-        MemberDto member = normalUserService.login(loginForm.getEmail(), loginForm.getPassword());
 
-        if(member == null){
-            return "fail";
-        }
+        MemberDto member = normalUserService.login(loginForm.getEmail(), loginForm.getPassword());
 
         HttpSession session = request.getSession();
         session.setAttribute(SessionConst.LOGIN_MEMBER, member);
@@ -92,10 +82,6 @@ public class UserApiController {
     @PostMapping("/pay")
     public String payComplete(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) MemberDto memberDto,
                               @RequestParam Long amount) {
-
-        if(memberDto == null){
-            return "fail";
-        }
 
         log.info("email={}, amount={}", memberDto.getEmail(), amount);
         normalUserService.pay(memberDto.getEmail(), amount);

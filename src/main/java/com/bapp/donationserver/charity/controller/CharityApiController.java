@@ -23,13 +23,9 @@ public class CharityApiController {
      */
     @PostMapping
     public String registerCampaign(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) MemberDto memberDto,
-                                       @RequestBody CampaignFullDto dto) {
+                                   @RequestBody CampaignFullDto dto) {
 
-        log.info("CampaignFullDto={}",dto);
-
-        if(memberDto == null){
-            return "fail";
-        }
+        log.info("CampaignFullDto={}", dto);
 
         charityService.registerCampaign(dto);
         return "success";
@@ -43,10 +39,6 @@ public class CharityApiController {
     public String modifyCampaign(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) MemberDto memberDto,
                                  @PathVariable String campaignId, @RequestBody CampaignFullDto dto) {
 
-        if(memberDto == null){
-            return "fail";
-        }
-
         charityService.modifyCampaign(campaignId, dto);
         return "success";
     }
@@ -59,10 +51,6 @@ public class CharityApiController {
     public String withdrawFromCampaign(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) MemberDto memberDto,
                                        @PathVariable String campaignId,
                                        @RequestBody TransactionDto dto) {
-
-        if(memberDto == null){
-            return "fail";
-        }
 
         charityService.withdraw(campaignId, dto);
         return "success";
