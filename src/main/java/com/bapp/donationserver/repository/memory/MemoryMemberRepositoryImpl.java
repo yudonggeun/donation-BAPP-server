@@ -2,6 +2,7 @@ package com.bapp.donationserver.repository.memory;
 
 import com.bapp.donationserver.data.Member;
 import com.bapp.donationserver.data.MemberType;
+import com.bapp.donationserver.data.Wallet;
 import com.bapp.donationserver.data.dto.MemberDto;
 import com.bapp.donationserver.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -56,11 +57,12 @@ public class MemoryMemberRepositoryImpl implements MemberRepository {
         myPageDto.setPassword("psasdflskdj");
         myPageDto.setNickname("test1234");
         myPageDto.setPhoneNumber("010-1111-1111");
-        myPageDto.setMemberType(MemberType.USER);
+        myPageDto.setMemberType(MemberType.ADMIN);
         myPageDto.setProfilePhotoName("picture");
 
         Member memberInfo = new Member();
         memberInfo.setMyPageDto(myPageDto);
+        memberInfo.setWallet(new Wallet());
         db.put(memberInfo.getEmail(), memberInfo);
     }
 }

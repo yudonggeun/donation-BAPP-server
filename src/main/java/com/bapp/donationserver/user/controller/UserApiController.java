@@ -1,5 +1,8 @@
 package com.bapp.donationserver.user.controller;
 
+import com.bapp.donationserver.data.Member;
+import com.bapp.donationserver.data.SessionConst;
+import com.bapp.donationserver.data.dto.LoginDto;
 import com.bapp.donationserver.data.dto.MemberDto;
 import com.bapp.donationserver.user.service.MemberService;
 import com.bapp.donationserver.user.service.NormalUserService;
@@ -8,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 @RequestMapping("/api/user")
 @Slf4j
@@ -25,15 +29,28 @@ public class UserApiController {
      * 서버 응답 : 처리 결과 응답
      */
     @GetMapping
-    public MemberDto getMyPage(HttpServletRequest request, @RequestParam String email) {
-        log.info("내 정보 조회 : email={}", email);
-        return memberService.getMemberInformation(email);
+    public MemberDto getMyPage(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) MemberDto memberDto,
+                               HttpServletRequest request) {
+        //log
+        log.info("내 정보 조회 : email={}", memberDto.getEmail());
+
+        if(memberDto == null){
+            return null;
+        }
+
+        return memberService.getMemberInformation(memberDto.getEmail());
     }
 
     @PostMapping
-    public String editMyPage(@RequestBody MemberDto data) {
+    public String editMyPage(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) MemberDto memberDto,
+                             @RequestBody MemberDto data) {
+
         log.info("내 정보 수정 : 전달된 데이터 {}", data);
-        memberService.updateMemberInformation(data.getEmail(), data);
+
+        if(memberDto == null){
+            return "fail";
+        }
+        memberService.updateMemberInformation(memberDto.getEmail(), data);
         return "ok";
     }
 
@@ -46,6 +63,7 @@ public class UserApiController {
     public String newUser(@RequestBody MemberDto data) {
 
         log.info("회원가입 : 전달된 데이터 {}", data);
+
         normalUserService.joinMember(data);
         return "ok";
     }
@@ -55,10 +73,16 @@ public class UserApiController {
      * 서버 응답 : 세션 아이디, fail
      */
     @PostMapping("/login")
-    public String login(@RequestParam String email,
-                        @RequestParam String password) {
-        MemberDto member = memberService.getMemberInformation(email);
-        return member.getPassword().equals(password) ? "success" : "fail";
+    public String login(@RequestBody LoginDto loginForm, HttpServletRequest request) {
+        MemberDto member = normalUserService.login(loginForm.getEmail(), loginForm.getPassword());
+
+        if(member == null){
+            return "fail";
+        }
+
+        HttpSession session = request.getSession();
+        session.setAttribute(SessionConst.LOGIN_MEMBER, member);
+        return "success";
     }
 
     /**
@@ -66,9 +90,15 @@ public class UserApiController {
      * 서버 응답 : success fail
      */
     @PostMapping("/pay")
-    public String payComplete(@RequestParam String email, @RequestParam Long amount) {
-        log.info("email={}, amount={}", email, amount);
-        normalUserService.pay(email, amount);
+    public String payComplete(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) MemberDto memberDto,
+                              @RequestParam Long amount) {
+
+        if(memberDto == null){
+            return "fail";
+        }
+
+        log.info("email={}, amount={}", memberDto.getEmail(), amount);
+        normalUserService.pay(memberDto.getEmail(), amount);
         return "success";
     }
 }

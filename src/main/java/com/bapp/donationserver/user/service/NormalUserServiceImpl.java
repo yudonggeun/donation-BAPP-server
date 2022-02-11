@@ -1,10 +1,7 @@
 package com.bapp.donationserver.user.service;
 
 import com.bapp.donationserver.data.*;
-import com.bapp.donationserver.data.dto.CampaignFullDto;
-import com.bapp.donationserver.data.dto.CampaignSimpleDto;
-import com.bapp.donationserver.data.dto.MemberDto;
-import com.bapp.donationserver.data.dto.TransactionDto;
+import com.bapp.donationserver.data.dto.*;
 import com.bapp.donationserver.repository.CampaignRepository;
 import com.bapp.donationserver.repository.DonationTransactionRepository;
 import com.bapp.donationserver.repository.MemberRepository;
@@ -31,22 +28,24 @@ public class NormalUserServiceImpl implements NormalUserService {
     }
 
     @Override
-    public List<CampaignSimpleDto> checkCampaignList(CampaignSearchCondition condition) {
-        List<Campaign> campaignInfos = campaignRepository.findCampaignListByCondition(condition);
+    public MemberDto login(String email, String password) {
+        Member member = memberRepository.findByEmail(email);
 
+        return member != null && member.getPassword().equals(password)
+                ? member.getMyPageDto() : null;
+    }
+
+    @Override
+    public List<CampaignSimpleDto> checkCampaignList(CampaignSearchConditionDto dto, MemberType memberType) {
+        //조건 설정
+        CampaignSearchCondition condition = new CampaignSearchCondition();
+        condition.setDto(dto);
+        condition.setMemberType(memberType);
+
+        //db 조회 및 dto 변환
         List<CampaignSimpleDto> dtoList = new ArrayList<>();
-
-        if (condition == null)
-            condition = new CampaignSearchCondition();
-
-        if (campaignInfos == null || campaignInfos.size() - 1 < condition.getStartIndex()) {
-            log.info("검색 조건에 부합하는 캠페인이 없습니다.");
-            return dtoList;
-        }
-
-        campaignInfos.subList(condition.getStartIndex(),
-                (campaignInfos.size() <= condition.getEndIndex() ? campaignInfos.size() : condition.getEndIndex() + 1)
-        ).forEach(campaign -> dtoList.add(campaign.getCampaignSimpleDto()));
+        campaignRepository.findCampaignListByCondition(condition)
+                .forEach(campaign -> dtoList.add(campaign.getCampaignSimpleDto()));
 
         log.info("정상 반환 ={}", dtoList);
         return dtoList;
