@@ -21,7 +21,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserCampaignApiController {
 
-    private final MemberService memberService;
     private final NormalUserService normalUserService;
 
 

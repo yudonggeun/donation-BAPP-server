@@ -32,10 +32,6 @@ public class AdminCampaignApiController {
     public String registerCampaign(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) MemberDto memberDto,
                                    @RequestBody CampaignFullDto dto){
 
-        if(memberDto.getMemberType() != MemberType.ADMIN){
-            return "fail";
-        }
-
         charityService.registerCampaign(dto);
         return "ok";
     }
@@ -59,13 +55,9 @@ public class AdminCampaignApiController {
                                  @PathVariable String campaignId){
         return "ok";
     }
-    //수정
+
     @GetMapping("/request")
     public String getRequestCampaignList(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) MemberDto memberDto){
-
-        if(memberDto.getMemberType() != MemberType.ADMIN){
-            return "fail";
-        }
 
         CampaignSearchConditionDto dto = new CampaignSearchConditionDto();
         dto.setStartIndex(0);
@@ -78,10 +70,6 @@ public class AdminCampaignApiController {
     public String changeLimitCampaign(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) MemberDto memberDto,
                                       @PathVariable String campaignId,
                                       @RequestParam("accept") Boolean isAccept){
-
-        if(memberDto.getMemberType() != MemberType.ADMIN){
-            return "fail";
-        }
 
         adminService.changeCampaignAcceptTo(campaignId, isAccept);
         return "ok";
