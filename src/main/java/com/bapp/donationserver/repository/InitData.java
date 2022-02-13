@@ -1,11 +1,11 @@
 package com.bapp.donationserver.repository;
 
-import com.bapp.donationserver.admin.service.AdminService;
-import com.bapp.donationserver.charity.service.CharityService;
+import com.bapp.donationserver.service.admin.AdminService;
+import com.bapp.donationserver.service.charity.CharityService;
 import com.bapp.donationserver.data.*;
 import com.bapp.donationserver.data.dto.MemberDto;
-import com.bapp.donationserver.user.service.MemberService;
-import com.bapp.donationserver.user.service.NormalUserService;
+import com.bapp.donationserver.service.user.MemberService;
+import com.bapp.donationserver.service.user.NormalUserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

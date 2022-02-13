@@ -1,9 +1,6 @@
 package com.bapp.donationserver.data;
 
-import com.bapp.donationserver.admin.dto.CategoryDto;
-import com.bapp.donationserver.data.Campaign;
-import com.bapp.donationserver.data.CategoryInfo;
-import lombok.Data;
+import com.bapp.donationserver.data.dto.CategoryDto;
 import lombok.Getter;
 import lombok.Setter;
 
