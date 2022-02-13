@@ -1,42 +1,45 @@
 package com.bapp.donationserver.data;
 
 import com.bapp.donationserver.data.dto.TransactionDto;
-//import com.sun.istack.NotNull;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-//import javax.persistence.Entity;
-//import javax.persistence.Id;
-import java.time.LocalDateTime;
+import javax.persistence.*;
+import java.time.LocalDate;
+import java.util.Calendar;
+import java.util.UUID;
 
 /**
  * 기부금 사용 내역 관련 정보 클래스
  */
-//@Entity
-@Data
+@Entity
+@Getter
+@Setter
 public class Transaction {
-//    @Id
-    private String campaignId;//기부 켐페인 id
-//    @NotNull
+    @Id
+    private String  id;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "CAMPAIGN_ID")
+    private Campaign campaign;//기부 켐페인 id
     private String sender;//사용자
-//    @NotNull
     private String receiver;//거래처
-//    @NotNull
     private Long amount;//거래 금액
-//    @NotNull
     private Long balance;//남은 금액
-//    @NotNull
-    private LocalDateTime date;//거래 시간
+    private LocalDate date;//거래 시간
 
     public Transaction() {
+        this.id = UUID.randomUUID().toString();
     }
 
-    public Transaction(String campaignId, String sender, String receiver, Long amount, Long balance) {
-        this.campaignId = campaignId;
+    public Transaction(Campaign campaign, String sender, String receiver, Long amount, Long balance) {
+        this.id = UUID.randomUUID().toString();
+        this.campaign = campaign;
         this.sender = sender;
         this.receiver = receiver;
         this.amount = amount;
         this.balance = balance;
-        this.date = LocalDateTime.now();
+        this.date = LocalDate.now();
     }
 
     public TransactionDto getDto() {

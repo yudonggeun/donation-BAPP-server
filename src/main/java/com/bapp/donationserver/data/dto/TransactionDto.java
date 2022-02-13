@@ -2,7 +2,7 @@ package com.bapp.donationserver.data.dto;
 
 import lombok.Data;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Data
 public class TransactionDto {
@@ -10,5 +10,5 @@ public class TransactionDto {
     private String receiver;//거래처
     private Long amount;//거래 금액
     private Long balance;//남은 금액
-    private LocalDateTime date;
+    private LocalDate date;
 }

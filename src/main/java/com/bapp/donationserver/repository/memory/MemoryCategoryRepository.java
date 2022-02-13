@@ -1,6 +1,7 @@
-package com.bapp.donationserver.admin.repository;
+package com.bapp.donationserver.repository.memory;
 
-import com.bapp.donationserver.admin.domain.Category;
+import com.bapp.donationserver.data.Category;
+import com.bapp.donationserver.repository.CategoryRepository;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 

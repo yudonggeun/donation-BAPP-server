@@ -12,6 +12,7 @@ import com.bapp.donationserver.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +21,7 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 @Slf4j
+@Transactional
 public class CharityServiceImpl implements CharityService {
 
     private final CampaignRepository campaignRepository;
@@ -53,24 +55,23 @@ public class CharityServiceImpl implements CharityService {
         campaign.setCurrentAmount(campaign.getCurrentAmount() - dto.getAmount());
 
         Transaction transaction = new Transaction(
-                campaignId,
+                campaign,
                 dto.getSender(),
                 dto.getReceiver(),
                 dto.getAmount(),
                 campaign.getCurrentAmount()
         );
 
-
-
         campaignRepository.update(campaignId, campaign);
         transactionRepository.save(transaction);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<CampaignSimpleDto> checkCampaignList(String email) {
         Member member = memberRepository.findByEmail(email);
         List<CampaignSimpleDto> dtoList = new ArrayList<>();
-        member.getInterestCampaigns().forEach(campaign -> dtoList.add(campaign.getCampaignSimpleDto()));
+        member.getInterestCampaigns().forEach(campaign -> dtoList.add(campaign.getCampaign().getCampaignSimpleDto()));
         return dtoList;
     }
 }

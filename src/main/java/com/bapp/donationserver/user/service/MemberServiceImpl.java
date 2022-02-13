@@ -8,6 +8,7 @@ import com.bapp.donationserver.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,17 +16,18 @@ import java.util.List;
 @Service
 @Slf4j
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class MemberServiceImpl implements MemberService {
 
     private final MemberRepository memberRepository;
-    private final CampaignRepository campaignRepository;
 
     @Override
     public MemberDto getMemberInformation(String email) {
-        return memberRepository.findByEmail(email).getMyPageDto();
+        return memberRepository.findByEmail(email).getDto();
     }
 
     @Override
+    @Transactional
     public void updateMemberInformation(String email, MemberDto updateMemberInformation) {
         memberRepository.update(email, updateMemberInformation);
     }
@@ -35,7 +37,7 @@ public class MemberServiceImpl implements MemberService {
         List<CampaignSimpleDto> donationList = new ArrayList<>();
         memberRepository.findByEmail(email)
                 .getDonatedCampaigns()
-                .forEach(campaignInfo -> donationList.add(campaignInfo.getCampaignSimpleDto()));
+                .forEach(campaignInfo -> donationList.add(campaignInfo.getCampaign().getCampaignSimpleDto()));
         return donationList;
     }
 

@@ -7,7 +7,7 @@ import java.util.List;
 
 @Data
 public class CampaignFullDto {
-    private String subject;
+    private String campaignName;
     private String charityName;
     private LocalDate deadline;
     private Long currentAmount;

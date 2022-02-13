@@ -20,13 +20,13 @@ public class MemoryMemberRepositoryImpl implements MemberRepository {
 
     private final Map<String , Member> db = new HashMap<>();
     @Override
-    public void save(MemberDto memberInfo) {
-        Member member = new Member();
-        member.setMyPageDto(memberInfo);
+    public void save(Member member) {
+        /*Member member = new Member();
+        member.setDto(memberInfo);
         if(db.get(memberInfo.getEmail()) != null){
             throw new IllegalStateException("해당 이메일로 가입한 멤버가 존재합니다.");
-        }
-        db.put(memberInfo.getEmail(), member);
+        }*/
+        db.put(member.getEmail(), member);
         log.info("새로운 멤버 등록 class={}", member);
     }
 
@@ -34,7 +34,7 @@ public class MemoryMemberRepositoryImpl implements MemberRepository {
     public void update(String email, MemberDto memberInfo) {
         log.info("멤버 정보 수정 ={}", memberInfo);
         Member member = db.get(email);
-        member.setMyPageDto(memberInfo);
+        member.setDto(memberInfo);
     }
 
     @Override
@@ -61,7 +61,7 @@ public class MemoryMemberRepositoryImpl implements MemberRepository {
         myPageDto.setProfilePhotoName("picture");
 
         Member memberInfo = new Member();
-        memberInfo.setMyPageDto(myPageDto);
+        memberInfo.setDto(myPageDto);
         memberInfo.setWallet(new Wallet());
         db.put(memberInfo.getEmail(), memberInfo);
     }

@@ -1,5 +1,6 @@
 package com.bapp.donationserver.repository.memory;
 
+import com.bapp.donationserver.data.Campaign;
 import com.bapp.donationserver.data.Transaction;
 import com.bapp.donationserver.repository.DonationTransactionRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -23,7 +24,7 @@ public class MemoryDonationTransactionRepository implements DonationTransactionR
     public List<Transaction> findByCampaignId(String campaignId) {
         List<Transaction> list = new ArrayList<>();
         db.values().stream()
-                .filter(transaction -> transaction.getCampaignId().equals(campaignId))
+                .filter(transaction -> transaction.getCampaign().getCampaignId().equals(campaignId))
                 .forEach(list::add);
 
         return list;
@@ -32,7 +33,7 @@ public class MemoryDonationTransactionRepository implements DonationTransactionR
     @PostConstruct
     public void init(){
         db.put("test", new Transaction(
-                "test",
+                new Campaign(),
                 "me",
                 "you",
                 10000L,

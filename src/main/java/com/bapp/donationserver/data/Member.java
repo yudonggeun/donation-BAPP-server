@@ -2,34 +2,41 @@ package com.bapp.donationserver.data;
 
 import com.bapp.donationserver.data.dto.MemberDto;
 import lombok.Data;
-//import com.sun.istack.NotNull;
-//import javax.persistence.Entity;
-//import javax.persistence.Id;
-//import javax.persistence.JoinColumn;
-//import javax.persistence.OneToOne;
+import lombok.Getter;
+import lombok.Setter;
+
+import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
-//@Entity
-@Data
+@Entity
+@Getter
+@Setter
 public class Member {
-//    @Id
-//    @NotNull
+    @Id
     private String email;
-//    @NotNull
+    @Enumerated(EnumType.STRING)
+    @Column(name = "TYPE")
     private MemberType memberType;
+    @Column(name = "USERNAME")
     private String name;
+    @Column(name = "PHONE")
     private String phoneNumber;
-//    @NotNull
+    @Column(name = "PASSWORD")
     private String password;
+    @Column(name = "NICKNAME")
     private String nickname;
+    @Column(name = "PROFILE_IMAGE")
     private String profilePhotoName;
-    private List<Campaign> interestCampaigns;//기부 단체의 경우에 관심 켐패인이 아닌 등록한 켐패인 리스트
-    private List<Campaign> donatedCampaigns;
-//    @OneToOne
-//    @JoinColumn(name = "wallet_id")
+    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
+    private List<InterestCampaign> interestCampaigns = new ArrayList<>();//기부 단체의 경우에 관심 켐패인이 아닌 등록한 켐패인 리스트
+    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
+    private List<DonatedCampaign> donatedCampaigns = new ArrayList<>();
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "WALLET_ID")
     private Wallet wallet;
 
-    public void setMyPageDto(MemberDto data) {
+    public void setDto(MemberDto data) {
         setMemberType(data.getMemberType());
         setName(data.getName());
         setPhoneNumber(data.getPhoneNumber());
@@ -39,7 +46,7 @@ public class Member {
         setProfilePhotoName(data.getProfilePhotoName());
     }
 
-    public MemberDto getMyPageDto() {
+    public MemberDto getDto() {
         MemberDto myPageDto = new MemberDto();
         myPageDto.setMemberType(getMemberType());
         myPageDto.setName(getName());

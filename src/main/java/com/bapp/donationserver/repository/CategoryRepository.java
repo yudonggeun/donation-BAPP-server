@@ -1,6 +1,6 @@
-package com.bapp.donationserver.admin.repository;
+package com.bapp.donationserver.repository;
 
-import com.bapp.donationserver.admin.domain.Category;
+import com.bapp.donationserver.data.Category;
 
 import java.util.List;
 

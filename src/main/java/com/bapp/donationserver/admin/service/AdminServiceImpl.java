@@ -1,11 +1,12 @@
 package com.bapp.donationserver.admin.service;
 
-import com.bapp.donationserver.admin.repository.CategoryRepository;
-import com.bapp.donationserver.admin.domain.Category;
+import com.bapp.donationserver.repository.CategoryRepository;
+import com.bapp.donationserver.data.Category;
 import com.bapp.donationserver.admin.dto.CategoryDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,11 +14,13 @@ import java.util.List;
 @Service
 @Slf4j
 @RequiredArgsConstructor
+@Transactional
 public class AdminServiceImpl implements AdminService {
 
     private final CategoryRepository categoryRepository;
 
     @Override
+    @Transactional(readOnly = true)
     public List<CategoryDto> getCategoryList() {
         List<CategoryDto> dtoList = new ArrayList<>();
         categoryRepository.findAll().forEach(category -> dtoList.add(category.getDto()));

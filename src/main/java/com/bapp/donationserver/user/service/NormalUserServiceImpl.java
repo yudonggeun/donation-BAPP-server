@@ -8,6 +8,7 @@ import com.bapp.donationserver.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +16,7 @@ import java.util.List;
 @Service
 @Slf4j
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class NormalUserServiceImpl implements NormalUserService {
 
     private final MemberRepository memberRepository;
@@ -22,8 +24,11 @@ public class NormalUserServiceImpl implements NormalUserService {
     private final DonationTransactionRepository transactionRepository;
 
     @Override
-    public void joinMember(MemberDto newMember) {
+    @Transactional
+    public void joinMember(MemberDto data) {
         log.info("서비스 호출");
+        Member newMember = new Member();
+        newMember.setDto(data);
         memberRepository.save(newMember);
     }
 
@@ -32,7 +37,7 @@ public class NormalUserServiceImpl implements NormalUserService {
         Member member = memberRepository.findByEmail(email);
 
         return member != null && member.getPassword().equals(password)
-                ? member.getMyPageDto() : null;
+                ? member.getDto() : null;
     }
 
     @Override
@@ -57,6 +62,7 @@ public class NormalUserServiceImpl implements NormalUserService {
     }
 
     @Override
+    @Transactional
     public void pay(String memberEmail, Long amount) {
         log.info("결제 완료");
         Member member = memberRepository.findByEmail(memberEmail);
