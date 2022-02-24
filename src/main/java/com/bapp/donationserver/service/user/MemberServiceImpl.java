@@ -41,23 +41,10 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public void putCampaignAtCart(String campaignId) {
+    public void dropMember(String email) {
+        //db 에서 해당 멤버의 기록 삭제
+        memberRepository.delete(email);
+        //지갑 삭제
 
     }
-
-    @Override
-    public void deleteCampaignAtCart(String campaignId) {
-
-    }
-
-    @Override
-    public void clearCart(String campaignId) {
-
-    }
-
-    @Override
-    public void buyDonationAtCart(Cart cart) {
-
-    }
-
 }

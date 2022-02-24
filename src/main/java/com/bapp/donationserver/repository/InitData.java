@@ -49,7 +49,7 @@ public class InitData {
         myPageDto.setMemberType(MemberType.ADMIN);
         myPageDto.setProfilePhotoName("picture");
 
-        normalUserService.joinMember(myPageDto);
+        normalUserService.newMember(myPageDto);
     }
 
     public void initCampaign(){

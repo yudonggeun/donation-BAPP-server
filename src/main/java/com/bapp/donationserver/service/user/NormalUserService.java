@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface NormalUserService {
     //회원 가입
-    void joinMember(MemberDto newMemberInfo);
+    void newMember(MemberDto newMemberInfo);
     //로그인
     MemberDto login(String email, String password);
     //캠페인 목록 조회 //켐페인 검색

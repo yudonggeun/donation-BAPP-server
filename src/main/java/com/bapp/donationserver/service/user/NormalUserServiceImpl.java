@@ -25,10 +25,12 @@ public class NormalUserServiceImpl implements NormalUserService {
 
     @Override
     @Transactional
-    public void joinMember(MemberDto data) {
-        log.info("서비스 호출");
+    public void newMember(MemberDto data) {
+        log.info("회원 가입 서비스 호출");
+        //회원 생성
         Member newMember = new Member();
         newMember.setDto(data);
+        //지갑 생성
         memberRepository.save(newMember);
     }
 

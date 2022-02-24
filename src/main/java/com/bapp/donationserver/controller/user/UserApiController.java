@@ -56,8 +56,20 @@ public class UserApiController {
 
         log.info("회원가입 : 전달된 데이터 {}", data);
 
-        normalUserService.joinMember(data);
+        normalUserService.newMember(data);
         return "ok";
+    }
+
+    /**
+     * 회원 탈퇴
+     */
+    @DeleteMapping
+    public String quitService(HttpServletRequest request){
+        HttpSession session = request.getSession(false);
+        MemberDto memberDto = (MemberDto) session.getAttribute(SessionConst.LOGIN_MEMBER);
+        memberService.dropMember(memberDto.getEmail());
+
+        return "success";
     }
 
     /**
