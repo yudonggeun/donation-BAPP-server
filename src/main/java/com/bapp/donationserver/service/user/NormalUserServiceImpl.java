@@ -5,6 +5,7 @@ import com.bapp.donationserver.data.dto.*;
 import com.bapp.donationserver.repository.CampaignRepository;
 import com.bapp.donationserver.repository.DonationTransactionRepository;
 import com.bapp.donationserver.repository.MemberRepository;
+import com.bapp.donationserver.repository.WalletRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -22,6 +23,7 @@ public class NormalUserServiceImpl implements NormalUserService {
     private final MemberRepository memberRepository;
     private final CampaignRepository campaignRepository;
     private final DonationTransactionRepository transactionRepository;
+    private final WalletRepository walletRepository;
 
     @Override
     @Transactional
@@ -31,6 +33,8 @@ public class NormalUserServiceImpl implements NormalUserService {
         Member newMember = new Member();
         newMember.setDto(data);
         //지갑 생성
+        Wallet wallet = walletRepository.createWallet();
+        newMember.setWallet(wallet);
         memberRepository.save(newMember);
     }
 
