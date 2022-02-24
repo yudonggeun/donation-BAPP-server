@@ -39,6 +39,6 @@ public class JPACategoryRepository implements CategoryRepository {
 
     @Override
     public List<Category> findAll() {
-        return em.createQuery("select i from i CATEGORY").getResultList();
+        return em.createQuery("select i from i Category").getResultList();
     }
 }

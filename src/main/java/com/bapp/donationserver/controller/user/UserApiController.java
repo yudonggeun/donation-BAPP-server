@@ -73,6 +73,17 @@ public class UserApiController {
         session.setAttribute(SessionConst.LOGIN_MEMBER, member);
         return "success";
     }
+    /**
+     * 로그아웃 요청
+     */
+    @GetMapping("/logout")
+    public String logout(HttpServletRequest request){
+        HttpSession session = request.getSession(false);
+        if(session == null)
+            return "fail";
+        session.invalidate();
+        return "success";
+    }
 
     /**
      * 클라이언트 : 사용자 id, 포인트 충전 금액

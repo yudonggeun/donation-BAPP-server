@@ -46,14 +46,14 @@ public class JPACampaignRepository implements CampaignRepository {
 
     @Override
     public List<Campaign> findAll() {
-        return em.createQuery("select i from i CAMPAIGN").getResultList();
+        return em.createQuery("select i from i Campaign").getResultList();
     }
 
     @Override
     public List<Campaign> findCampaignListByCondition(CampaignSearchCondition condition) {
 
         log.info("조건={}", condition);
-        List<Campaign> campaigns = em.createQuery("select i from i CAMPAIGN").getResultList();
+        List<Campaign> campaigns = em.createQuery("select i from i Campaign").getResultList();
         
         /*//조건 필터
         for (String s : db.keySet()) {
