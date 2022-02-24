@@ -1,5 +1,6 @@
 package com.bapp.donationserver.intercepter;
 
+import com.bapp.donationserver.data.SessionConst;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.servlet.HandlerInterceptor;
 
@@ -21,7 +22,8 @@ public class LoginInterceptor implements HandlerInterceptor {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, errorMsg);
         }
 
-        log.info("{} url={}", isMember ? successMsg : errorMsg, request.getRequestURL());
+        log.info("{} url={} member={}", isMember ? successMsg : errorMsg, request.getRequestURL(),
+                request.getSession(false).getAttribute(SessionConst.LOGIN_MEMBER));
 
         return isMember;
     }

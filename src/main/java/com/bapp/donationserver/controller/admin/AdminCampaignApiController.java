@@ -1,5 +1,6 @@
 package com.bapp.donationserver.controller.admin;
 
+import com.bapp.donationserver.data.status.Status;
 import com.bapp.donationserver.service.admin.AdminService;
 import com.bapp.donationserver.service.charity.CharityService;
 import com.bapp.donationserver.data.MemberType;
@@ -23,17 +24,17 @@ public class AdminCampaignApiController {
     private final CharityService charityService;
 
     @GetMapping
-    public String getCampaignList(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) MemberDto memberDto){
+    public Object getCampaignList(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) MemberDto memberDto){
         normalUserService.checkCampaignList(new CampaignSearchConditionDto(), memberDto.getMemberType());
-        return "ok";
+        return Status.successStatus();
     }
 
     @PostMapping
-    public String registerCampaign(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) MemberDto memberDto,
+    public Object registerCampaign(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) MemberDto memberDto,
                                    @RequestBody CampaignFullDto dto){
 
         charityService.registerCampaign(dto);
-        return "ok";
+        return Status.successStatus();
     }
 
     @GetMapping("/{campaignId}")
@@ -42,37 +43,37 @@ public class AdminCampaignApiController {
     }
 
     @PostMapping("/{campaignId}")
-    public String editCampaign(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) MemberDto memberDto,
+    public Object editCampaign(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) MemberDto memberDto,
                                @PathVariable String campaignId,
                                @RequestBody CampaignFullDto dto) {
 
         charityService.modifyCampaign(campaignId, dto);
-        return "ok";
+        return Status.successStatus();
     }
 
     @DeleteMapping("/{campaignId}")
-    public String deleteCampaign(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) MemberDto memberDto,
+    public Object deleteCampaign(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) MemberDto memberDto,
                                  @PathVariable String campaignId){
-        return "ok";
+        return Status.successStatus();
     }
 
     @GetMapping("/request")
-    public String getRequestCampaignList(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) MemberDto memberDto){
+    public Object getRequestCampaignList(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) MemberDto memberDto){
 
         CampaignSearchConditionDto dto = new CampaignSearchConditionDto();
         dto.setStartIndex(0);
         dto.setEndIndex(Integer.MAX_VALUE);
         normalUserService.checkCampaignList(dto, MemberType.ADMIN);
-        return "ok";
+        return Status.successStatus();
     }
 
     @GetMapping("/{campaignId}/limit")
-    public String changeLimitCampaign(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) MemberDto memberDto,
+    public Object changeLimitCampaign(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) MemberDto memberDto,
                                       @PathVariable String campaignId,
                                       @RequestParam("accept") Boolean isAccept){
 
         adminService.changeCampaignAcceptTo(campaignId, isAccept);
-        return "ok";
+        return Status.successStatus();
     }
 
 }

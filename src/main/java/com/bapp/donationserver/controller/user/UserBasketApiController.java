@@ -1,5 +1,6 @@
 package com.bapp.donationserver.controller.user;
 
+import com.bapp.donationserver.data.status.Status;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
@@ -9,13 +10,13 @@ import org.springframework.web.bind.annotation.*;
 public class UserBasketApiController {
 
     @GetMapping
-    public String addBasket(@RequestParam String campaignId,
+    public Object addBasket(@RequestParam String campaignId,
                             @RequestParam Long price){
-        return "ok";
+        return Status.successStatus();
     }
 
     @PostMapping
-    public String deleteBasket(@RequestParam String campaignId){
-        return "ok";
+    public Object deleteBasket(@RequestParam String campaignId){
+        return Status.successStatus();
     }
 }
