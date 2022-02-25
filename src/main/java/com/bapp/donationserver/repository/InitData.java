@@ -1,5 +1,7 @@
 package com.bapp.donationserver.repository;
 
+import com.bapp.donationserver.data.dto.CampaignFullDto;
+import com.bapp.donationserver.data.type.MemberType;
 import com.bapp.donationserver.service.category.CategoryService;
 import com.bapp.donationserver.data.*;
 import com.bapp.donationserver.data.dto.MemberDto;
@@ -25,20 +27,10 @@ public class InitData {
 
     @PostConstruct
     public void init(){
-        testTransaction();
         initMember();
         initCampaign();
         initCategory("아동");
         initCategory("청년");
-    }
-    public void testTransaction(){
-        Transaction transaction = new Transaction(
-                null,
-                "me",
-                "you",
-                10000L,
-                20000L
-        );
     }
 
     public void initMember(){
@@ -61,7 +53,7 @@ public class InitData {
     }
 
     private void addSampleCampaign(String subject) {
-        Campaign campaignInfo = new Campaign(UUID.randomUUID().toString());
+        CampaignFullDto campaignInfo = new CampaignFullDto();
 
         campaignInfo.setCampaignName(subject);
         campaignInfo.setCharityName("몬스터주식회사");
@@ -71,7 +63,7 @@ public class InitData {
         campaignInfo.setCoverImagePath("/path/child");
         campaignInfo.setDetailImagePath("/path/detail/child");
         log.info("켐패인 추가 ={}", campaignInfo);
-        campaignService.registerCampaign(campaignInfo.getCampaignFullDto());
+        campaignService.registerCampaign(campaignInfo);
     }
 
     private void initCategory(String name){

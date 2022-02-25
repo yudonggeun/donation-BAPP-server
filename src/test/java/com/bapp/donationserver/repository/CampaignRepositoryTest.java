@@ -27,8 +27,7 @@ class CampaignRepositoryTest {
     void init() {
         campaign = new Campaign();
         campaign.setCampaignName("켐패인 이름");
-        campaign.setCampaignId(UUID.randomUUID().toString());
-        campaign.setCurrentAmount(10000L);
+//        campaign.setCurrentAmount(10000L);
         campaign.setIsAccepted(true);
         campaign.setCharityName("단체 이름");
         campaign.setDeadline(LocalDate.parse("2020-01-01"));

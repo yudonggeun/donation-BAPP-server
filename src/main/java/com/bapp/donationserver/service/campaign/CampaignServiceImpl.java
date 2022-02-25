@@ -2,7 +2,7 @@ package com.bapp.donationserver.service.campaign;
 
 import com.bapp.donationserver.data.Campaign;
 import com.bapp.donationserver.data.CampaignSearchCondition;
-import com.bapp.donationserver.data.MemberType;
+import com.bapp.donationserver.data.type.MemberType;
 import com.bapp.donationserver.data.Wallet;
 import com.bapp.donationserver.data.dto.CampaignFullDto;
 import com.bapp.donationserver.data.dto.CampaignSearchConditionDto;
@@ -16,7 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 @Service
 @Slf4j
@@ -26,9 +25,10 @@ public class CampaignServiceImpl implements CampaignService {
 
     private final CampaignRepository campaignRepository;
     private final WalletRepository walletRepository;
+
     @Override
     public void registerCampaign(CampaignFullDto campaignInfo) {
-        Campaign campaign = new Campaign(UUID.randomUUID().toString());
+        Campaign campaign = new Campaign();
         campaign.setCampaignFullDto(campaignInfo);
         //지갑 생성 및 등록
         Wallet wallet = walletRepository.createWallet();
@@ -38,7 +38,7 @@ public class CampaignServiceImpl implements CampaignService {
     }
 
     @Override
-    public void modifyCampaign(String campaignId, CampaignFullDto campaignInfo) {
+    public void modifyCampaign(Long campaignId, CampaignFullDto campaignInfo) {
         Campaign campaign = campaignRepository.findById(campaignId);
         campaign.setCampaignFullDto(campaignInfo);
         campaignRepository.update(campaignId, campaign);
@@ -63,12 +63,17 @@ public class CampaignServiceImpl implements CampaignService {
 
     @Transactional(readOnly = true)
     @Override
-    public CampaignFullDto checkDetailsOfCampaign(String campaignId) {
+    public CampaignFullDto checkDetailsOfCampaign(Long campaignId) {
         return campaignRepository.findById(campaignId).getCampaignFullDto();
     }
 
     @Override
-    public void acceptCampaign(String campaignId, Boolean status) {
+    public String getCampaignWalletId(Long campaignId) {
+        return campaignRepository.findById(campaignId).getWallet().getId();
+    }
+
+    @Override
+    public void acceptCampaign(Long campaignId, Boolean status) {
 
     }
 

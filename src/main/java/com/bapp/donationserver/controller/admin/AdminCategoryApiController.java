@@ -3,7 +3,7 @@ package com.bapp.donationserver.controller.admin;
 import com.bapp.donationserver.data.status.Status;
 import com.bapp.donationserver.service.category.CategoryService;
 import com.bapp.donationserver.data.dto.CategoryDto;
-import com.bapp.donationserver.data.MemberType;
+import com.bapp.donationserver.data.type.MemberType;
 import com.bapp.donationserver.data.SessionConst;
 import com.bapp.donationserver.data.dto.MemberDto;
 import lombok.RequiredArgsConstructor;

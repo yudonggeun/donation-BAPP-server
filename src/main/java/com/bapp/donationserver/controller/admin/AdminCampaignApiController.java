@@ -2,7 +2,7 @@ package com.bapp.donationserver.controller.admin;
 
 import com.bapp.donationserver.data.status.Status;
 import com.bapp.donationserver.service.category.CategoryService;
-import com.bapp.donationserver.data.MemberType;
+import com.bapp.donationserver.data.type.MemberType;
 import com.bapp.donationserver.data.SessionConst;
 import com.bapp.donationserver.data.dto.CampaignFullDto;
 import com.bapp.donationserver.data.dto.CampaignSearchConditionDto;
@@ -36,13 +36,13 @@ public class AdminCampaignApiController {
     }
 
     @GetMapping("/{campaignId}")
-    public CampaignFullDto inquiredCampaign(@PathVariable String campaignId){
+    public CampaignFullDto inquiredCampaign(@PathVariable Long campaignId){
         return campaignService.checkDetailsOfCampaign(campaignId);
     }
 
     @PostMapping("/{campaignId}")
     public Object editCampaign(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) MemberDto memberDto,
-                               @PathVariable String campaignId,
+                               @PathVariable Long campaignId,
                                @RequestBody CampaignFullDto dto) {
 
         campaignService.modifyCampaign(campaignId, dto);
@@ -67,7 +67,7 @@ public class AdminCampaignApiController {
 
     @GetMapping("/{campaignId}/limit")
     public Object changeLimitCampaign(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) MemberDto memberDto,
-                                      @PathVariable String campaignId,
+                                      @PathVariable Long campaignId,
                                       @RequestParam("accept") Boolean isAccept){
 
         campaignService.acceptCampaign(campaignId, isAccept);

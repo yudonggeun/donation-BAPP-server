@@ -2,6 +2,7 @@ package com.bapp.donationserver.repository.jpa;
 
 import com.bapp.donationserver.data.Campaign;
 import com.bapp.donationserver.data.Transaction;
+import com.bapp.donationserver.data.TransactionDetail;
 import com.bapp.donationserver.repository.TransactionRepository;
 import com.bapp.donationserver.service.blockchain.BlockChainService;
 import lombok.RequiredArgsConstructor;
@@ -24,13 +25,15 @@ public class JPATransactionRepository implements TransactionRepository {
     private final BlockChainService blockChainService;
 
     @Override
-    public void save(Transaction transaction) {
-        log.info("거래 저장 transaction={}", transaction);
+    public void save(Transaction transaction, TransactionDetail detail) {
+        log.info("거래 저장 transaction={} {}", transaction, detail);
         em.persist(transaction);
+        if(detail != null)
+            em.persist(detail);
     }
 
     @Override
     public List<Transaction> findByCampaignId(String campaignId) {
-        return em.find(Campaign.class, campaignId).getTransactions();
+        return em.find(Campaign.class, campaignId).getWallet().getTransactions();
     }
 }

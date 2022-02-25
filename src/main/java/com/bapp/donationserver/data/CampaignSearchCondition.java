@@ -1,6 +1,7 @@
 package com.bapp.donationserver.data;
 
 import com.bapp.donationserver.data.dto.CampaignSearchConditionDto;
+import com.bapp.donationserver.data.type.MemberType;
 import lombok.Data;
 
 import java.util.List;

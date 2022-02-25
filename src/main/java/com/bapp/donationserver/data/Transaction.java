@@ -1,13 +1,12 @@
 package com.bapp.donationserver.data;
 
 import com.bapp.donationserver.data.dto.TransactionDto;
-import lombok.Data;
+import com.bapp.donationserver.data.type.TransactionType;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.Calendar;
 import java.util.UUID;
 
 /**
@@ -18,45 +17,59 @@ import java.util.UUID;
 @Setter
 public class Transaction {
     @Id
-    private String  id;/*
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "CAMPAIGN_ID")*/
-    private String campaign;//기부 켐페인 id
-    private String sender;//사용자
-    private String receiver;//거래처
+    @Column(name = "ID", nullable = false)
+    private Long id;
+    @Column(name = "FROM_WALLET")
+    private String from;
+    @Column(name = "TO_WALLET")
+    private String to;
+    @Column(name = "FROM_BALANCE")
+    private Long fromBalance;//남은 금액
+    @Column(name = "TO_BALANCE")
+    private Long toBalance;//남은 금액
+    @Column(name = "AMOUNT")
     private Long amount;//거래 금액
-    private Long balance;//남은 금액
+    @Column(name = "DATE")
     private LocalDate date;//거래 시간
+    @Column(name = "TYPE")
+    private TransactionType type;
+    @OneToOne(mappedBy = "transaction", fetch = FetchType.LAZY)
+    private TransactionDetail detail;
 
     public Transaction() {
-        this.id = UUID.randomUUID().toString();
     }
 
-    public Transaction(String campaign, String sender, String receiver, Long amount, Long balance) {
-        this.id = UUID.randomUUID().toString();
-        this.campaign = campaign;
-        this.sender = sender;
-        this.receiver = receiver;
+    public Transaction(Wallet from, Wallet to, Long amount, TransactionType type, TransactionDetail detail) {
+        this.from = from.getId();
+        this.to = to.getId();
+        this.fromBalance = from.getAmount() - amount;
+        this.toBalance = to.getAmount() + amount;
         this.amount = amount;
-        this.balance = balance;
         this.date = LocalDate.now();
+        this.type = type;
+        this.detail = detail;
     }
 
     public TransactionDto getDto() {
         TransactionDto dto = new TransactionDto();
-        dto.setSender(getSender());
-        dto.setReceiver(getReceiver());
+        dto.setSender(getDetail().getSender());
+        dto.setReceiver(getDetail().getReceiver());
         dto.setAmount(getAmount());
-        dto.setBalance(getBalance());
+        dto.setBalance(getToBalance());
         dto.setDate(getDate());
+        dto.setType(getType());
+        dto.setPurpose(getDetail().getPurpose());
 
         return dto;
     }
 
     public void setDto(TransactionDto dto) {
-        this.setSender(dto.getSender());
-        this.setReceiver(dto.getReceiver());
-        this.setAmount(dto.getAmount());
-        this.setBalance(dto.getBalance());
+        getDetail().setSender(dto.getSender());
+        getDetail().setReceiver(dto.getReceiver());
+        getDetail().setPurpose(dto.getPurpose());
+        setAmount(dto.getAmount());
+        setToBalance(dto.getBalance());
+        setType(dto.getType());
+
     }
 }

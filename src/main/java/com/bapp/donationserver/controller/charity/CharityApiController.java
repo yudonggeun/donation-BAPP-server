@@ -40,7 +40,7 @@ public class CharityApiController {
      */
     @PostMapping("/{campaignId}")
     public Object modifyCampaign(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) MemberDto memberDto,
-                                 @PathVariable String campaignId, @RequestBody CampaignFullDto dto) {
+                                 @PathVariable Long campaignId, @RequestBody CampaignFullDto dto) {
 
         campaignService.modifyCampaign(campaignId, dto);
         return Status.successStatus();
@@ -51,11 +51,11 @@ public class CharityApiController {
      * 서버 응답 : success fail
      */
     @PostMapping("/withdraw/{campaignId}")
-    public Object withdrawFromCampaign(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) MemberDto memberDto,
-                                       @PathVariable String campaignId,
+    public Object withdrawFromCampaign(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) MemberDto member,
+                                       @PathVariable Long campaignId,
                                        @RequestBody TransactionDto dto) {
-        campaignService.checkDetailsOfCampaign(campaignId);
-        transactionService.withdraw(campaignId, dto);
+        String campaignWalletId = campaignService.getCampaignWalletId(campaignId);
+        transactionService.withdraw(member.getWalletId(), campaignWalletId, dto);
         return Status.successStatus();
     }
 }

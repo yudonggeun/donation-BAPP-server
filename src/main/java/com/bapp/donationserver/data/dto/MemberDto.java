@@ -1,6 +1,6 @@
 package com.bapp.donationserver.data.dto;
 
-import com.bapp.donationserver.data.MemberType;
+import com.bapp.donationserver.data.type.MemberType;
 import lombok.Data;
 
 /**

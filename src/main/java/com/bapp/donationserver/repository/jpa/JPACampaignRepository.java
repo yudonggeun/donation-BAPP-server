@@ -29,20 +29,20 @@ public class JPACampaignRepository implements CampaignRepository {
     }
 
     @Override
-    public void update(String campaignId, Campaign updateCampaign) {
+    public void update(Long campaignId, Campaign updateCampaign) {
         Campaign campaign = em.find(Campaign.class, campaignId);
         em.remove(campaign);
         em.persist(updateCampaign);
     }
 
     @Override
-    public void delete(String campaignId) {
+    public void delete(Long campaignId) {
         Campaign campaign = em.find(Campaign.class, campaignId);
         em.remove(campaign);
     }
 
     @Override
-    public Campaign findById(String campaignId) {
+    public Campaign findById(Long campaignId) {
         return em.find(Campaign.class, campaignId);
     }
 

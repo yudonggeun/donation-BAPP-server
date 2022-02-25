@@ -1,7 +1,7 @@
 package com.bapp.donationserver.data;
 
 import com.bapp.donationserver.data.dto.MemberDto;
-import lombok.Data;
+import com.bapp.donationserver.data.type.MemberType;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,6 +13,7 @@ import java.util.List;
 @Getter
 @Setter
 public class Member {
+
     @Id
     private String email;
     @Enumerated(EnumType.STRING)

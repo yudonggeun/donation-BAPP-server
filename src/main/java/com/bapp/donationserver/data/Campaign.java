@@ -2,7 +2,6 @@ package com.bapp.donationserver.data;
 
 import com.bapp.donationserver.data.dto.CampaignFullDto;
 import com.bapp.donationserver.data.dto.CampaignSimpleDto;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -19,7 +18,9 @@ import java.util.List;
 @Setter
 public class Campaign {
     @Id
-    private String campaignId;
+    @Column(name = "ID")
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long campaignId;
     @Column(name = "NAME")
     private String campaignName;
     @Column(name = "CHARITY")
@@ -36,17 +37,11 @@ public class Campaign {
     private String detailImagePath;
     @Column(name = "ACCEPT")
     private Boolean isAccepted;
-    @OneToMany(mappedBy = "campaign", fetch = FetchType.LAZY)
-    private List<Transaction> transactions = new ArrayList<>();
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "WALLET_ID")
     private Wallet wallet;
 
     public Campaign() {
-    }
-
-    public Campaign(String campaignId) {
-        this.campaignId = campaignId;
         this.isAccepted = false;
     }
 

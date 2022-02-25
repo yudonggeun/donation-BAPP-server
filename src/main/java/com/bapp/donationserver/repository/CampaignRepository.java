@@ -9,11 +9,11 @@ public interface CampaignRepository {
 
     void save(Campaign campaign);
 
-    void update(String campaignId, Campaign updateCampaign);
+    void update(Long campaignId, Campaign updateCampaign);
 
-    void delete(String campaignId);
+    void delete(Long campaignId);
 
-    Campaign findById(String campaignId);
+    Campaign findById(Long campaignId);
 
     List<Campaign> findAll();
 

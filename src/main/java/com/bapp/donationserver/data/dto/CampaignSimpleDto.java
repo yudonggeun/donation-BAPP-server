@@ -12,7 +12,7 @@ import java.util.Date;
  */
 @Data
 public class CampaignSimpleDto {
-    private String campaignId;
+    private Long campaignId;
     private String subject;
     private String charityName;
     private LocalDate deadline;
