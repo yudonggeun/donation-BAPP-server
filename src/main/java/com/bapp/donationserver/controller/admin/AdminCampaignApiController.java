@@ -19,49 +19,10 @@ import org.springframework.web.bind.annotation.*;
 public class AdminCampaignApiController {
 
     private final CampaignService campaignService;
-    private final CategoryService adminService;
-
-    @GetMapping
-    public Object getCampaignList(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) MemberDto memberDto){
-        campaignService.checkCampaignList(new CampaignSearchConditionDto(), memberDto.getMemberType());
-        return Status.successStatus();
-    }
-
-    @PostMapping
-    public Object registerCampaign(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) MemberDto memberDto,
-                                   @RequestBody CampaignFullDto dto){
-
-        campaignService.registerCampaign(dto);
-        return Status.successStatus();
-    }
-
-    @GetMapping("/{campaignId}")
-    public CampaignFullDto inquiredCampaign(@PathVariable Long campaignId){
-        return campaignService.checkDetailsOfCampaign(campaignId);
-    }
-
-    @PostMapping("/{campaignId}")
-    public Object editCampaign(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) MemberDto memberDto,
-                               @PathVariable Long campaignId,
-                               @RequestBody CampaignFullDto dto) {
-
-        campaignService.modifyCampaign(campaignId, dto);
-        return Status.successStatus();
-    }
 
     @DeleteMapping("/{campaignId}")
     public Object deleteCampaign(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) MemberDto memberDto,
                                  @PathVariable String campaignId){
-        return Status.successStatus();
-    }
-
-    @GetMapping("/request")
-    public Object getRequestCampaignList(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) MemberDto memberDto){
-
-        CampaignSearchConditionDto dto = new CampaignSearchConditionDto();
-        dto.setStartIndex(0);
-        dto.setEndIndex(Integer.MAX_VALUE);
-        campaignService.checkCampaignList(dto, MemberType.ADMIN);
         return Status.successStatus();
     }
 

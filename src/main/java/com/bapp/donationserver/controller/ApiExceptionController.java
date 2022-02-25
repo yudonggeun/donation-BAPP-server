@@ -14,5 +14,4 @@ public class ApiExceptionController {
         return new ErrorResult("BAD_REQUEST", e.getMessage());
     }*/
 }
-
 //기능 적용하지 않은 클래스 수정

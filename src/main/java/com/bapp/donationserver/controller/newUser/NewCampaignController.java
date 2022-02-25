@@ -1,34 +1,23 @@
-package com.bapp.donationserver.controller.user;
+package com.bapp.donationserver.controller.newUser;
 
 import com.bapp.donationserver.data.SessionConst;
-import com.bapp.donationserver.data.dto.CampaignFullDto;
-import com.bapp.donationserver.data.dto.CampaignSearchConditionDto;
-import com.bapp.donationserver.data.dto.CampaignSimpleDto;
-import com.bapp.donationserver.data.dto.MemberDto;
+import com.bapp.donationserver.data.dto.*;
 import com.bapp.donationserver.service.campaign.CampaignService;
+import com.bapp.donationserver.service.transaction.TransactionService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RequestMapping("/api/user/campaign")
+@RequestMapping("/api/new/campaign")
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-public class UserCampaignApiController {
+public class NewCampaignController {
 
     private final CampaignService campaignService;
-
-    /**
-     * 캠패인 정보 : 표지이미지, 켐페인 제목, 재단 이름, 마감일, 현재 모금 금액, 목표 금액
-     */
-    @GetMapping
-    public List<CampaignSimpleDto> getCampaignList(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) MemberDto memberDto) {
-
-        return userSearchCampaign(memberDto, new CampaignSearchConditionDto());
-    }
-
+    private final TransactionService transactionService;
     /**
      * 검색 조건 : 페이지 정보, 단채명, 제목, 카테고리 중복, 관심
      */
@@ -47,4 +36,13 @@ public class UserCampaignApiController {
         return campaignService.checkDetailsOfCampaign(campaignId);
     }
 
+
+    /**
+     * 기부 내역(거래 내역) : 사용처, 출금(환전)액, 거래 내용, 출금 시간
+     * 기부 내역 배열 전송
+     */
+    @GetMapping("/history")
+    public List<TransactionDto> checkCampaignHistory(@RequestParam String campaignId) {
+        return transactionService.checkDonationHistory(campaignId);
+    }
 }

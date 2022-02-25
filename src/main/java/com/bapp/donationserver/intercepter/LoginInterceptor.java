@@ -18,13 +18,14 @@ public class LoginInterceptor implements HandlerInterceptor {
 
         boolean isMember = request.getSession(false) != null;
 
-        if (!isMember) {
+        if (request.getSession(false) == null) {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, errorMsg);
+            log.info("{} url={}", errorMsg, request.getRequestURL());
+            return isMember;
         }
 
-        log.info("{} url={} member={}", isMember ? successMsg : errorMsg, request.getRequestURL(),
-                request.getSession(false).getAttribute(SessionConst.LOGIN_MEMBER));
+        log.info("{} url={}", successMsg, request.getRequestURL());
 
-        return isMember;
+        return true;
     }
 }

@@ -1,5 +1,6 @@
 package com.bapp.donationserver.controller.user;
 
+import com.bapp.donationserver.data.dto.CampaignSimpleDto;
 import com.bapp.donationserver.data.type.MemberType;
 import com.bapp.donationserver.data.SessionConst;
 import com.bapp.donationserver.data.dto.LoginDto;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 @RequestMapping("/api/user")
 @Slf4j
@@ -26,7 +28,7 @@ public class UserApiController {
     /**
      * 클라이언트 정보 : 사용자 id
      * 내 정보, 후원 이력 조회
-     * <p>
+     *
      * 서버 응답 : 처리 결과 응답
      */
     @GetMapping
@@ -49,23 +51,6 @@ public class UserApiController {
     }
 
     /**
-     * 클라이언트 전달 정보 : 회원 유형
-     * 일반 사용자 : 이름, 번호, 이메일, 패스워드, 닉네임, 프로필 사진
-     * 단체 사용자 : 단체이름, 번호, 이메일, 패스워드, 닉네임, 프로필 사진 -> 승인 후 가입
-     */
-    @PostMapping("/new")
-    public Object newUser(@RequestBody MemberDto data) {
-
-        log.info("회원가입 : 전달된 데이터 {}", data);
-        if(data.getMemberType() == MemberType.ADMIN){
-            log.info("관리자 권한을 가진 계정 생성을 요청할 수 없습니다.");
-            return Status.failStatus("API 요청이 처리되지 않았습니다.");
-        }
-        memberService.newMember(data);
-        return Status.successStatus();
-    }
-
-    /**
      * 회원 탈퇴
      */
     @DeleteMapping
@@ -78,19 +63,6 @@ public class UserApiController {
     }
 
     /**
-     * 클라이언트 전송 : 이메일, 패스워드
-     * 서버 응답 : 세션 아이디, fail
-     */
-    @PostMapping("/login")
-    public Object login(@RequestBody LoginDto loginForm, HttpServletRequest request) {
-
-        MemberDto member = memberService.login(loginForm.getEmail(), loginForm.getPassword());
-
-        HttpSession session = request.getSession();
-        session.setAttribute(SessionConst.LOGIN_MEMBER, member);
-        return Status.successStatus();
-    }
-    /**
      * 로그아웃 요청
      */
     @GetMapping("/logout")
@@ -101,6 +73,17 @@ public class UserApiController {
         session.invalidate();
         return Status.successStatus();
     }
+
+    /**
+     * 클라이언트 : 사용자 id -> email로 수정
+     * 응답 정보 : 표지이미지, 켐페인 제목, 재단 이름, 마감일, 현재 모금 금액, 목표 금액
+     */
+    @GetMapping("/info")
+    public List<CampaignSimpleDto> myDonationList(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) MemberDto memberDto) {
+
+        return memberService.checkMyDonationList(memberDto.getEmail());
+    }
+
 
     /**
      * 클라이언트 : 사용자 id, 포인트 충전 금액
