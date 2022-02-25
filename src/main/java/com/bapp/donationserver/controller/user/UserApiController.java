@@ -5,8 +5,8 @@ import com.bapp.donationserver.data.SessionConst;
 import com.bapp.donationserver.data.dto.LoginDto;
 import com.bapp.donationserver.data.dto.MemberDto;
 import com.bapp.donationserver.data.status.Status;
-import com.bapp.donationserver.service.user.MemberService;
-import com.bapp.donationserver.service.user.NormalUserService;
+import com.bapp.donationserver.service.account.AccountService;
+import com.bapp.donationserver.service.transaction.TransactionService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -20,8 +20,8 @@ import javax.servlet.http.HttpSession;
 @RequiredArgsConstructor
 public class UserApiController {
 
-    private final MemberService memberService;
-    private final NormalUserService normalUserService;
+    private final AccountService memberService;
+    private final TransactionService normalUserService;
 
     /**
      * 클라이언트 정보 : 사용자 id
@@ -61,7 +61,7 @@ public class UserApiController {
             log.info("관리자 권한을 가진 계정 생성을 요청할 수 없습니다.");
             return Status.failStatus("API 요청이 처리되지 않았습니다.");
         }
-        normalUserService.newMember(data);
+        memberService.newMember(data);
         return Status.successStatus();
     }
 
@@ -84,7 +84,7 @@ public class UserApiController {
     @PostMapping("/login")
     public Object login(@RequestBody LoginDto loginForm, HttpServletRequest request) {
 
-        MemberDto member = normalUserService.login(loginForm.getEmail(), loginForm.getPassword());
+        MemberDto member = memberService.login(loginForm.getEmail(), loginForm.getPassword());
 
         HttpSession session = request.getSession();
         session.setAttribute(SessionConst.LOGIN_MEMBER, member);
@@ -111,7 +111,7 @@ public class UserApiController {
                               @RequestParam Long amount) {
 
         log.info("email={}, amount={}", memberDto.getEmail(), amount);
-        normalUserService.pay(memberDto.getEmail(), amount);
+        normalUserService.pay(memberDto.getWalletId(), amount);
         return Status.successStatus();
     }
 }

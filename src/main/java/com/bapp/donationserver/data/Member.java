@@ -55,6 +55,7 @@ public class Member {
         myPageDto.setPassword(getPassword());
         myPageDto.setNickname(getNickname());
         myPageDto.setProfilePhotoName(getProfilePhotoName());
+        myPageDto.setWalletId(getWallet().getId());
         myPageDto.setPointAmount(getWallet().getAmount());
 
         return myPageDto;

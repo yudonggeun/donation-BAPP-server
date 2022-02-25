@@ -1,11 +1,12 @@
 package com.bapp.donationserver.controller.charity;
 
 import com.bapp.donationserver.data.status.Status;
-import com.bapp.donationserver.service.charity.CharityService;
 import com.bapp.donationserver.data.SessionConst;
 import com.bapp.donationserver.data.dto.CampaignFullDto;
 import com.bapp.donationserver.data.dto.MemberDto;
 import com.bapp.donationserver.data.dto.TransactionDto;
+import com.bapp.donationserver.service.campaign.CampaignService;
+import com.bapp.donationserver.service.transaction.TransactionService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -16,7 +17,8 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class CharityApiController {
 
-    private final CharityService charityService;
+    private final CampaignService campaignService;
+    private final TransactionService transactionService;
 
     /**
      * 클라이언트 전송 : 표지이미지, 상세이미지, 켐페인 제목, 재단 이름, 마감일, 현재 모금 금액, 목표 금액, 카테고리, 계획
@@ -28,7 +30,7 @@ public class CharityApiController {
 
         log.info("CampaignFullDto={}", dto);
 
-        charityService.registerCampaign(dto);
+        campaignService.registerCampaign(dto);
         return Status.successStatus();
     }
 
@@ -40,7 +42,7 @@ public class CharityApiController {
     public Object modifyCampaign(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) MemberDto memberDto,
                                  @PathVariable String campaignId, @RequestBody CampaignFullDto dto) {
 
-        charityService.modifyCampaign(campaignId, dto);
+        campaignService.modifyCampaign(campaignId, dto);
         return Status.successStatus();
     }
 
@@ -52,8 +54,8 @@ public class CharityApiController {
     public Object withdrawFromCampaign(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) MemberDto memberDto,
                                        @PathVariable String campaignId,
                                        @RequestBody TransactionDto dto) {
-
-        charityService.withdraw(campaignId, dto);
+        campaignService.checkDetailsOfCampaign(campaignId);
+        transactionService.withdraw(campaignId, dto);
         return Status.successStatus();
     }
 }

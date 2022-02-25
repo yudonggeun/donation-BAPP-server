@@ -2,7 +2,9 @@ package com.bapp.donationserver.repository.jpa;
 
 import com.bapp.donationserver.data.Campaign;
 import com.bapp.donationserver.data.CampaignSearchCondition;
+import com.bapp.donationserver.data.Wallet;
 import com.bapp.donationserver.repository.CampaignRepository;
+import com.bapp.donationserver.repository.WalletRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Primary;

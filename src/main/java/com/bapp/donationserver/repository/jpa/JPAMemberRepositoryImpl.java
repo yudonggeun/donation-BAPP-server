@@ -1,8 +1,10 @@
 package com.bapp.donationserver.repository.jpa;
 
 import com.bapp.donationserver.data.Member;
+import com.bapp.donationserver.data.Wallet;
 import com.bapp.donationserver.data.dto.MemberDto;
 import com.bapp.donationserver.repository.MemberRepository;
+import com.bapp.donationserver.repository.WalletRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Primary;

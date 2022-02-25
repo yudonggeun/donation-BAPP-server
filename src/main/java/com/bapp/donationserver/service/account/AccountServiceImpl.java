@@ -1,7 +1,7 @@
-package com.bapp.donationserver.service.user;
+package com.bapp.donationserver.service.account;
 
-import com.bapp.donationserver.data.Cart;
 import com.bapp.donationserver.data.Member;
+import com.bapp.donationserver.data.Wallet;
 import com.bapp.donationserver.data.dto.CampaignSimpleDto;
 import com.bapp.donationserver.data.dto.MemberDto;
 import com.bapp.donationserver.repository.MemberRepository;
@@ -18,7 +18,7 @@ import java.util.List;
 @Slf4j
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class MemberServiceImpl implements MemberService {
+public class AccountServiceImpl implements AccountService {
 
     private final MemberRepository memberRepository;
     private final WalletRepository walletRepository;
@@ -41,6 +41,27 @@ public class MemberServiceImpl implements MemberService {
                 .getDonatedCampaigns()
                 .forEach(campaignInfo -> donationList.add(campaignInfo.getCampaign().getCampaignSimpleDto()));
         return donationList;
+    }
+
+    @Override
+    @Transactional
+    public void newMember(MemberDto data) {
+        log.info("회원 가입 서비스 호출");
+        //회원 생성
+        Member newMember = new Member();
+        newMember.setDto(data);
+        //지갑 생성
+        Wallet wallet = walletRepository.createWallet();
+        newMember.setWallet(wallet);
+        memberRepository.save(newMember);
+    }
+
+    @Override
+    public MemberDto login(String email, String password) {
+        Member member = memberRepository.findByEmail(email);
+
+        return member != null && member.getPassword().equals(password)
+                ? member.getDto() : null;
     }
 
     @Override

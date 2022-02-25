@@ -1,10 +1,10 @@
-package com.bapp.donationserver.service.admin;
+package com.bapp.donationserver.service.category;
 
 import com.bapp.donationserver.data.dto.CategoryDto;
 
 import java.util.List;
 
-public interface AdminService {
+public interface CategoryService {
     //카테고리 리스트 전체 조회
     List<CategoryDto> getCategoryList();
     //카테고리 등록
@@ -13,6 +13,4 @@ public interface AdminService {
     void modifyCategory(String categoryName, CategoryDto categoryDto);
     //카테고리 삭제
     void deleteCategory(String categoryName);
-    //켐패인 승인 여부 변경
-    void changeCampaignAcceptTo(String campaignId, Boolean status);
 }

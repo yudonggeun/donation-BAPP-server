@@ -1,12 +1,13 @@
 package com.bapp.donationserver.repository;
 
-import com.bapp.donationserver.service.admin.AdminService;
-import com.bapp.donationserver.service.charity.CharityService;
+import com.bapp.donationserver.service.category.CategoryService;
 import com.bapp.donationserver.data.*;
 import com.bapp.donationserver.data.dto.MemberDto;
-import com.bapp.donationserver.service.user.MemberService;
-import com.bapp.donationserver.service.user.NormalUserService;
+import com.bapp.donationserver.service.account.AccountService;
+import com.bapp.donationserver.service.campaign.CampaignService;
+import com.bapp.donationserver.service.transaction.TransactionService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -15,11 +16,12 @@ import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class InitData {
-    private final MemberService memberService;
-    private final NormalUserService normalUserService;
-    private final CharityService charityService;
-    private final AdminService adminService;
+    private final AccountService memberService;
+    private final TransactionService transactionService;
+    private final CampaignService campaignService;
+    private final CategoryService adminService;
 
     @PostConstruct
     public void init(){
@@ -31,7 +33,7 @@ public class InitData {
     }
     public void testTransaction(){
         Transaction transaction = new Transaction(
-                new Campaign(),
+                null,
                 "me",
                 "you",
                 10000L,
@@ -49,7 +51,7 @@ public class InitData {
         myPageDto.setMemberType(MemberType.ADMIN);
         myPageDto.setProfilePhotoName("picture");
 
-        normalUserService.newMember(myPageDto);
+        memberService.newMember(myPageDto);
     }
 
     public void initCampaign(){
@@ -64,13 +66,12 @@ public class InitData {
         campaignInfo.setCampaignName(subject);
         campaignInfo.setCharityName("몬스터주식회사");
         campaignInfo.setDeadline(LocalDate.now());
-        campaignInfo.setCurrentAmount(1000L);
         campaignInfo.setGoalAmount(1000000L);
 
         campaignInfo.setCoverImagePath("/path/child");
         campaignInfo.setDetailImagePath("/path/detail/child");
-
-        charityService.registerCampaign(campaignInfo.getCampaignFullDto());
+        log.info("켐패인 추가 ={}", campaignInfo);
+        campaignService.registerCampaign(campaignInfo.getCampaignFullDto());
     }
 
     private void initCategory(String name){

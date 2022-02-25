@@ -1,7 +1,7 @@
 package com.bapp.donationserver.controller.admin;
 
 import com.bapp.donationserver.data.status.Status;
-import com.bapp.donationserver.service.admin.AdminServiceImpl;
+import com.bapp.donationserver.service.category.CategoryService;
 import com.bapp.donationserver.data.dto.CategoryDto;
 import com.bapp.donationserver.data.MemberType;
 import com.bapp.donationserver.data.SessionConst;
@@ -18,7 +18,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AdminCategoryApiController {
 
-    private final AdminServiceImpl adminService;
+    private final CategoryService adminService;
 
     @GetMapping
     public List<CategoryDto> getCategoryList(){

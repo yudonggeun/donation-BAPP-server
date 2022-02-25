@@ -18,10 +18,10 @@ import java.util.UUID;
 @Setter
 public class Transaction {
     @Id
-    private String  id;
+    private String  id;/*
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "CAMPAIGN_ID")
-    private Campaign campaign;//기부 켐페인 id
+    @JoinColumn(name = "CAMPAIGN_ID")*/
+    private String campaign;//기부 켐페인 id
     private String sender;//사용자
     private String receiver;//거래처
     private Long amount;//거래 금액
@@ -32,7 +32,7 @@ public class Transaction {
         this.id = UUID.randomUUID().toString();
     }
 
-    public Transaction(Campaign campaign, String sender, String receiver, Long amount, Long balance) {
+    public Transaction(String campaign, String sender, String receiver, Long amount, Long balance) {
         this.id = UUID.randomUUID().toString();
         this.campaign = campaign;
         this.sender = sender;

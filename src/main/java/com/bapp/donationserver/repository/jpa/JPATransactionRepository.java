@@ -2,7 +2,7 @@ package com.bapp.donationserver.repository.jpa;
 
 import com.bapp.donationserver.data.Campaign;
 import com.bapp.donationserver.data.Transaction;
-import com.bapp.donationserver.repository.DonationTransactionRepository;
+import com.bapp.donationserver.repository.TransactionRepository;
 import com.bapp.donationserver.service.blockchain.BlockChainService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,7 +17,7 @@ import java.util.*;
 @Slf4j
 @Primary
 @RequiredArgsConstructor
-public class JPADonationTransactionRepository implements DonationTransactionRepository {
+public class JPATransactionRepository implements TransactionRepository {
 
     @PersistenceContext
     private final EntityManager em;

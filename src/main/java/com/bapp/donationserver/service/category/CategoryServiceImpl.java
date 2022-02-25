@@ -1,4 +1,4 @@
-package com.bapp.donationserver.service.admin;
+package com.bapp.donationserver.service.category;
 
 import com.bapp.donationserver.repository.CategoryRepository;
 import com.bapp.donationserver.data.Category;
@@ -15,7 +15,7 @@ import java.util.List;
 @Slf4j
 @RequiredArgsConstructor
 @Transactional
-public class AdminServiceImpl implements AdminService {
+public class CategoryServiceImpl implements CategoryService {
 
     private final CategoryRepository categoryRepository;
 
@@ -45,8 +45,4 @@ public class AdminServiceImpl implements AdminService {
         categoryRepository.delete(categoryName);
     }
 
-    @Override
-    public void changeCampaignAcceptTo(String campaignId, Boolean status) {
-
-    }
 }

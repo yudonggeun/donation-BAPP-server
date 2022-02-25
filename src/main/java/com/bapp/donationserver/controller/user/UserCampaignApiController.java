@@ -5,7 +5,7 @@ import com.bapp.donationserver.data.dto.CampaignFullDto;
 import com.bapp.donationserver.data.dto.CampaignSearchConditionDto;
 import com.bapp.donationserver.data.dto.CampaignSimpleDto;
 import com.bapp.donationserver.data.dto.MemberDto;
-import com.bapp.donationserver.service.user.NormalUserService;
+import com.bapp.donationserver.service.campaign.CampaignService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -18,8 +18,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserCampaignApiController {
 
-    private final NormalUserService normalUserService;
-
+    private final CampaignService campaignService;
 
     /**
      * 캠패인 정보 : 표지이미지, 켐페인 제목, 재단 이름, 마감일, 현재 모금 금액, 목표 금액
@@ -37,7 +36,7 @@ public class UserCampaignApiController {
     public List<CampaignSimpleDto> userSearchCampaign(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) MemberDto memberDto,
                                                       @RequestBody CampaignSearchConditionDto searchCondition) {
 
-        return normalUserService.checkCampaignList(searchCondition, memberDto.getMemberType());
+        return campaignService.checkCampaignList(searchCondition, memberDto.getMemberType());
     }
 
     /**
@@ -45,7 +44,7 @@ public class UserCampaignApiController {
      */
     @GetMapping("/{campaignId}")
     public CampaignFullDto getCampaignDetail(@PathVariable String campaignId) {
-        return normalUserService.checkDetailsOfCampaign(campaignId);
+        return campaignService.checkDetailsOfCampaign(campaignId);
     }
 
 }

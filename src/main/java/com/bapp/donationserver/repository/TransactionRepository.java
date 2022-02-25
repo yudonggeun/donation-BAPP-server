@@ -4,7 +4,7 @@ import com.bapp.donationserver.data.Transaction;
 
 import java.util.List;
 
-public interface DonationTransactionRepository {
+public interface TransactionRepository {
 
     void save(Transaction transaction);
 

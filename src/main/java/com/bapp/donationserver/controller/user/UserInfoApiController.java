@@ -4,8 +4,8 @@ import com.bapp.donationserver.data.SessionConst;
 import com.bapp.donationserver.data.dto.CampaignSimpleDto;
 import com.bapp.donationserver.data.dto.MemberDto;
 import com.bapp.donationserver.data.dto.TransactionDto;
-import com.bapp.donationserver.service.user.MemberService;
-import com.bapp.donationserver.service.user.NormalUserService;
+import com.bapp.donationserver.service.account.AccountService;
+import com.bapp.donationserver.service.transaction.TransactionService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -18,8 +18,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserInfoApiController {
 
-    private final NormalUserService normalUserService;
-    private final MemberService memberService;
+    private final TransactionService transactionService;
+    private final AccountService memberService;
 
    /* @GetMapping
     public String checkDonationHistory(){
@@ -43,6 +43,6 @@ public class UserInfoApiController {
     @GetMapping("/history")
     public List<TransactionDto> checkCampaignHistory(@RequestParam String campaignId) {
 
-        return normalUserService.checkDonationHistory(campaignId);
+        return transactionService.checkDonationHistory(campaignId);
     }
 }

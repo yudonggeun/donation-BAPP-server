@@ -32,4 +32,9 @@ public class JPAWalletRepository implements WalletRepository {
     public void deleteWallet(Wallet wallet) {
         em.remove(wallet);
     }
+
+    @Override
+    public Wallet getWallet(String walletId) {
+        return em.find(Wallet.class, walletId);
+    }
 }

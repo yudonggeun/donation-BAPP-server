@@ -18,6 +18,7 @@ public class MemberDto {
     private String password;
     private String nickname;
     private String profilePhotoName;
+    private String walletId;
     private Long pointAmount;
 
 }

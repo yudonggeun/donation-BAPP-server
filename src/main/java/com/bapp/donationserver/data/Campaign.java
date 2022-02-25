@@ -26,8 +26,6 @@ public class Campaign {
     private String charityName;
     @Column(name = "DEADLINE")
     private LocalDate deadline;
-    @Column(name = "AMOUNT")
-    private Long currentAmount;
     @Column(name = "GOAL_AMOUNT")
     private Long goalAmount;
     @OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
@@ -40,6 +38,9 @@ public class Campaign {
     private Boolean isAccepted;
     @OneToMany(mappedBy = "campaign", fetch = FetchType.LAZY)
     private List<Transaction> transactions = new ArrayList<>();
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "WALLET_ID")
+    private Wallet wallet;
 
     public Campaign() {
     }
@@ -47,7 +48,6 @@ public class Campaign {
     public Campaign(String campaignId) {
         this.campaignId = campaignId;
         this.isAccepted = false;
-        this.currentAmount = 0L;
     }
 
     public CampaignSimpleDto getCampaignSimpleDto() {
@@ -58,7 +58,6 @@ public class Campaign {
         dto.setSubject(campaignName);
         dto.setCharityName(charityName);
         dto.setDeadline(deadline);
-        dto.setCurrentAmount(currentAmount);
         dto.setGoalAmount(goalAmount);
         dto.setCoverImagePath(coverImagePath);
 
@@ -72,7 +71,7 @@ public class Campaign {
         dto.setCampaignName(campaignName);
         dto.setCharityName(charityName);
         dto.setDeadline(deadline);
-        dto.setCurrentAmount(currentAmount);
+        dto.setCurrentAmount(wallet.getAmount());
         dto.setGoalAmount(goalAmount);
         dto.setCoverImagePath(coverImagePath);
         dto.setDetailImagePath(detailImagePath);
@@ -86,7 +85,6 @@ public class Campaign {
         setCampaignName(dto.getCampaignName());
         setCharityName(dto.getCharityName());
         setDeadline(dto.getDeadline());
-        setCurrentAmount(dto.getCurrentAmount());
         setGoalAmount(dto.getGoalAmount());
         setCoverImagePath(dto.getCoverImagePath());
         setDetailImagePath(dto.getDetailImagePath());
