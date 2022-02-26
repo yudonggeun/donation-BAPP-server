@@ -35,6 +35,8 @@ public class Campaign {
     private String coverImagePath;
     @Column(name = "DETAIL_IMAGE")
     private String detailImagePath;
+    @Column(name = "REVIEW_IMAGE")
+    private String reviewImagePath;
     @Column(name = "ACCEPT")
     private Boolean isAccepted;
     @OneToOne(fetch = FetchType.LAZY)

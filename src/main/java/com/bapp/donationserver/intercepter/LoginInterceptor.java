@@ -16,15 +16,7 @@ public class LoginInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 
-        boolean isMember = request.getSession(false) != null;
-
-        if (request.getSession(false) == null) {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, errorMsg);
-            log.info("{} url={}", errorMsg, request.getRequestURL());
-            return isMember;
-        }
-
-        log.info("{} url={}", successMsg, request.getRequestURL());
+        log.info("{} url={} member={}", successMsg, request.getRequestURL(), request.getSession(false).getAttribute(SessionConst.LOGIN_MEMBER));
 
         return true;
     }

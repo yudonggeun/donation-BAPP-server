@@ -1,4 +1,4 @@
-package com.bapp.donationserver.repository;
+package com.bapp.donationserver.exception;
 
 import com.bapp.donationserver.data.dto.CampaignFullDto;
 import com.bapp.donationserver.data.type.MemberType;
@@ -21,7 +21,6 @@ import java.util.UUID;
 @Slf4j
 public class InitData {
     private final AccountService memberService;
-    private final TransactionService transactionService;
     private final CampaignService campaignService;
     private final CategoryService adminService;
 

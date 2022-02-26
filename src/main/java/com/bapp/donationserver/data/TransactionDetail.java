@@ -21,4 +21,5 @@ public class TransactionDetail {
     private Transaction transaction;
     @Column(name = "CERTIFICATE_FILE")
     private String certificateFile;
+    private String hashCode;//블록체인 TX 해쉬 값
 }
