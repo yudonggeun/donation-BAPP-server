@@ -1,10 +1,9 @@
 package com.bapp.donationserver.controller.user;
 
+import com.bapp.donationserver.data.Member;
 import com.bapp.donationserver.data.dto.CampaignSimpleDto;
-import com.bapp.donationserver.data.type.MemberType;
-import com.bapp.donationserver.data.SessionConst;
-import com.bapp.donationserver.data.dto.LoginDto;
 import com.bapp.donationserver.data.dto.MemberDto;
+import com.bapp.donationserver.data.SessionConst;
 import com.bapp.donationserver.data.status.Status;
 import com.bapp.donationserver.service.account.AccountService;
 import com.bapp.donationserver.service.transaction.TransactionService;
@@ -32,21 +31,21 @@ public class UserApiController {
      * 서버 응답 : 처리 결과 응답
      */
     @GetMapping
-    public MemberDto getMyPage(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) MemberDto memberDto,
+    public MemberDto getMyPage(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member member,
                                HttpServletRequest request) {
         //log
-        log.info("내 정보 조회 : email={}", memberDto.getEmail());
+        log.info("내 정보 조회 : email={}", member.getEmail());
 
-        return memberService.getMemberInformation(memberDto.getEmail());
+        return memberService.getMemberInformation(member.getEmail()).getDto();
     }
 
     @PostMapping
-    public Object editMyPage(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) MemberDto memberDto,
+    public Object editMyPage(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member member,
                              @RequestBody MemberDto data) {
 
         log.info("내 정보 수정 : 전달된 데이터 {}", data);
 
-        memberService.updateMemberInformation(memberDto.getEmail(), data);
+        memberService.updateMemberInformation(member, data);
         return Status.successStatus();
     }
 
@@ -56,8 +55,8 @@ public class UserApiController {
     @DeleteMapping
     public Object quitService(HttpServletRequest request){
         HttpSession session = request.getSession(false);
-        MemberDto memberDto = (MemberDto) session.getAttribute(SessionConst.LOGIN_MEMBER);
-        memberService.dropMember(memberDto.getEmail());
+        Member member = (Member) session.getAttribute(SessionConst.LOGIN_MEMBER);
+        memberService.dropMember(member);
 
         return Status.successStatus();
     }
@@ -79,9 +78,9 @@ public class UserApiController {
      * 응답 정보 : 표지이미지, 켐페인 제목, 재단 이름, 마감일, 현재 모금 금액, 목표 금액
      */
     @GetMapping("/info")
-    public List<CampaignSimpleDto> myDonationList(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) MemberDto memberDto) {
+    public List<CampaignSimpleDto> myDonationList(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member member) {
 
-        return memberService.checkMyDonationList(memberDto.getEmail());
+        return memberService.checkMyDonationList(member);
     }
 
 
@@ -90,11 +89,11 @@ public class UserApiController {
      * 서버 응답 : success fail
      */
     @PostMapping("/pay")
-    public Object payComplete(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) MemberDto memberDto,
+    public Object payComplete(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member member,
                               @RequestParam Long amount) {
 
-        log.info("email={}, amount={}", memberDto.getEmail(), amount);
-        normalUserService.pay(memberDto.getWalletId(), amount);
+        log.info("email={}, amount={}", member.getEmail(), amount);
+        normalUserService.pay(member.getWallet().getId(), amount);
         return Status.successStatus();
     }
 }

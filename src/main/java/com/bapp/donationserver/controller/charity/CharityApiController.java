@@ -1,5 +1,7 @@
 package com.bapp.donationserver.controller.charity;
 
+import com.bapp.donationserver.data.Campaign;
+import com.bapp.donationserver.data.Member;
 import com.bapp.donationserver.data.status.Status;
 import com.bapp.donationserver.data.SessionConst;
 import com.bapp.donationserver.data.dto.CampaignFullDto;
@@ -25,7 +27,7 @@ public class CharityApiController {
      * 서버 응답 : success fail
      */
     @PostMapping
-    public Object registerCampaign(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) MemberDto memberDto,
+    public Object registerCampaign(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member member,
                                    @RequestBody CampaignFullDto dto) {
 
         log.info("CampaignFullDto={}", dto);
@@ -39,7 +41,7 @@ public class CharityApiController {
      * 서버 응답 : success fail
      */
     @PostMapping("/{campaignId}")
-    public Object modifyCampaign(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) MemberDto memberDto,
+    public Object modifyCampaign(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member member,
                                  @PathVariable Long campaignId, @RequestBody CampaignFullDto dto) {
 
         campaignService.modifyCampaign(campaignId, dto);
@@ -51,11 +53,11 @@ public class CharityApiController {
      * 서버 응답 : success fail
      */
     @PostMapping("/withdraw/{campaignId}")
-    public Object withdrawFromCampaign(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) MemberDto member,
+    public Object withdrawFromCampaign(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member member,
                                        @PathVariable Long campaignId,
                                        @RequestBody TransactionDto dto) {
-        String campaignWalletId = campaignService.getCampaignWalletId(campaignId);
-        transactionService.withdraw(member.getWalletId(), campaignWalletId, dto);
+        Campaign campaign = campaignService.checkDetailsOfCampaign(campaignId);
+        transactionService.withdraw(campaign, member, dto);
         return Status.successStatus();
     }
 }

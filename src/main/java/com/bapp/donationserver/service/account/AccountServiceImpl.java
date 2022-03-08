@@ -24,21 +24,21 @@ public class AccountServiceImpl implements AccountService {
     private final WalletRepository walletRepository;
 
     @Override
-    public MemberDto getMemberInformation(String email) {
-        return memberRepository.findByEmail(email).getDto();
+    public Member getMemberInformation(String email) {
+        return memberRepository.findByEmail(email);
     }
 
     @Override
     @Transactional
-    public void updateMemberInformation(String email, MemberDto updateMemberInformation) {
-        memberRepository.update(email, updateMemberInformation);
+    public void updateMemberInformation(Member member, MemberDto updateMemberInformation) {
+        member.setDto(updateMemberInformation);
+//        memberRepository.update(email, updateMemberInformation);
     }
 
     @Override
-    public List<CampaignSimpleDto> checkMyDonationList(String email) {
+    public List<CampaignSimpleDto> checkMyDonationList(Member member) {
         List<CampaignSimpleDto> donationList = new ArrayList<>();
-        memberRepository.findByEmail(email)
-                .getDonatedCampaigns()
+        member.getDonatedCampaigns()
                 .forEach(campaignInfo -> donationList.add(campaignInfo.getCampaign().getCampaignSimpleDto()));
         return donationList;
     }
@@ -57,19 +57,19 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public MemberDto login(String email, String password) {
+    public Member login(String email, String password) throws Exception {
         Member member = memberRepository.findByEmail(email);
-
-        return member != null && member.getPassword().equals(password)
-                ? member.getDto() : null;
+        if(member.getPassword().equals(password)){
+            throw new Exception();
+        }
+        return member;
     }
 
     @Override
     @Transactional
-    public void dropMember(String email) {
-        Member member = memberRepository.findByEmail(email);
+    public void dropMember(Member member) {
         //db 에서 해당 멤버의 기록 삭제
-        memberRepository.delete(email);
+        memberRepository.delete(member.getEmail());
         //지갑 삭제
         walletRepository.deleteWallet(member.getWallet());
     }

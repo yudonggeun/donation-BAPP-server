@@ -1,5 +1,6 @@
 package com.bapp.donationserver.controller.admin;
 
+import com.bapp.donationserver.data.Member;
 import com.bapp.donationserver.data.status.Status;
 import com.bapp.donationserver.service.category.CategoryService;
 import com.bapp.donationserver.data.type.MemberType;
@@ -21,13 +22,13 @@ public class AdminCampaignApiController {
     private final CampaignService campaignService;
 
     @DeleteMapping("/{campaignId}")
-    public Object deleteCampaign(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) MemberDto memberDto,
+    public Object deleteCampaign(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member member,
                                  @PathVariable String campaignId){
         return Status.successStatus();
     }
 
     @GetMapping("/{campaignId}/limit")
-    public Object changeLimitCampaign(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) MemberDto memberDto,
+    public Object changeLimitCampaign(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member member,
                                       @PathVariable Long campaignId,
                                       @RequestParam("accept") Boolean isAccept){
 

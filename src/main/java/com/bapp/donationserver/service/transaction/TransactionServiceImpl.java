@@ -38,12 +38,15 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
-    public void withdraw(String fromWallet, String toWallet, TransactionDto dto) {
+    public void withdraw(Campaign campaign, Member member, TransactionDto dto) {
 
         //인출 가능한 금액인지 확인
-        Wallet from = walletRepository.getWallet(fromWallet);
-        Wallet to = walletRepository.getWallet(toWallet);
+        Wallet from = campaign.getWallet();
+        Wallet to = member.getWallet();
 
+        if(!campaign.getCharityName().equals(member.getName())){
+            throw new IllegalArgumentException("해당 켐페인 출금이 불가능한 유저입니다.");
+        }
         if (from.getAmount() < dto.getAmount()) {
             throw new IllegalArgumentException("인출 금액이 너무 큽니다.");
         }

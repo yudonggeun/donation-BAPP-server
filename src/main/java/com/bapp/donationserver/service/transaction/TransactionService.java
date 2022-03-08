@@ -1,5 +1,7 @@
 package com.bapp.donationserver.service.transaction;
 
+import com.bapp.donationserver.data.Campaign;
+import com.bapp.donationserver.data.Member;
 import com.bapp.donationserver.data.dto.*;
 
 import java.util.List;
@@ -10,5 +12,5 @@ public interface TransactionService {
     //기부 사용 내역 조회
     List<TransactionDto> checkDonationHistory(String campaignId);
     //캠패인 자금 출금
-    void withdraw(String campaignId, String walletId, TransactionDto dto);
+    void withdraw(Campaign campaign, Member member, TransactionDto dto);
 }

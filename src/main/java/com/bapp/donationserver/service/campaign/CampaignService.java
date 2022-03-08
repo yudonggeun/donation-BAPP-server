@@ -1,5 +1,7 @@
 package com.bapp.donationserver.service.campaign;
 
+import com.bapp.donationserver.data.Campaign;
+import com.bapp.donationserver.data.Wallet;
 import com.bapp.donationserver.data.type.MemberType;
 import com.bapp.donationserver.data.dto.CampaignFullDto;
 import com.bapp.donationserver.data.dto.CampaignSearchConditionDto;
@@ -15,9 +17,7 @@ public interface CampaignService {
     //캠페인 목록 조회 //켐페인 검색
     List<CampaignSimpleDto> checkCampaignList(CampaignSearchConditionDto condition, MemberType memberType);
     //켐페인 상세 조회
-    CampaignFullDto checkDetailsOfCampaign(Long campaignId);
-    //켐패인 지갑 id 조회
-    String getCampaignWalletId(Long campaignId);
+    Campaign checkDetailsOfCampaign(Long campaignId);
     //켐패인 승인 여부 변경 : 관리자 기능
-    void acceptCampaign(Long campaignId, Boolean status);
+    Boolean acceptCampaign(Long campaignId, Boolean status);
 }

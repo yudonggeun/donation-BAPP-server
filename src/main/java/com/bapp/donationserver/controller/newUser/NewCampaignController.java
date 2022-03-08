@@ -1,5 +1,6 @@
 package com.bapp.donationserver.controller.newUser;
 
+import com.bapp.donationserver.data.Member;
 import com.bapp.donationserver.data.SessionConst;
 import com.bapp.donationserver.data.dto.*;
 import com.bapp.donationserver.service.campaign.CampaignService;
@@ -22,10 +23,10 @@ public class NewCampaignController {
      * 검색 조건 : 페이지 정보, 단채명, 제목, 카테고리 중복, 관심
      */
     @PostMapping
-    public List<CampaignSimpleDto> userSearchCampaign(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) MemberDto memberDto,
+    public List<CampaignSimpleDto> userSearchCampaign(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member member,
                                                       @RequestBody CampaignSearchConditionDto searchCondition) {
 
-        return campaignService.checkCampaignList(searchCondition, memberDto.getMemberType());
+        return campaignService.checkCampaignList(searchCondition, member.getMemberType());
     }
 
     /**
@@ -33,7 +34,7 @@ public class NewCampaignController {
      */
     @GetMapping("/{campaignId}")
     public CampaignFullDto getCampaignDetail(@PathVariable Long campaignId) {
-        return campaignService.checkDetailsOfCampaign(campaignId);
+        return campaignService.checkDetailsOfCampaign(campaignId).getCampaignFullDto();
     }
 
 

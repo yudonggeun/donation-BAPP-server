@@ -63,18 +63,13 @@ public class CampaignServiceImpl implements CampaignService {
 
     @Transactional(readOnly = true)
     @Override
-    public CampaignFullDto checkDetailsOfCampaign(Long campaignId) {
-        return campaignRepository.findById(campaignId).getCampaignFullDto();
+    public Campaign checkDetailsOfCampaign(Long campaignId) {
+        return campaignRepository.findById(campaignId);
     }
 
     @Override
-    public String getCampaignWalletId(Long campaignId) {
-        return campaignRepository.findById(campaignId).getWallet().getId();
-    }
-
-    @Override
-    public void acceptCampaign(Long campaignId, Boolean status) {
-
+    public Boolean acceptCampaign(Long campaignId, Boolean status) {
+        return status;
     }
 
 }

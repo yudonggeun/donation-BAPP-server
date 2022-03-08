@@ -1,5 +1,6 @@
 package com.bapp.donationserver.controller.newUser;
 
+import com.bapp.donationserver.data.Member;
 import com.bapp.donationserver.data.SessionConst;
 import com.bapp.donationserver.data.dto.LoginDto;
 import com.bapp.donationserver.data.dto.MemberDto;
@@ -25,9 +26,9 @@ public class NewAccountController {
      * 서버 응답 : 세션 아이디, fail
      */
     @GetMapping("/login")
-    public Object login(@ModelAttribute LoginDto loginForm, HttpServletRequest request) {
+    public Object login(@ModelAttribute LoginDto loginForm, HttpServletRequest request) throws Exception {
 
-        MemberDto member = memberService.login(loginForm.getEmail(), loginForm.getPassword());
+        Member member = memberService.login(loginForm.getEmail(), loginForm.getPassword());
 
         HttpSession session = request.getSession();
         session.setAttribute(SessionConst.LOGIN_MEMBER, member);

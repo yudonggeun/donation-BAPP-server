@@ -1,5 +1,6 @@
 package com.bapp.donationserver.controller.admin;
 
+import com.bapp.donationserver.data.Member;
 import com.bapp.donationserver.data.status.Status;
 import com.bapp.donationserver.service.category.CategoryService;
 import com.bapp.donationserver.data.dto.CategoryDto;
@@ -26,10 +27,10 @@ public class AdminCategoryApiController {
     }
 
     @PostMapping
-    public Object registerCategory(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) MemberDto memberDto,
+    public Object registerCategory(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member member,
                                    @RequestBody CategoryDto categoryDto){
 
-        if(memberDto == null || memberDto.getMemberType() != MemberType.ADMIN){
+        if(member.getMemberType() != MemberType.ADMIN){
             return Status.failStatus("API 요청이 처리되지 않았습니다.");
         }
 
@@ -38,10 +39,10 @@ public class AdminCategoryApiController {
     }
 
     @PostMapping("/{categoryName}")
-    public Object editCategory(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) MemberDto memberDto,
+    public Object editCategory(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member member,
                                @PathVariable String categoryName, @RequestBody CategoryDto categoryDto){
 
-        if(memberDto == null || memberDto.getMemberType() != MemberType.ADMIN){
+        if(member.getMemberType() != MemberType.ADMIN){
             return Status.failStatus("API 요청이 처리되지 않았습니다.");
         }
 
@@ -50,10 +51,10 @@ public class AdminCategoryApiController {
     }
 
     @DeleteMapping("/{categoryName}")
-    public Object deleteCategory(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) MemberDto memberDto,
+    public Object deleteCategory(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member member,
                                  @PathVariable String categoryName){
 
-        if(memberDto == null || memberDto.getMemberType() != MemberType.ADMIN){
+        if(member.getMemberType() != MemberType.ADMIN){
             return Status.failStatus("API 요청이 처리되지 않았습니다.");
         }
 
