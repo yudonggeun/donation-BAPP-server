@@ -41,7 +41,7 @@ public class CampaignServiceImpl implements CampaignService {
     public void modifyCampaign(Long campaignId, CampaignFullDto campaignInfo) {
         Campaign campaign = campaignRepository.findById(campaignId);
         campaign.setCampaignFullDto(campaignInfo);
-        campaignRepository.update(campaignId, campaign);
+        campaignRepository.update(campaign);
     }
 
     @Transactional(readOnly = true)
@@ -63,7 +63,7 @@ public class CampaignServiceImpl implements CampaignService {
 
     @Transactional(readOnly = true)
     @Override
-    public Campaign checkDetailsOfCampaign(Long campaignId) {
+    public Campaign getDetailsOfCampaign(Long campaignId) {
         return campaignRepository.findById(campaignId);
     }
 

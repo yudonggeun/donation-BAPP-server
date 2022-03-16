@@ -8,9 +8,9 @@ import java.util.List;
 
 public interface TransactionService {
     //하나의 상품 결제
-    void pay(String walletId, Long amount);
+    void pay(Member member, Long amount);
     //기부 사용 내역 조회
-    List<TransactionDto> checkDonationHistory(String campaignId);
+    List<TransactionDto> getDonationHistory(Long campaignId);
     //캠패인 자금 출금
     void withdraw(Campaign campaign, Member member, TransactionDto dto);
 }

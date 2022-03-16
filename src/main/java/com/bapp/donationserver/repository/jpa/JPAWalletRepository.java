@@ -1,5 +1,6 @@
 package com.bapp.donationserver.repository.jpa;
 
+import com.bapp.donationserver.data.Member;
 import com.bapp.donationserver.data.Wallet;
 import com.bapp.donationserver.repository.WalletRepository;
 import com.bapp.donationserver.service.blockchain.BlockChainService;
@@ -36,5 +37,16 @@ public class JPAWalletRepository implements WalletRepository {
     @Override
     public Wallet getWallet(String walletId) {
         return em.find(Wallet.class, walletId);
+    }
+
+    @Override
+    public Wallet getWallet(Member member) {
+        em.merge(member);
+        return member.getWallet();
+    }
+
+    @Override
+    public void update(Wallet wallet) {
+        em.merge(wallet);
     }
 }

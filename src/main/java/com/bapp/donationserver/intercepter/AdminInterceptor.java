@@ -1,7 +1,7 @@
 package com.bapp.donationserver.intercepter;
 
 import com.bapp.donationserver.data.type.MemberType;
-import com.bapp.donationserver.data.SessionConst;
+import com.bapp.donationserver.data.consts.SessionConst;
 import com.bapp.donationserver.data.dto.MemberDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.servlet.HandlerInterceptor;

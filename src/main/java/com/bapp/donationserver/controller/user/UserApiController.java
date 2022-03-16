@@ -3,7 +3,7 @@ package com.bapp.donationserver.controller.user;
 import com.bapp.donationserver.data.Member;
 import com.bapp.donationserver.data.dto.CampaignSimpleDto;
 import com.bapp.donationserver.data.dto.MemberDto;
-import com.bapp.donationserver.data.SessionConst;
+import com.bapp.donationserver.data.consts.SessionConst;
 import com.bapp.donationserver.data.status.Status;
 import com.bapp.donationserver.service.account.AccountService;
 import com.bapp.donationserver.service.transaction.TransactionService;
@@ -21,8 +21,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserApiController {
 
-    private final AccountService memberService;
-    private final TransactionService normalUserService;
+    private final AccountService accountService;
+    private final TransactionService transactionService;
 
     /**
      * 클라이언트 정보 : 사용자 id
@@ -36,7 +36,7 @@ public class UserApiController {
         //log
         log.info("내 정보 조회 : email={}", member.getEmail());
 
-        return memberService.getMemberInformation(member.getEmail()).getDto();
+        return member.getDto();
     }
 
     @PostMapping
@@ -45,7 +45,7 @@ public class UserApiController {
 
         log.info("내 정보 수정 : 전달된 데이터 {}", data);
 
-        memberService.updateMemberInformation(member, data);
+        accountService.updateMember(member, data);
         return Status.successStatus();
     }
 
@@ -56,7 +56,7 @@ public class UserApiController {
     public Object quitService(HttpServletRequest request){
         HttpSession session = request.getSession(false);
         Member member = (Member) session.getAttribute(SessionConst.LOGIN_MEMBER);
-        memberService.dropMember(member);
+        accountService.dropMember(member);
 
         return Status.successStatus();
     }
@@ -80,7 +80,7 @@ public class UserApiController {
     @GetMapping("/info")
     public List<CampaignSimpleDto> myDonationList(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member member) {
 
-        return memberService.checkMyDonationList(member);
+        return accountService.checkMyDonationList(member);
     }
 
 
@@ -93,7 +93,7 @@ public class UserApiController {
                               @RequestParam Long amount) {
 
         log.info("email={}, amount={}", member.getEmail(), amount);
-        normalUserService.pay(member.getWallet().getId(), amount);
+        transactionService.pay(member, amount);
         return Status.successStatus();
     }
 }

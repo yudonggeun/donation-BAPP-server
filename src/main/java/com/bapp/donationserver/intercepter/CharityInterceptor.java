@@ -1,8 +1,8 @@
 package com.bapp.donationserver.intercepter;
 
+import com.bapp.donationserver.data.Member;
 import com.bapp.donationserver.data.type.MemberType;
-import com.bapp.donationserver.data.SessionConst;
-import com.bapp.donationserver.data.dto.MemberDto;
+import com.bapp.donationserver.data.consts.SessionConst;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.servlet.HandlerInterceptor;
 
@@ -18,7 +18,7 @@ public class CharityInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 
-        MemberDto member = (MemberDto) request.getSession(false).getAttribute(SessionConst.LOGIN_MEMBER);
+        Member member = (Member) request.getSession(false).getAttribute(SessionConst.LOGIN_MEMBER);
 
         boolean isNormalUser = member.getMemberType() == MemberType.USER;
 

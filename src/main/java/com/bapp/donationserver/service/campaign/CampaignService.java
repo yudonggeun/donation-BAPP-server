@@ -17,7 +17,7 @@ public interface CampaignService {
     //캠페인 목록 조회 //켐페인 검색
     List<CampaignSimpleDto> checkCampaignList(CampaignSearchConditionDto condition, MemberType memberType);
     //켐페인 상세 조회
-    Campaign checkDetailsOfCampaign(Long campaignId);
+    Campaign getDetailsOfCampaign(Long campaignId);
     //켐패인 승인 여부 변경 : 관리자 기능
     Boolean acceptCampaign(Long campaignId, Boolean status);
 }

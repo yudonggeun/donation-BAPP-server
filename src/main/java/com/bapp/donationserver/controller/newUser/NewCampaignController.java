@@ -1,7 +1,7 @@
 package com.bapp.donationserver.controller.newUser;
 
 import com.bapp.donationserver.data.Member;
-import com.bapp.donationserver.data.SessionConst;
+import com.bapp.donationserver.data.consts.SessionConst;
 import com.bapp.donationserver.data.dto.*;
 import com.bapp.donationserver.service.campaign.CampaignService;
 import com.bapp.donationserver.service.transaction.TransactionService;
@@ -34,7 +34,7 @@ public class NewCampaignController {
      */
     @GetMapping("/{campaignId}")
     public CampaignFullDto getCampaignDetail(@PathVariable Long campaignId) {
-        return campaignService.checkDetailsOfCampaign(campaignId).getCampaignFullDto();
+        return campaignService.getDetailsOfCampaign(campaignId).getCampaignFullDto();
     }
 
 
@@ -43,7 +43,7 @@ public class NewCampaignController {
      * 기부 내역 배열 전송
      */
     @GetMapping("/history")
-    public List<TransactionDto> checkCampaignHistory(@RequestParam String campaignId) {
-        return transactionService.checkDonationHistory(campaignId);
+    public List<TransactionDto> getCampaignHistory(@RequestParam Long campaignId) {
+        return transactionService.getDonationHistory(campaignId);
     }
 }

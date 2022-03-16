@@ -12,7 +12,7 @@ import java.util.List;
 @Data
 public class CampaignSearchCondition {
     private Integer startIndex;
-    private Integer endIndex;
+    private Integer maxResult;
     private String charityName;
     private String subject;
     private List<String> categories;
@@ -22,14 +22,14 @@ public class CampaignSearchCondition {
 
     public CampaignSearchCondition() {
         this.startIndex = 0;
-        this.endIndex = 4;
+        this.maxResult = 100;
     }
 
     public CampaignSearchConditionDto getDto() {
         CampaignSearchConditionDto dto = new CampaignSearchConditionDto();
 
         dto.setStartIndex(startIndex);
-        dto.setEndIndex(endIndex);
+        dto.setEndIndex(maxResult);
         dto.setCharityName(charityName);
         dto.setSubject(subject);
         dto.setCategories(categories);
@@ -43,7 +43,7 @@ public class CampaignSearchCondition {
         if(dto == null)
             return;
         setStartIndex(dto.getStartIndex());
-        setEndIndex(dto.getEndIndex());
+        setMaxResult(dto.getEndIndex());
         setCharityName(dto.getCharityName());
         setSubject(dto.getSubject());
         setCategories(dto.getCategories());

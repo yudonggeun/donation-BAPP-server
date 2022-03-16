@@ -9,9 +9,9 @@ import java.util.List;
 public interface AccountService {
 
     //개인 정보 조회
-    Member getMemberInformation(String email);
+    Member getMember(String email);
     //개인 정보 수정
-    void updateMemberInformation(Member member, MemberDto updateData);
+    void updateMember(Member member, MemberDto updateData);
     //자신의 기부 내역 조회
     List<CampaignSimpleDto> checkMyDonationList(Member member);
     //회원 가입

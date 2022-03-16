@@ -7,7 +7,6 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.UUID;
 
 /**
  * 기부금 사용 내역 관련 정보 클래스
@@ -18,7 +17,7 @@ import java.util.UUID;
 public class Transaction {
     @Id
     @Column(name = "ID", nullable = false)
-    private Long id;
+    private String id;
     @Column(name = "FROM_WALLET")
     private String from;
     @Column(name = "TO_WALLET")

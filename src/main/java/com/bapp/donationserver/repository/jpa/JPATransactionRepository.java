@@ -26,14 +26,16 @@ public class JPATransactionRepository implements TransactionRepository {
 
     @Override
     public void save(Transaction transaction, TransactionDetail detail) {
-        log.info("거래 저장 transaction={} {}", transaction, detail);
+        String id = blockChainService.putTransaction(transaction, detail);
+        transaction.setId(id);
+
         em.persist(transaction);
         if(detail != null)
             em.persist(detail);
     }
 
     @Override
-    public List<Transaction> findByCampaignId(String campaignId) {
+    public List<Transaction> findByCampaignId(Long campaignId) {
         return em.find(Campaign.class, campaignId).getWallet().getTransactions();
     }
 }

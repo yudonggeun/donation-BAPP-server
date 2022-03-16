@@ -2,12 +2,7 @@ package com.bapp.donationserver.controller.admin;
 
 import com.bapp.donationserver.data.Member;
 import com.bapp.donationserver.data.status.Status;
-import com.bapp.donationserver.service.category.CategoryService;
-import com.bapp.donationserver.data.type.MemberType;
-import com.bapp.donationserver.data.SessionConst;
-import com.bapp.donationserver.data.dto.CampaignFullDto;
-import com.bapp.donationserver.data.dto.CampaignSearchConditionDto;
-import com.bapp.donationserver.data.dto.MemberDto;
+import com.bapp.donationserver.data.consts.SessionConst;
 import com.bapp.donationserver.service.campaign.CampaignService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

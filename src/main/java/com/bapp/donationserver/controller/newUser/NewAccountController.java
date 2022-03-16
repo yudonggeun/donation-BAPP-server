@@ -1,7 +1,7 @@
 package com.bapp.donationserver.controller.newUser;
 
 import com.bapp.donationserver.data.Member;
-import com.bapp.donationserver.data.SessionConst;
+import com.bapp.donationserver.data.consts.SessionConst;
 import com.bapp.donationserver.data.dto.LoginDto;
 import com.bapp.donationserver.data.dto.MemberDto;
 import com.bapp.donationserver.data.status.Status;
@@ -25,8 +25,8 @@ public class NewAccountController {
      * 클라이언트 전송 : 이메일, 패스워드
      * 서버 응답 : 세션 아이디, fail
      */
-    @GetMapping("/login")
-    public Object login(@ModelAttribute LoginDto loginForm, HttpServletRequest request) throws Exception {
+    @PostMapping("/login")
+    public Object login(@RequestBody LoginDto loginForm, HttpServletRequest request) throws Exception {
 
         Member member = memberService.login(loginForm.getEmail(), loginForm.getPassword());
 

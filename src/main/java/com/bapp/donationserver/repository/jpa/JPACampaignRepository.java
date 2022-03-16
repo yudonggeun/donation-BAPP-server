@@ -2,9 +2,7 @@ package com.bapp.donationserver.repository.jpa;
 
 import com.bapp.donationserver.data.Campaign;
 import com.bapp.donationserver.data.CampaignSearchCondition;
-import com.bapp.donationserver.data.Wallet;
 import com.bapp.donationserver.repository.CampaignRepository;
-import com.bapp.donationserver.repository.WalletRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Primary;
@@ -29,15 +27,12 @@ public class JPACampaignRepository implements CampaignRepository {
     }
 
     @Override
-    public void update(Long campaignId, Campaign updateCampaign) {
-        Campaign campaign = em.find(Campaign.class, campaignId);
-        em.remove(campaign);
-        em.persist(updateCampaign);
+    public void update(Campaign campaign) {
+        em.merge(campaign);
     }
 
     @Override
-    public void delete(Long campaignId) {
-        Campaign campaign = em.find(Campaign.class, campaignId);
+    public void delete(Campaign campaign) {
         em.remove(campaign);
     }
 
@@ -48,46 +43,22 @@ public class JPACampaignRepository implements CampaignRepository {
 
     @Override
     public List<Campaign> findAll() {
-        return em.createQuery("select i from i Campaign").getResultList();
+        return em.createQuery("select c from Campaign as c", Campaign.class).getResultList();
     }
 
     @Override
     public List<Campaign> findCampaignListByCondition(CampaignSearchCondition condition) {
 
+        //query dsl 을 통해서 조건 필터 완성하기 지금은 맛보기로만 코딩해놓자.
         log.info("조건={}", condition);
-        List<Campaign> campaigns = em.createQuery("select i from i Campaign").getResultList();
-        
-        /*//조건 필터
-        for (String s : db.keySet()) {
-            Campaign target = db.get(s);
+        String query = "select c from Campaign as c ";
 
-            if(condition == null)
-                continue;
+        List<Campaign> campaigns = em.createQuery(query, Campaign.class)
+                .setFirstResult(condition.getStartIndex())
+                .setMaxResults(condition.getMaxResult())
+                .getResultList();
 
-            if(condition.getMemberType() == MemberType.USER && !target.getIsAccepted())
-                continue;
-
-            if ((condition.getCharityName() != null) && (!target.getCharityName().contains(condition.getCharityName())))
-                continue;
-
-            if ((condition.getSubject() != null) && (!target.getCampaignName().contains(condition.getSubject())))
-                continue;
-
-            if (condition.getCategories() != null
-                    && !(target.getCategories() == null)
-                    && !target.getCategories().containsAll(condition.getCategories())
-            )
-                continue;
-
-            list.add(target);
-        }*/
-        //범위 확인
-        if (campaigns.size() - 1 < condition.getStartIndex()) {
-            log.info("검색 조건에 부합하는 캠페인이 없습니다.");
-        }
         log.info("campaignRepository result={}", campaigns);
-        return campaigns.subList(condition.getStartIndex(),
-                (campaigns.size() <= condition.getEndIndex() ? campaigns.size() : condition.getEndIndex() + 1)
-        );
+        return campaigns;
     }
 }

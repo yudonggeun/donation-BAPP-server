@@ -9,9 +9,9 @@ public interface CampaignRepository {
 
     void save(Campaign campaign);
 
-    void update(Long campaignId, Campaign updateCampaign);
+    void update(Campaign campaign);
 
-    void delete(Long campaignId);
+    void delete(Campaign campaign);
 
     Campaign findById(Long campaignId);
 

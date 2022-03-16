@@ -9,6 +9,6 @@ public interface TransactionRepository {
 
     void save(Transaction transaction, TransactionDetail detail);
 
-    List<Transaction> findByCampaignId(String campaignId);
+    List<Transaction> findByCampaignId(Long campaignId);
 
 }

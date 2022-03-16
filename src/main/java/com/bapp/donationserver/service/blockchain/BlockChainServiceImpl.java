@@ -1,7 +1,10 @@
 package com.bapp.donationserver.service.blockchain;
 
 import com.bapp.donationserver.data.Transaction;
+import com.bapp.donationserver.data.TransactionDetail;
 import org.springframework.stereotype.Service;
+
+import java.util.UUID;
 
 @Service
 public class BlockChainServiceImpl implements BlockChainService{
@@ -15,8 +18,8 @@ public class BlockChainServiceImpl implements BlockChainService{
     }
 
     @Override
-    public void putTransaction(Transaction transaction) {
-
+    public String putTransaction(Transaction transaction, TransactionDetail detail) {
+        return UUID.randomUUID().toString();
     }
 
     @Override

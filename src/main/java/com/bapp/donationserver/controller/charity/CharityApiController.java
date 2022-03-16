@@ -3,9 +3,8 @@ package com.bapp.donationserver.controller.charity;
 import com.bapp.donationserver.data.Campaign;
 import com.bapp.donationserver.data.Member;
 import com.bapp.donationserver.data.status.Status;
-import com.bapp.donationserver.data.SessionConst;
+import com.bapp.donationserver.data.consts.SessionConst;
 import com.bapp.donationserver.data.dto.CampaignFullDto;
-import com.bapp.donationserver.data.dto.MemberDto;
 import com.bapp.donationserver.data.dto.TransactionDto;
 import com.bapp.donationserver.service.campaign.CampaignService;
 import com.bapp.donationserver.service.transaction.TransactionService;
@@ -56,7 +55,7 @@ public class CharityApiController {
     public Object withdrawFromCampaign(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member member,
                                        @PathVariable Long campaignId,
                                        @RequestBody TransactionDto dto) {
-        Campaign campaign = campaignService.checkDetailsOfCampaign(campaignId);
+        Campaign campaign = campaignService.getDetailsOfCampaign(campaignId);
         transactionService.withdraw(campaign, member, dto);
         return Status.successStatus();
     }

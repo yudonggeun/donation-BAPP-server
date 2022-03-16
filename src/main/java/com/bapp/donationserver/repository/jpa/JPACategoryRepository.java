@@ -31,14 +31,13 @@ public class JPACategoryRepository implements CategoryRepository {
     }
 
     @Override
-    public void delete(String categoryName) {
+    public void delete(Category category) {
         //수정 필요
-        Category category = em.find(Category.class, categoryName);
         em.remove(category);
     }
 
     @Override
     public List<Category> findAll() {
-        return em.createQuery("select i from i Category").getResultList();
+        return em.createQuery("select c from Category as c", Category.class).getResultList();
     }
 }

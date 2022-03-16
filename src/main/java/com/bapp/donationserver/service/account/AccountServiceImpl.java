@@ -24,21 +24,21 @@ public class AccountServiceImpl implements AccountService {
     private final WalletRepository walletRepository;
 
     @Override
-    public Member getMemberInformation(String email) {
+    public Member getMember(String email) {
         return memberRepository.findByEmail(email);
     }
 
     @Override
     @Transactional
-    public void updateMemberInformation(Member member, MemberDto updateMemberInformation) {
+    public void updateMember(Member member, MemberDto updateMemberInformation) {
         member.setDto(updateMemberInformation);
-//        memberRepository.update(email, updateMemberInformation);
+        memberRepository.update(member);
     }
 
     @Override
     public List<CampaignSimpleDto> checkMyDonationList(Member member) {
         List<CampaignSimpleDto> donationList = new ArrayList<>();
-        member.getDonatedCampaigns()
+        memberRepository.getMyDonationList(member)
                 .forEach(campaignInfo -> donationList.add(campaignInfo.getCampaign().getCampaignSimpleDto()));
         return donationList;
     }
@@ -59,7 +59,7 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public Member login(String email, String password) throws Exception {
         Member member = memberRepository.findByEmail(email);
-        if(member.getPassword().equals(password)){
+        if(!member.getPassword().equals(password)){
             throw new Exception();
         }
         return member;
@@ -69,7 +69,7 @@ public class AccountServiceImpl implements AccountService {
     @Transactional
     public void dropMember(Member member) {
         //db 에서 해당 멤버의 기록 삭제
-        memberRepository.delete(member.getEmail());
+        memberRepository.delete(member);
         //지갑 삭제
         walletRepository.deleteWallet(member.getWallet());
     }

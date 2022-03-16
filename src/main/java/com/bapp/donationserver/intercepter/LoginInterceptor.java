@@ -1,6 +1,8 @@
 package com.bapp.donationserver.intercepter;
 
-import com.bapp.donationserver.data.SessionConst;
+import com.bapp.donationserver.data.consts.HttpAttributeConst;
+import com.bapp.donationserver.data.consts.SessionConst;
+import com.bapp.donationserver.exception.IllegalUserDataException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.servlet.HandlerInterceptor;
 
@@ -16,7 +18,11 @@ public class LoginInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 
-        log.info("{} url={} member={}", successMsg, request.getRequestURL(), request.getSession(false).getAttribute(SessionConst.LOGIN_MEMBER));
+        try{
+            log.info("{} url={} member={}", successMsg, request.getRequestURL(), request.getSession(false).getAttribute(SessionConst.LOGIN_MEMBER));
+        } catch (NullPointerException e){
+            throw new IllegalUserDataException("올바르지 않은 세션 요청입니다.");
+        }
 
         return true;
     }
