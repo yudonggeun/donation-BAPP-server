@@ -4,6 +4,7 @@ import com.bapp.donationserver.data.dto.TransactionDto;
 import com.bapp.donationserver.data.type.TransactionType;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.time.LocalDate;

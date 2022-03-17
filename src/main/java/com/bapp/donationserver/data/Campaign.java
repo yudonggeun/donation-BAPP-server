@@ -4,6 +4,7 @@ import com.bapp.donationserver.data.dto.CampaignFullDto;
 import com.bapp.donationserver.data.dto.CampaignSimpleDto;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -20,7 +21,7 @@ public class Campaign {
     @Id
     @Column(name = "ID")
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long campaignId;
+    private Long id;
     @Column(name = "NAME")
     private String campaignName;
     @Column(name = "CHARITY")
@@ -51,7 +52,7 @@ public class Campaign {
 
         CampaignSimpleDto dto = new CampaignSimpleDto();
 
-        dto.setCampaignId(campaignId);
+        dto.setCampaignId(id);
         dto.setSubject(campaignName);
         dto.setCharityName(charityName);
         dto.setDeadline(deadline);
@@ -85,7 +86,5 @@ public class Campaign {
         setGoalAmount(dto.getGoalAmount());
         setCoverImagePath(dto.getCoverImagePath());
         setDetailImagePath(dto.getDetailImagePath());
-//        setCategories(categoryInfos);
     }
-
 }

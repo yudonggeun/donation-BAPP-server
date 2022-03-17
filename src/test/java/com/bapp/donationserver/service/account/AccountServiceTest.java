@@ -156,6 +156,7 @@ class AccountServiceTest {
         accountService.newMember(newMember);
 
         Member member = accountService.getMember(newMember.getEmail());
+        log.info("삭제 시작");
         accountService.dropMember(member);
 
         Assertions.assertThrows(Exception.class, () -> accountService.getMember(newMember.getEmail()));
@@ -168,7 +169,6 @@ class AccountServiceTest {
         MemberType memberType = MemberType.USER;
         String name = "new";
         String phoneNumber = "0l0-1234-3432";
-        String email = key;
         String password = "password1234";
         String nickname = "mynick";
         String profilePhotoName = "pridkfjls";
@@ -177,7 +177,7 @@ class AccountServiceTest {
         member.setMemberType(memberType);
         member.setNickname(nickname);
         member.setPhoneNumber(phoneNumber);
-        member.setEmail(email);
+        member.setEmail(key);
         member.setPassword(password);
         member.setNickname(nickname);
         member.setProfilePhotoName(profilePhotoName);

@@ -7,9 +7,9 @@ import java.util.List;
 
 public interface CampaignRepository {
 
-    void save(Campaign campaign);
+    void save(Campaign campaign, List<String> categories);
 
-    void update(Campaign campaign);
+    void update(Campaign campaign, List<String> categories);
 
     void delete(Campaign campaign);
 

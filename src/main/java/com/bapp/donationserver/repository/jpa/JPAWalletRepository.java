@@ -31,7 +31,8 @@ public class JPAWalletRepository implements WalletRepository {
 
     @Override
     public void deleteWallet(Wallet wallet) {
-        em.remove(wallet);
+        Wallet target = getWallet(wallet.getId());
+        em.remove(target);
     }
 
     @Override

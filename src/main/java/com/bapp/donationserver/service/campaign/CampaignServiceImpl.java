@@ -1,9 +1,7 @@
 package com.bapp.donationserver.service.campaign;
 
-import com.bapp.donationserver.data.Campaign;
-import com.bapp.donationserver.data.CampaignSearchCondition;
+import com.bapp.donationserver.data.*;
 import com.bapp.donationserver.data.type.MemberType;
-import com.bapp.donationserver.data.Wallet;
 import com.bapp.donationserver.data.dto.CampaignFullDto;
 import com.bapp.donationserver.data.dto.CampaignSearchConditionDto;
 import com.bapp.donationserver.data.dto.CampaignSimpleDto;
@@ -30,18 +28,20 @@ public class CampaignServiceImpl implements CampaignService {
     public void registerCampaign(CampaignFullDto campaignInfo) {
         Campaign campaign = new Campaign();
         campaign.setCampaignFullDto(campaignInfo);
+
         //지갑 생성 및 등록
         Wallet wallet = walletRepository.createWallet();
         campaign.setWallet(wallet);
+
         log.info("켐페인 등록={}", campaign);
-        campaignRepository.save(campaign);
+        campaignRepository.save(campaign, campaignInfo.getCategories());
     }
 
     @Override
     public void modifyCampaign(Long campaignId, CampaignFullDto campaignInfo) {
         Campaign campaign = campaignRepository.findById(campaignId);
         campaign.setCampaignFullDto(campaignInfo);
-        campaignRepository.update(campaign);
+        campaignRepository.update(campaign, campaignInfo.getCategories());
     }
 
     @Transactional(readOnly = true)
@@ -67,8 +67,12 @@ public class CampaignServiceImpl implements CampaignService {
         return campaignRepository.findById(campaignId);
     }
 
-    @Override
+    @Override//수정 필요
     public Boolean acceptCampaign(Long campaignId, Boolean status) {
+        Campaign campaign = campaignRepository.findById(campaignId);
+        campaign.setIsAccepted(status);
+        campaignRepository.update(campaign, null);
+
         return status;
     }
 

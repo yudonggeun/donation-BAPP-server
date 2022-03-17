@@ -2,8 +2,6 @@ package com.bapp.donationserver.repository.jpa;
 
 import com.bapp.donationserver.data.DonatedCampaign;
 import com.bapp.donationserver.data.Member;
-import com.bapp.donationserver.data.dto.MemberDto;
-import com.bapp.donationserver.exception.IllegalUserDataException;
 import com.bapp.donationserver.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -37,17 +35,19 @@ public class JPAMemberRepositoryImpl implements MemberRepository {
 
     @Override
     public void delete(Member member) {
-        em.remove(member);
+        log.info("멤버 삭제");
+        Member target = findByEmail(member.getEmail());
+        em.remove(target);
+
     }
 
     @Override
     public Member findByEmail(String email) {
         log.info("멤버 조회={}", email);
-        Member member = em.createQuery("select m from Member m join fetch m.wallet where m.email = :email", Member.class)
+
+        return em.createQuery("select m from Member m join fetch m.wallet where m.email = :email", Member.class)
                 .setParameter("email", email)
                 .getSingleResult();
-
-        return member;
     }
 
     @Override

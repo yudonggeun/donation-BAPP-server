@@ -2,6 +2,7 @@ package com.bapp.donationserver.data;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.*;
 

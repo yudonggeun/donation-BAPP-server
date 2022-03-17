@@ -71,6 +71,7 @@ public class AccountServiceImpl implements AccountService {
         //db 에서 해당 멤버의 기록 삭제
         memberRepository.delete(member);
         //지갑 삭제
+        log.info("지갑 삭제");
         walletRepository.deleteWallet(member.getWallet());
     }
 }

@@ -62,6 +62,7 @@ public class InitData {
         campaignInfo.setGoalAmount(1000000L);
         ArrayList<String> test = new ArrayList<>();
         test.add("아동");
+        test.add("청년");
         campaignInfo.setCategories(test);
         campaignInfo.setCoverImagePath("/path/child");
         campaignInfo.setDetailImagePath("/path/detail/child");
