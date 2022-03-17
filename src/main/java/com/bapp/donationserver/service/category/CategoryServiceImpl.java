@@ -36,8 +36,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public void modifyCategory(String categoryName, CategoryDto categoryDto) {
-        Category category = categoryRepository.findByName(categoryName);
-        category.setDto(categoryDto);
+        categoryRepository.update(categoryName, categoryDto.getName());
     }
 
     @Override

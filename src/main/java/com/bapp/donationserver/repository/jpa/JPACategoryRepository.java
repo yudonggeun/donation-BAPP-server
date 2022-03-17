@@ -31,6 +31,15 @@ public class JPACategoryRepository implements CategoryRepository {
     }
 
     @Override
+    public void update(String before, String after) {
+
+        String query = "update Category c set c.name = :after where c.name=:before";
+        em.createQuery(query).setParameter("before", before)
+                .setParameter("after", after)
+                .executeUpdate();
+    }
+
+    @Override
     public void delete(Category category) {
         //수정 필요
         em.remove(category);

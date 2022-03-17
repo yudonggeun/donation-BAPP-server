@@ -10,6 +10,8 @@ public interface CategoryRepository {
 
     Category findByName(String categoryName);
 
+    void update(String before, String after);
+
     void delete(Category category);
 
     List<Category> findAll();
