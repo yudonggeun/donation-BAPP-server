@@ -4,6 +4,7 @@ import com.bapp.donationserver.data.Campaign;
 import com.bapp.donationserver.data.CampaignSearchCondition;
 import com.bapp.donationserver.data.Category;
 import com.bapp.donationserver.data.CategoryInfo;
+import com.bapp.donationserver.data.type.MemberType;
 import com.bapp.donationserver.repository.CampaignRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -12,7 +13,9 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 import java.util.*;
+import java.util.stream.IntStream;
 
 @Slf4j
 @Primary
@@ -43,7 +46,7 @@ public class JPACampaignRepository implements CampaignRepository {
         em.merge(campaign);
 
         //카테고리 수정 사항 없을 경우 종료
-        if(categories == null)
+        if (categories == null)
             return;
 
         //모든 카테고리 항목 조회
@@ -58,7 +61,7 @@ public class JPACampaignRepository implements CampaignRepository {
         //수정시 제거하는 카테고리 항목 제거
         updateCategoryList.forEach(categoryInfo -> {
             String target = categoryInfo.getCategory().getName();
-            if( !categories.contains(target) ){//카테고리 제거
+            if (!categories.contains(target)) {//카테고리 제거
                 em.remove(categoryInfo);
             } else {
                 categories.remove(target);
@@ -67,7 +70,7 @@ public class JPACampaignRepository implements CampaignRepository {
 
         //수정시 추가하는 카테고리 추가
         categories.forEach(stringCategory -> allCategories.forEach(category -> {
-            if(category.getName().equals(stringCategory)){
+            if (category.getName().equals(stringCategory)) {
                 CategoryInfo categoryInfo = new CategoryInfo();
                 categoryInfo.setCampaign(campaign);
                 categoryInfo.setCategory(category);
@@ -116,11 +119,60 @@ public class JPACampaignRepository implements CampaignRepository {
     @Override
     public List<Campaign> findCampaignListByCondition(CampaignSearchCondition condition) {
 
-        //query dsl 을 통해서 조건 필터 완성하기 지금은 맛보기로만 코딩해놓자.
         log.info("조건={}", condition);
-        String query = "select c from Campaign as c ";
+        StringBuilder query = new StringBuilder("select c from Campaign c left join c.categories");
+        List<String> whereQuery = new ArrayList<>();
 
-        List<Campaign> campaigns = em.createQuery(query, Campaign.class)
+        //where 조건 검사
+        if (condition.getMemberType() != MemberType.ADMIN) {
+            whereQuery.add("c.isAccepted = true");
+        }
+        if (condition.getCharityName() != null) {
+            whereQuery.add("c.charityName like :charityName");
+        }
+        if (condition.getSubject() != null) {
+            whereQuery.add("c.campaignName like :campaignName");
+        }
+        StringBuilder categoryCondition;
+        if (condition.getCategories() != null && condition.getCategories().size() > 0) {
+            List<String> categories = condition.getCategories();
+
+            categoryCondition = new StringBuilder("c.id in (select i.campaign.id from CategoryInfo i where i.category.name like :category0");
+
+            for (int i = 1; i < categories.size(); i++) {
+                categoryCondition.append(" or i.category.name like :category").append(i);
+            }
+
+            categoryCondition.append(")");
+
+            whereQuery.add(categoryCondition.toString());
+        }
+
+        //where 조건 and 연결
+        if (whereQuery.size() > 0) {
+            query.append(" where ").append(whereQuery.get(0)).append(" ");
+            for (int i = 1; i < whereQuery.size(); i++) {
+                query.append("and ").append(whereQuery.get(i)).append(" ");
+            }
+        }
+
+        log.info("condition query = {}", query);
+
+
+        TypedQuery<Campaign> typedQuery = em.createQuery(query.toString(), Campaign.class);
+
+        //파라미터 적용
+        if (condition.getCharityName() != null)
+            typedQuery.setParameter("charityName", condition.getCharityNameForLike());
+
+        if (condition.getSubject() != null)
+            typedQuery.setParameter("campaignName", condition.getCampaignNameForLike());
+
+        if (condition.getCategories() != null && condition.getCategories().size() > 0)
+            IntStream.range(0, condition.getCategories().size()).forEach(i -> typedQuery.setParameter("category" + i, condition.getCategories().get(i)));
+
+        //범위 설정 및 실행
+        List<Campaign> campaigns = typedQuery
                 .setFirstResult(condition.getStartIndex())
                 .setMaxResults(condition.getMaxResult())
                 .getResultList();

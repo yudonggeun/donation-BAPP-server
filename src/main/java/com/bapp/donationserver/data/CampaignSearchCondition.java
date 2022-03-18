@@ -18,13 +18,19 @@ public class CampaignSearchCondition {
     private String charityName;
     private String subject;
     private List<String> categories;
-    private Boolean interest;
-    private String userId;
     private MemberType memberType;
 
     public CampaignSearchCondition() {
         this.startIndex = 0;
         this.maxResult = 100;
+    }
+
+    public String getCharityNameForLike() {
+        return "%"+charityName+"%";
+    }
+
+    public String getCampaignNameForLike(){
+        return "%"+subject+"%";
     }
 
     public CampaignSearchConditionDto getDto() {
@@ -35,8 +41,6 @@ public class CampaignSearchCondition {
         dto.setCharityName(charityName);
         dto.setSubject(subject);
         dto.setCategories(categories);
-        dto.setInterest(interest);
-        dto.setUserId(userId);
 
         return dto;
     }
@@ -49,7 +53,5 @@ public class CampaignSearchCondition {
         setCharityName(dto.getCharityName());
         setSubject(dto.getSubject());
         setCategories(dto.getCategories());
-        setInterest(dto.getInterest());
-        setUserId(dto.getUserId());
     }
 }

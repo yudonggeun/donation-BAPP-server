@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import javax.persistence.NoResultException;
+
 @Slf4j
 @RestControllerAdvice
 public class ApiExceptionController {
@@ -17,6 +19,13 @@ public class ApiExceptionController {
     public Status badRequestHandle(Exception e) {
         log.info("error msg = {}", e.getMessage());
         return Status.failStatus(e.getMessage());
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(NoResultException.class)
+    public Status NoResult(Exception e) {
+        log.info("error msg = {}", e.getMessage());
+        return Status.failStatus("데이터가 존재하지 않습니다.");
     }
 }
 //기능 적용하지 않은 클래스 수정

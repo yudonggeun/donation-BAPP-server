@@ -68,6 +68,7 @@ public class AccountServiceImpl implements AccountService {
     @Override
     @Transactional
     public void dropMember(Member member) {
+
         //db 에서 해당 멤버의 기록 삭제
         memberRepository.delete(member);
         //지갑 삭제

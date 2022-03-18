@@ -5,6 +5,7 @@ import com.bapp.donationserver.data.type.MemberType;
 import com.bapp.donationserver.data.dto.CampaignFullDto;
 import com.bapp.donationserver.data.dto.CampaignSearchConditionDto;
 import com.bapp.donationserver.data.dto.CampaignSimpleDto;
+import com.bapp.donationserver.exception.IllegalUserDataException;
 import com.bapp.donationserver.repository.CampaignRepository;
 import com.bapp.donationserver.repository.WalletRepository;
 import lombok.RequiredArgsConstructor;
@@ -64,7 +65,11 @@ public class CampaignServiceImpl implements CampaignService {
     @Transactional(readOnly = true)
     @Override
     public Campaign getDetailsOfCampaign(Long campaignId) {
-        return campaignRepository.findById(campaignId);
+        Campaign campaign = campaignRepository.findById(campaignId);
+        if(campaign == null){
+            throw new IllegalUserDataException("존재하지 않은 캠패인 id를 조회했습니다.");
+        }
+        return campaign;
     }
 
     @Override//수정 필요

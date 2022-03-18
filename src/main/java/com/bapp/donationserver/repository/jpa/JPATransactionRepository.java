@@ -36,6 +36,12 @@ public class JPATransactionRepository implements TransactionRepository {
 
     @Override
     public List<Transaction> findByCampaignId(Long campaignId) {
-        return em.find(Campaign.class, campaignId).getWallet().getTransactions();
+        String query = "select t from Transaction t join fetch t.detail where t.from = " +
+                "(select c.wallet.id from Campaign c left join c.wallet where c.id = :campaignId)";
+
+        return em.createQuery(query, Transaction.class)
+                .setParameter("campaignId", campaignId)
+                .getResultList();
+//        return em.find(Campaign.class, campaignId).getWallet().getTransactions();
     }
 }

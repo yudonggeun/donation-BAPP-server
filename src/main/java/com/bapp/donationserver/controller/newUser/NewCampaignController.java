@@ -3,6 +3,7 @@ package com.bapp.donationserver.controller.newUser;
 import com.bapp.donationserver.data.Member;
 import com.bapp.donationserver.data.consts.SessionConst;
 import com.bapp.donationserver.data.dto.*;
+import com.bapp.donationserver.data.type.MemberType;
 import com.bapp.donationserver.service.campaign.CampaignService;
 import com.bapp.donationserver.service.transaction.TransactionService;
 import lombok.RequiredArgsConstructor;
@@ -26,7 +27,9 @@ public class NewCampaignController {
     public List<CampaignSimpleDto> userSearchCampaign(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member member,
                                                       @RequestBody CampaignSearchConditionDto searchCondition) {
 
-        return campaignService.checkCampaignList(searchCondition, member.getMemberType());
+        MemberType type = (member != null ? member.getMemberType() : MemberType.USER);
+
+        return campaignService.checkCampaignList(searchCondition, type);
     }
 
     /**
@@ -41,6 +44,7 @@ public class NewCampaignController {
     /**
      * 기부 내역(거래 내역) : 사용처, 출금(환전)액, 거래 내용, 출금 시간
      * 기부 내역 배열 전송
+     * 존재하지 않은 켐페인 id로 조회시 빈 배열을 반환한다.
      */
     @GetMapping("/history")
     public List<TransactionDto> getCampaignHistory(@RequestParam Long campaignId) {

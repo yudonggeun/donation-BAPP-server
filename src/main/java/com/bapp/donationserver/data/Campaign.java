@@ -56,6 +56,7 @@ public class Campaign {
         dto.setSubject(campaignName);
         dto.setCharityName(charityName);
         dto.setDeadline(deadline);
+        dto.setCurrentAmount(wallet.getAmount());
         dto.setGoalAmount(goalAmount);
         dto.setCoverImagePath(coverImagePath);
 

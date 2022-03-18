@@ -38,7 +38,6 @@ public class JPAMemberRepositoryImpl implements MemberRepository {
         log.info("멤버 삭제");
         Member target = findByEmail(member.getEmail());
         em.remove(target);
-
     }
 
     @Override
