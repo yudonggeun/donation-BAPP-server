@@ -25,14 +25,6 @@ public class CampaignSearchCondition {
         this.maxResult = 100;
     }
 
-    public String getCharityNameForLike() {
-        return "%"+charityName+"%";
-    }
-
-    public String getCampaignNameForLike(){
-        return "%"+subject+"%";
-    }
-
     public CampaignSearchConditionDto getDto() {
         CampaignSearchConditionDto dto = new CampaignSearchConditionDto();
 

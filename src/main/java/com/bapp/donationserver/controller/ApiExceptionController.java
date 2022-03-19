@@ -28,4 +28,3 @@ public class ApiExceptionController {
         return Status.failStatus("데이터가 존재하지 않습니다.");
     }
 }
-//기능 적용하지 않은 클래스 수정

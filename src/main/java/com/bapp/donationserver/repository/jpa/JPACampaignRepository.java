@@ -163,10 +163,10 @@ public class JPACampaignRepository implements CampaignRepository {
 
         //파라미터 적용
         if (condition.getCharityName() != null)
-            typedQuery.setParameter("charityName", condition.getCharityNameForLike());
+            typedQuery.setParameter("charityName", "%" + condition.getCharityName() + "%");
 
         if (condition.getSubject() != null)
-            typedQuery.setParameter("campaignName", condition.getCampaignNameForLike());
+            typedQuery.setParameter("campaignName", "%" + condition.getSubject() + "%");
 
         if (condition.getCategories() != null && condition.getCategories().size() > 0)
             IntStream.range(0, condition.getCategories().size()).forEach(i -> typedQuery.setParameter("category" + i, condition.getCategories().get(i)));

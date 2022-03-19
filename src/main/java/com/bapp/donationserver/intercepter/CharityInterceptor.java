@@ -21,7 +21,7 @@ public class CharityInterceptor implements HandlerInterceptor {
 
         Member member = (Member) request.getSession(false).getAttribute(SessionConst.LOGIN_MEMBER);
 
-        boolean isCorrectUser = member.getMemberType() == MemberType.CHARITY;
+        boolean isCorrectUser = member.getMemberType() != MemberType.USER;
 
         if (!isCorrectUser) {
             throw new IllegalUserDataException(errorMsg);

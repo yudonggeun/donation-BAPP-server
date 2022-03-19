@@ -96,4 +96,13 @@ public class UserApiController {
         transactionService.pay(member, amount);
         return Status.successStatus();
     }
+
+    /*@GetMapping("/give")
+    public Object donatedPoint(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member member,
+                               @RequestParam Long campaignid,
+                               @RequestParam Long amount){
+        if(member.getWallet().getAmount() < amount)
+            return Status.failStatus("포인트가 적습니다. 충전해주세요");
+        accountService.updateMember(member, member.getDto());
+    }*/
 }
