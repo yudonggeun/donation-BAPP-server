@@ -17,14 +17,13 @@ import java.util.List;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
+@Transactional
 public class TransactionServiceImpl implements TransactionService {
 
     private final WalletRepository walletRepository;
     private final TransactionRepository transactionRepository;
 
     @Override
-    @Transactional
     public void pay(Member member, Long amount) {
 
         Wallet wallet = member.getWallet();
@@ -44,6 +43,27 @@ public class TransactionServiceImpl implements TransactionService {
         transactionRepository.save(transaction, null);
     }
 
+    @Override//추후 결제 대행사를 통한 결제 시스템 구축시에 변경사항이 생길 수도 있음
+    public void payback(Member member, Long amount) {
+
+        Wallet wallet = member.getWallet();
+        wallet.setAmount(wallet.getAmount() - amount);
+
+        Transaction transaction = new Transaction();
+        transaction.setAmount(amount);
+        transaction.setTo("PROVIDER");
+        transaction.setFrom(wallet.getId());
+        transaction.setToBalance(-1L);
+        transaction.setFromBalance(wallet.getAmount());
+        transaction.setType(TransactionType.PAYBACK);
+        transaction.setDate(LocalDate.now());
+        transaction.setDetail(null);
+
+        walletRepository.update(wallet);
+        transactionRepository.save(transaction, null);
+    }
+
+    @Transactional(readOnly = true)
     @Override
     public List<TransactionDto> getDonationHistory(Long campaignId) {
         List<TransactionDto> dtoList = new ArrayList<>();
@@ -51,7 +71,6 @@ public class TransactionServiceImpl implements TransactionService {
         return dtoList;
     }
 
-    @Transactional
     @Override
     public void withdraw(Campaign campaign, Member member, TransactionDto dto) {
 

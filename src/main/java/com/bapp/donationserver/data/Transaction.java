@@ -31,6 +31,7 @@ public class Transaction {
     private Long amount;//거래 금액
     @Column(name = "DATE")
     private LocalDate date;//거래 시간
+    @Enumerated(EnumType.STRING)
     @Column(name = "TYPE")
     private TransactionType type;
     @OneToOne(mappedBy = "transaction", fetch = FetchType.LAZY)

@@ -102,11 +102,22 @@ public class UserApiController {
 
     @GetMapping("/give")
     public Object donatedPoint(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member member,
-                               @SessionAttribute(name = SessionConst.LAST_CHECK_CAMPAIGN, required = false) Campaign campaign,
+                               @SessionAttribute(name = SessionConst.LAST_CHECK_CAMPAIGN, required = false) Campaign campaign,//최근 조회한 켐페인 등록
                                @RequestParam Long amount){
 
 
         transactionService.donate(member, campaign, amount);
+
+        return Status.successStatus();
+    }
+
+    @GetMapping("/payback")
+    public Object payBack(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member member,
+                          @RequestParam Long amount){
+        if(member.getWallet().getAmount() < amount){
+            return Status.failStatus("요청한 금액보다 포인트가 적습니다.");
+        }
+        transactionService.payback(member, amount);
 
         return Status.successStatus();
     }
