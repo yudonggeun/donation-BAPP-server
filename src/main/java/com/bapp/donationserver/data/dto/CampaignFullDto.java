@@ -16,4 +16,5 @@ public class CampaignFullDto {
     private List<String> categories = new ArrayList<>();
     private String coverImagePath;
     private String detailImagePath;
+    private String reviewImagePath;
 }

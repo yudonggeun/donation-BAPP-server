@@ -1,5 +1,6 @@
 package com.bapp.donationserver.controller.user;
 
+import com.bapp.donationserver.data.Campaign;
 import com.bapp.donationserver.data.Member;
 import com.bapp.donationserver.data.dto.CampaignSimpleDto;
 import com.bapp.donationserver.data.dto.MemberDto;
@@ -91,18 +92,22 @@ public class UserApiController {
     @PostMapping("/pay")
     public Object payComplete(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member member,
                               @RequestParam Long amount) {
+        if(amount < 0){
+            return Status.failStatus("결제 금액이 음수입니다. 0 이상의 값을 전송해야합니다.");
+        }
 
-        log.info("email={}, amount={}", member.getEmail(), amount);
         transactionService.pay(member, amount);
         return Status.successStatus();
     }
 
-    /*@GetMapping("/give")
+    @GetMapping("/give")
     public Object donatedPoint(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member member,
-                               @RequestParam Long campaignid,
+                               @SessionAttribute(name = SessionConst.LAST_CHECK_CAMPAIGN, required = false) Campaign campaign,
                                @RequestParam Long amount){
-        if(member.getWallet().getAmount() < amount)
-            return Status.failStatus("포인트가 적습니다. 충전해주세요");
-        accountService.updateMember(member, member.getDto());
-    }*/
+
+
+        transactionService.donate(member, campaign, amount);
+
+        return Status.successStatus();
+    }
 }

@@ -74,6 +74,7 @@ public class Campaign {
         dto.setGoalAmount(goalAmount);
         dto.setCoverImagePath(coverImagePath);
         dto.setDetailImagePath(detailImagePath);
+        dto.setReviewImagePath(reviewImagePath);
         List<String> categoryNames = new ArrayList<>();
         this.categories.forEach(info -> categoryNames.add(info.getCategory().getName()));
         dto.setCategories(categoryNames);
@@ -87,5 +88,6 @@ public class Campaign {
         setGoalAmount(dto.getGoalAmount());
         setCoverImagePath(dto.getCoverImagePath());
         setDetailImagePath(dto.getDetailImagePath());
+        setReviewImagePath(dto.getReviewImagePath());
     }
 }

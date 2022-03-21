@@ -20,6 +20,6 @@ public class CampaignSearchConditionDto {
 
     public CampaignSearchConditionDto() {
         this.startIndex = 0;
-        this.endIndex = 4;
+        this.endIndex = 100;
     }
 }

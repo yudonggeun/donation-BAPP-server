@@ -4,6 +4,7 @@ import com.bapp.donationserver.data.Member;
 import com.bapp.donationserver.data.Wallet;
 import com.bapp.donationserver.data.dto.CampaignSimpleDto;
 import com.bapp.donationserver.data.dto.MemberDto;
+import com.bapp.donationserver.exception.IllegalUserDataException;
 import com.bapp.donationserver.repository.MemberRepository;
 import com.bapp.donationserver.repository.WalletRepository;
 import lombok.RequiredArgsConstructor;
@@ -57,10 +58,10 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public Member login(String email, String password) throws Exception {
+    public Member login(String email, String password) {
         Member member = memberRepository.findByEmail(email);
         if(!member.getPassword().equals(password)){
-            throw new Exception();
+            throw new IllegalUserDataException("로그인에 실패했습니다.");
         }
         return member;
     }

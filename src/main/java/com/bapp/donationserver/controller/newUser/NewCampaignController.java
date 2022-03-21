@@ -1,5 +1,6 @@
 package com.bapp.donationserver.controller.newUser;
 
+import com.bapp.donationserver.data.Campaign;
 import com.bapp.donationserver.data.Member;
 import com.bapp.donationserver.data.consts.SessionConst;
 import com.bapp.donationserver.data.dto.*;
@@ -10,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @RequestMapping("/api/new/campaign")
@@ -36,8 +38,12 @@ public class NewCampaignController {
      * 서버 전송 : 표지이미지, 상세이미지, 캠페인 제목, 재단 이름, 마감일, 현재 모금 금액, 목표 금액, 카테고리, 계획
      */
     @GetMapping("/{campaignId}")
-    public CampaignFullDto getCampaignDetail(@PathVariable Long campaignId) {
-        return campaignService.getDetailsOfCampaign(campaignId).getCampaignFullDto();
+    public CampaignFullDto getCampaignDetail(@PathVariable Long campaignId, HttpServletRequest request) {
+        Campaign campaign = campaignService.getDetailsOfCampaign(campaignId);
+
+        request.getSession().setAttribute(SessionConst.LAST_CHECK_CAMPAIGN, campaign);
+
+        return campaign.getCampaignFullDto();
     }
 
 

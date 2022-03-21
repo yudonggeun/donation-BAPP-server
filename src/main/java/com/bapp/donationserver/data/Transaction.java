@@ -42,8 +42,8 @@ public class Transaction {
     public Transaction(Wallet from, Wallet to, Long amount, TransactionType type, TransactionDetail detail) {
         this.from = from.getId();
         this.to = to.getId();
-        this.fromBalance = from.getAmount() - amount;
-        this.toBalance = to.getAmount() + amount;
+        this.fromBalance = from.getAmount();
+        this.toBalance = to.getAmount();
         this.amount = amount;
         this.date = LocalDate.now();
         this.type = type;
