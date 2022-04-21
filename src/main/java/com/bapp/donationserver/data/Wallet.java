@@ -16,8 +16,9 @@ import java.util.UUID;
 @Setter
 public class Wallet {
     @Id
-    private String id;
+    private String id;//accountAddress
     private Long amount;
+    private String privateKey;
     @OneToMany(mappedBy = "from", fetch = FetchType.LAZY)
     private List<Transaction> transactions = new ArrayList<>();
 

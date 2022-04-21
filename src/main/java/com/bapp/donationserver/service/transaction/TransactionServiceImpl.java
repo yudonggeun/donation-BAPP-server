@@ -1,6 +1,7 @@
 package com.bapp.donationserver.service.transaction;
 
 import com.bapp.donationserver.data.*;
+import com.bapp.donationserver.data.consts.BlockChainConst;
 import com.bapp.donationserver.data.dto.*;
 import com.bapp.donationserver.data.type.TransactionType;
 import com.bapp.donationserver.repository.TransactionRepository;
@@ -27,11 +28,10 @@ public class TransactionServiceImpl implements TransactionService {
     public void pay(Member member, Long amount) {
 
         Wallet wallet = member.getWallet();
-        wallet.setAmount(wallet.getAmount() + amount);
 
         Transaction transaction = new Transaction();
         transaction.setAmount(amount);
-        transaction.setFrom("PROVIDER");
+        transaction.setFrom(BlockChainConst.OWNER_ADDRESS);
         transaction.setTo(wallet.getId());
         transaction.setFromBalance(-1L);
         transaction.setToBalance(wallet.getAmount());
@@ -39,19 +39,20 @@ public class TransactionServiceImpl implements TransactionService {
         transaction.setDate(LocalDate.now());
         transaction.setDetail(null);
 
+        transactionRepository.save(BlockChainConst.OWNER_PRIVATE_KEY, transaction, null);
+
+        wallet.setAmount(wallet.getAmount() + amount);
         walletRepository.update(wallet);
-        transactionRepository.save(transaction, null);
     }
 
     @Override//추후 결제 대행사를 통한 결제 시스템 구축시에 변경사항이 생길 수도 있음
     public void payback(Member member, Long amount) {
 
         Wallet wallet = member.getWallet();
-        wallet.setAmount(wallet.getAmount() - amount);
 
         Transaction transaction = new Transaction();
         transaction.setAmount(amount);
-        transaction.setTo("PROVIDER");
+        transaction.setTo(BlockChainConst.OWNER_ADDRESS);
         transaction.setFrom(wallet.getId());
         transaction.setToBalance(-1L);
         transaction.setFromBalance(wallet.getAmount());
@@ -59,8 +60,10 @@ public class TransactionServiceImpl implements TransactionService {
         transaction.setDate(LocalDate.now());
         transaction.setDetail(null);
 
+        transactionRepository.save(wallet.getPrivateKey(), transaction, null);
+
+        wallet.setAmount(wallet.getAmount() - amount);
         walletRepository.update(wallet);
-        transactionRepository.save(transaction, null);
     }
 
     @Transactional(readOnly = true)
@@ -85,9 +88,6 @@ public class TransactionServiceImpl implements TransactionService {
         if (from.getAmount() < dto.getAmount()) {
             throw new IllegalArgumentException("인출 금액이 너무 큽니다.");
         }
-        //인출 계산
-        from.setAmount(from.getAmount() - dto.getAmount());
-        to.setAmount(to.getAmount() + dto.getAmount());
 
         //인출 : 거래 내역 등록, 켐패인 갱신
         TransactionDetail detail = new TransactionDetail();
@@ -103,11 +103,16 @@ public class TransactionServiceImpl implements TransactionService {
         detail.setReceiver(dto.getReceiver());
         detail.setPurpose(dto.getPurpose());
 
-        //db 저장
-        walletRepository.update(from);
-        walletRepository.update(to);
+        //block chain 저장
+        transactionRepository.save(from.getPrivateKey(), transaction, detail);
 
-        transactionRepository.save(transaction, detail);
+        //인출 계산
+        from.setAmount(from.getAmount() - dto.getAmount());
+        to.setAmount(to.getAmount() + dto.getAmount());
+
+        //db 저장
+        walletRepository.update(to);
+        walletRepository.update(from);
     }
 
     @Override
@@ -120,9 +125,6 @@ public class TransactionServiceImpl implements TransactionService {
         if(memberWallet.getAmount() < amount)
             throw new IllegalArgumentException("포인트가 적습니다. 충전해주세요");
 
-        //인출 계산
-        memberWallet.setAmount(memberWallet.getAmount() - amount);
-        campaignWallet.setAmount(campaignWallet.getAmount() + amount);
 
         //거래 내역 생성
         Transaction transaction = new Transaction(
@@ -133,10 +135,14 @@ public class TransactionServiceImpl implements TransactionService {
                 null
         );
 
-        //db 저장
-        walletRepository.update(memberWallet);
-        walletRepository.update(campaignWallet);
+        //block chain 저장
+        transactionRepository.save(memberWallet.getPrivateKey(), transaction, null);
 
-        transactionRepository.save(transaction, null);
+        //인출 계산
+        memberWallet.setAmount(memberWallet.getAmount() - amount);
+        campaignWallet.setAmount(campaignWallet.getAmount() + amount);
+        //db 저장
+        walletRepository.update(campaignWallet);
+        walletRepository.update(memberWallet);
     }
 }

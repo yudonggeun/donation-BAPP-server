@@ -3,6 +3,8 @@ package com.bapp.donationserver.repository.jpa;
 import com.bapp.donationserver.data.Campaign;
 import com.bapp.donationserver.data.Transaction;
 import com.bapp.donationserver.data.TransactionDetail;
+import com.bapp.donationserver.data.Wallet;
+import com.bapp.donationserver.exception.BlockChainException;
 import com.bapp.donationserver.repository.TransactionRepository;
 import com.bapp.donationserver.service.blockchain.BlockChainService;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +14,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.math.BigInteger;
 import java.util.*;
 
 @Repository
@@ -25,13 +28,18 @@ public class JPATransactionRepository implements TransactionRepository {
     private final BlockChainService blockChainService;
 
     @Override
-    public void save(Transaction transaction, TransactionDetail detail) {
-        String id = blockChainService.putTransaction(transaction, detail);
+    public void save(String  fromPrivateKey, Transaction transaction, TransactionDetail detail) {
+        BigInteger balance = blockChainService.balanceOf(fromPrivateKey);
+        if (balance.longValue() < transaction.getAmount()){
+            throw new BlockChainException("klay network error : balance is insufficient");
+        }
+        String id = blockChainService.transfer(fromPrivateKey, transaction.getTo(), transaction.getAmount());
         transaction.setId(id);
-
         em.persist(transaction);
-        if(detail != null)
+        if(detail != null) {
+            detail.setHashCode(id);
             em.persist(detail);
+        }
     }
 
     @Override

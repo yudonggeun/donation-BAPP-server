@@ -24,7 +24,7 @@ public class JPAWalletRepository implements WalletRepository {
 
     @Override
     public Wallet createWallet() {
-        Wallet wallet = new Wallet();
+        Wallet wallet = blockChainService.makeWallet();
         em.persist(wallet);
         return wallet;
     }
