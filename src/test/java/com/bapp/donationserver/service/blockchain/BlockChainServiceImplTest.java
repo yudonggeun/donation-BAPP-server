@@ -1,5 +1,6 @@
 package com.bapp.donationserver.service.blockchain;
 
+import com.bapp.donationserver.data.consts.BlockChainConst;
 import com.klaytn.caver.Caver;
 import com.klaytn.caver.contract.*;
 import com.klaytn.caver.methods.response.TransactionReceipt;
@@ -25,8 +26,8 @@ class BlockChainServiceImplTest {
     String BAOBAB_URL = "https://api.baobab.klaytn.net:8651";
     String depoly_pk = "0xfd1628a48611633f6c1c800414de0899b672a2586d4cc74f603a7a3a2fb30355";
     String DEPOLY_ADDRESS = "0x9e1063a35b302c6c3aa18cf9085de2f99bf1b6eb";
-    String OTHER_ADDRESS = "0xe7b8d6c2b8ac13491fc05dd4e010fc6774f80818";
-    String ohter_pk = "0x20b6e93a5b56fc75465b154450e5b2ad47448b6eebcb747acf8bbb4b086c69ab";
+    String OTHER_ADDRESS = "0x97a2c0bc4bf464448d253561e33e2f658e21e6f4";
+    String ohter_pk = "0x4e28b1525dc387d5a9712e49c42efd445b6381bcffbe8d8673baeefcab0331cf";
 
     //contract variable
     String contractAddress = "0x2979C52Ad2a065DC406779c020ebe9a6b548ac22";
@@ -41,7 +42,7 @@ class BlockChainServiceImplTest {
     }
 
     @Test
-    public void generateAccount() throws Exception {
+    public void generateAccount() {
 
         SingleKeyring generate = caver.wallet.keyring.generate();
 
@@ -66,7 +67,7 @@ class BlockChainServiceImplTest {
             sendOptions.setGas(BigInteger.valueOf(400000));
             ContractMethod method = contract.getMethod("balanceOf");
 
-            method.call(Arrays.asList(
+            method.call(List.of(
                     DEPOLY_ADDRESS
             )).forEach(type -> {
                 log.info("type : {}", type.getValue());
@@ -86,16 +87,23 @@ class BlockChainServiceImplTest {
 
     @Test
     public void sampleTransfer(){
-        transfer(depoly_pk, OTHER_ADDRESS, 100_000);
+//        transfer(depoly_pk, OTHER_ADDRESS, 0);
+        transfer(depoly_pk, "0x97a2c0bc4bf464448d253561e33e2f658e21e6f4", 200);
 
-//        transfer("0xcdf1aef80beb49b427fe05e884f373b17dc465b62f3ef87e59851ca08c5b4a07", "0xfe56edd18927485957db574ecdd897e39ae85b3c", 100_000);
+        transfer("0x4e28b1525dc387d5a9712e49c42efd445b6381bcffbe8d8673baeefcab0331cf", "0x19f6b14f590bb3103e87efbd9ea1c51a1c392789", 100);
     }
 
     public boolean transfer(String fromPk, String toAddress, long amount){
         //
         BigInteger value = BigInteger.valueOf(amount);
         SingleKeyring executor = KeyringFactory.createFromPrivateKey(fromPk);
-        caver.wallet.add(executor);
+
+        if (!caver.wallet.isExisted(executor.getAddress()))
+            caver.wallet.add(executor);
+
+        SingleKeyring owner = KeyringFactory.createFromPrivateKey(BlockChainConst.OWNER_PRIVATE_KEY);
+        if(!caver.wallet.isExisted(BlockChainConst.OWNER_ADDRESS))
+            caver.wallet.add(owner);
 
         try {
             Contract contract = new Contract(caver, ABI, contractAddress);
@@ -103,6 +111,9 @@ class BlockChainServiceImplTest {
             SendOptions sendOptions = new SendOptions();
             sendOptions.setFrom(executor.getAddress());
             sendOptions.setGas(BigInteger.valueOf(400000));
+            sendOptions.setFeeDelegation(true);
+            sendOptions.setFeePayer(BlockChainConst.OWNER_ADDRESS);
+            log.info("sendOptions = {}", sendOptions.getFeeDelegation());
             ContractMethod method = contract.getMethod("transfer");
 
             TransactionReceipt.TransactionReceiptData receipt = method.send(
@@ -135,7 +146,7 @@ class BlockChainServiceImplTest {
 
             ContractMethod method = contract.getMethod("balanceOf");
 
-            method.call(Arrays.asList(
+            method.call(List.of(
                     executor.getAddress()
             )).forEach(type -> {
                 log.info("return = {}", type.getValue());
@@ -167,7 +178,7 @@ class BlockChainServiceImplTest {
             ContractMethod method = contract.getMethod("_supplyToken");
 
             TransactionReceipt.TransactionReceiptData receipt = method.send(
-                    Arrays.asList(
+                    List.of(
                             value
                     ), sendOptions);
 
@@ -193,9 +204,7 @@ class BlockChainServiceImplTest {
 
         try {
             TransactionReceipt receipt = caver.rpc.klay.getTransactionReceipt(txHash).send();
-            if(receipt.hasError()) {
-                // 에러 처리
-            }
+
             log.info("log");
             log.info("raw data = {}", receipt.getRawResponse());
 
@@ -233,13 +242,16 @@ class BlockChainServiceImplTest {
             String ABI = StringUtils.join(Files.readAllLines(Path.of(ABI_PATH)), "\n");
 
             Contract contract = new Contract(caver, ABI, contractAddress);
-            contract.getMethods().forEach((methodName, contractMethod) -> {
-                System.out.println("methodName : " + methodName + ", ContractMethod : " + contractMethod);
-            });
+            contract.getMethods().forEach((methodName, contractMethod) -> System.out.println("methodName : " + methodName + ", ContractMethod : " + contractMethod));
             System.out.println("ContractAddress : " + contract.getContractAddress());
         } catch (IOException e) {
             //handle exception..
         }
+    }
+
+    @Test
+    public void noGasTransaction(){
+
     }
 
 /*    @Test

@@ -10,11 +10,9 @@ public interface BlockChainService {
 
     Wallet makeWallet();
 
-    String putTransaction(Wallet fromWallet, Transaction transaction, TransactionDetail detail);
-
-    Transaction getTransaction(String HashKey);
-
     String transfer(String fromPk, String toAddress, long amount);
 
     BigInteger balanceOf(String accountPk);
+
+    boolean supplyToken(long amount/*100만 단위*/, String msgSenderPk);
 }

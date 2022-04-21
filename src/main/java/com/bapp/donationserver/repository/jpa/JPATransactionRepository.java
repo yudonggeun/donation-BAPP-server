@@ -4,6 +4,7 @@ import com.bapp.donationserver.data.Campaign;
 import com.bapp.donationserver.data.Transaction;
 import com.bapp.donationserver.data.TransactionDetail;
 import com.bapp.donationserver.data.Wallet;
+import com.bapp.donationserver.data.consts.BlockChainConst;
 import com.bapp.donationserver.exception.BlockChainException;
 import com.bapp.donationserver.repository.TransactionRepository;
 import com.bapp.donationserver.service.blockchain.BlockChainService;
@@ -30,9 +31,12 @@ public class JPATransactionRepository implements TransactionRepository {
     @Override
     public void save(String  fromPrivateKey, Transaction transaction, TransactionDetail detail) {
         BigInteger balance = blockChainService.balanceOf(fromPrivateKey);
-        if (balance.longValue() < transaction.getAmount()){
-            throw new BlockChainException("klay network error : balance is insufficient");
+        if (balance.longValue() < transaction.getAmount()) {
+            if (!(fromPrivateKey.equals(BlockChainConst.OWNER_PRIVATE_KEY) && blockChainService.supplyToken(100, BlockChainConst.OWNER_PRIVATE_KEY))) {
+                throw new BlockChainException("klay network error : balance is insufficient");
+            }
         }
+
         String id = blockChainService.transfer(fromPrivateKey, transaction.getTo(), transaction.getAmount());
         transaction.setId(id);
         em.persist(transaction);
