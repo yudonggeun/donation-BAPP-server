@@ -28,10 +28,10 @@ public class InitData {
 
     @PostConstruct
     public void init(){
-        initMember();
-        initCategory("아동");
-        initCategory("청년");
-        initCampaign();
+//        initMember();
+//        initCategory("아동");
+//        initCategory("청년");
+//        initCampaign();
     }
 
     public void initMember(){

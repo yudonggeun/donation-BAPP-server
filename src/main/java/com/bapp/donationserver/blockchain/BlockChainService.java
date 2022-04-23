@@ -1,7 +1,5 @@
-package com.bapp.donationserver.service.blockchain;
+package com.bapp.donationserver.blockchain;
 
-import com.bapp.donationserver.data.Transaction;
-import com.bapp.donationserver.data.TransactionDetail;
 import com.bapp.donationserver.data.Wallet;
 
 import java.math.BigInteger;

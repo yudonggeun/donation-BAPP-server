@@ -7,7 +7,7 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: create #스테이징과 운영 서버는 validate 또는 none
+      ddl-auto: none #스테이징과 운영 서버는 validate 또는 none
     properties:
       hiberate:
 #        show-sql: true

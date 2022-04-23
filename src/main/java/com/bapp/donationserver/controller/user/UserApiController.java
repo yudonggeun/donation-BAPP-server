@@ -34,9 +34,6 @@ public class UserApiController {
     @GetMapping
     public MemberDto getMyPage(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member member,
                                HttpServletRequest request) {
-        //log
-        log.info("내 정보 조회 : email={}", member.getEmail());
-
         return member.getDto();
     }
 
@@ -44,7 +41,7 @@ public class UserApiController {
     public Object editMyPage(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member member,
                              @RequestBody MemberDto data) {
 
-        log.info("내 정보 수정 : 전달된 데이터 {}", data);
+        MemberDto.checkValidation(data);
 
         accountService.updateMember(member, data);
         return Status.successStatus();
@@ -70,6 +67,7 @@ public class UserApiController {
         HttpSession session = request.getSession(false);
         if (session == null)
             return Status.failStatus("API 요청이 처리되지 않았습니다.");
+
         session.invalidate();
         return Status.successStatus();
     }
@@ -93,7 +91,7 @@ public class UserApiController {
     public Object pay(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member member,
                       @RequestParam Long amount) {
         if (amount < 0) {
-            return Status.failStatus("결제 금액이 음수입니다. 0 이상의 값을 전송해야합니다.");
+            return Status.failStatus("결제 가능 금액은 100원 이상입니다.");
         }
 
         transactionService.pay(member, amount);
@@ -106,6 +104,10 @@ public class UserApiController {
         if (member.getWallet().getAmount() < amount) {
             return Status.failStatus("요청한 금액보다 포인트가 적습니다.");
         }
+        if (amount < 100){
+            return Status.failStatus("환불 요청 가능한 금액은 100원 이상입니다.");
+        }
+
         transactionService.payback(member, amount);
 
         return Status.successStatus();
@@ -116,8 +118,15 @@ public class UserApiController {
                          @SessionAttribute(name = SessionConst.LAST_CHECK_CAMPAIGN, required = false) Campaign campaign,//최근 조회한 켐페인 등록
                          @RequestParam Long amount) {
 
-        if(campaign == null)
+        if(campaign == null) {
             return Status.failStatus("최근 조회한 켐페인이 없습니다.");
+        }
+        if (member.getWallet().getAmount() < amount) {
+            return Status.failStatus("요청한 금액보다 포인트가 적습니다.");
+        }
+        if (amount <= 100){
+            return Status.failStatus("기부 최소 금액은 100원 입니다.");
+        }
 
         transactionService.donate(member, campaign, amount);
 

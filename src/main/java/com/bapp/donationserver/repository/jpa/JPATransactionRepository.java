@@ -1,13 +1,11 @@
 package com.bapp.donationserver.repository.jpa;
 
-import com.bapp.donationserver.data.Campaign;
 import com.bapp.donationserver.data.Transaction;
 import com.bapp.donationserver.data.TransactionDetail;
-import com.bapp.donationserver.data.Wallet;
 import com.bapp.donationserver.data.consts.BlockChainConst;
 import com.bapp.donationserver.exception.BlockChainException;
 import com.bapp.donationserver.repository.TransactionRepository;
-import com.bapp.donationserver.service.blockchain.BlockChainService;
+import com.bapp.donationserver.blockchain.BlockChainService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Primary;

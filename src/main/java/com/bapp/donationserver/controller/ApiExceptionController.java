@@ -17,14 +17,12 @@ public class ApiExceptionController {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(IllegalUserDataException.class)
     public Status badRequestHandle(Exception e) {
-        log.info("error msg = {}", e.getMessage());
         return Status.failStatus(e.getMessage());
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(NoResultException.class)
     public Status NoResult(Exception e) {
-        log.info("error msg = {}", e.getMessage());
         return Status.failStatus("데이터가 존재하지 않습니다.");
     }
 }

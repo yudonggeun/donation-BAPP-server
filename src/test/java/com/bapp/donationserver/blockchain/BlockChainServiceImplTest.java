@@ -1,4 +1,4 @@
-package com.bapp.donationserver.service.blockchain;
+package com.bapp.donationserver.blockchain;
 
 import com.bapp.donationserver.data.consts.BlockChainConst;
 import com.klaytn.caver.Caver;

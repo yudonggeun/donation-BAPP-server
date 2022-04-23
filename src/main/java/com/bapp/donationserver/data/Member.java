@@ -12,7 +12,6 @@ import java.util.List;
 
 @Entity
 @Getter
-@Setter
 public class Member {
 
     @Id
@@ -38,14 +37,39 @@ public class Member {
     @JoinColumn(name = "WALLET_ID")
     private Wallet wallet;
 
+    public Member(){}
+
+    public Member(String email, Wallet wallet) {
+        this.email = email;
+        this.wallet = wallet;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public void setProfilePhotoName(String profilePhotoName) {
+        this.profilePhotoName = profilePhotoName;
+    }
+
     public void setDto(MemberDto data) {
-        setMemberType(data.getMemberType());
-        setName(data.getName());
-        setPhoneNumber(data.getPhoneNumber());
-        setEmail(data.getEmail());
-        setPassword(data.getPassword());
-        setNickname(data.getNickname());
-        setProfilePhotoName(data.getProfilePhotoName());
+        if(data.getName() != null) setName(data.getName());
+        if(data.getPhoneNumber() != null) setPhoneNumber(data.getPhoneNumber());
+        if(data.getPassword() != null) setPassword(data.getPassword());
+        if(data.getNickname() != null) setNickname(data.getNickname());
+        if(data.getProfilePhotoName() != null) setProfilePhotoName(data.getProfilePhotoName());
     }
 
     public MemberDto getDto() {

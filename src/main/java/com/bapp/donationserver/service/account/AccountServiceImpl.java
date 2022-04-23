@@ -47,13 +47,12 @@ public class AccountServiceImpl implements AccountService {
     @Override
     @Transactional
     public void newMember(MemberDto data) {
-        log.info("회원 가입 서비스 호출");
-        //회원 생성
-        Member newMember = new Member();
-        newMember.setDto(data);
         //지갑 생성
         Wallet wallet = walletRepository.createWallet();
-        newMember.setWallet(wallet);
+
+        //회원 생성
+        Member newMember = new Member(data.getEmail(), wallet);
+        newMember.setDto(data);
         memberRepository.save(newMember);
     }
 

@@ -4,6 +4,7 @@ import com.bapp.donationserver.data.*;
 import com.bapp.donationserver.data.consts.BlockChainConst;
 import com.bapp.donationserver.data.dto.*;
 import com.bapp.donationserver.data.type.TransactionType;
+import com.bapp.donationserver.exception.IllegalUserDataException;
 import com.bapp.donationserver.repository.TransactionRepository;
 import com.bapp.donationserver.repository.WalletRepository;
 import lombok.RequiredArgsConstructor;
@@ -123,7 +124,7 @@ public class TransactionServiceImpl implements TransactionService {
 
         //겁증
         if(memberWallet.getAmount() < amount)
-            throw new IllegalArgumentException("포인트가 적습니다. 충전해주세요");
+            throw new IllegalUserDataException("포인트가 적습니다. 충전해주세요");
 
 
         //거래 내역 생성

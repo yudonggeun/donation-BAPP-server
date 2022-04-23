@@ -51,4 +51,8 @@ public class NewAccountController {
         memberService.newMember(data);
         return Status.successStatus();
     }
+
+    public void test(){
+        log.info("테스트 실행");
+    }
 }

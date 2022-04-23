@@ -3,7 +3,7 @@ package com.bapp.donationserver.repository.jpa;
 import com.bapp.donationserver.data.Member;
 import com.bapp.donationserver.data.Wallet;
 import com.bapp.donationserver.repository.WalletRepository;
-import com.bapp.donationserver.service.blockchain.BlockChainService;
+import com.bapp.donationserver.blockchain.BlockChainService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Primary;
