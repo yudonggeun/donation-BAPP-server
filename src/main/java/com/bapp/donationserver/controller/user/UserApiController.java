@@ -132,10 +132,4 @@ public class UserApiController {
 
         return Status.successStatus();
     }
-
-    /*@GetMapping("/cancel-donate")
-    public Object cancelDonation(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member member,
-                                 ){
-
-    }*/
 }

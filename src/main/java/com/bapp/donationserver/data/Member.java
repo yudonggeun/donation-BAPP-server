@@ -39,9 +39,10 @@ public class Member {
 
     public Member(){}
 
-    public Member(String email, Wallet wallet) {
+    public Member(String email, Wallet wallet, MemberType memberType) {
         this.email = email;
         this.wallet = wallet;
+        this.memberType = memberType;
     }
 
     public void setName(String name) {

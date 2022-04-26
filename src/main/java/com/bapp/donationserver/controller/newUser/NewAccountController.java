@@ -28,6 +28,7 @@ public class NewAccountController {
     @PostMapping("/login")
     public Object login(@RequestBody LoginDto loginForm, HttpServletRequest request) throws Exception {
 
+        //로직 실행
         Member member = memberService.login(loginForm.getEmail(), loginForm.getPassword());
 
         HttpSession session = request.getSession();
@@ -43,16 +44,18 @@ public class NewAccountController {
     @PostMapping
     public Object newUser(@RequestBody MemberDto data) {
 
-        log.info("회원가입 : 전달된 데이터 {}", data);
+        // [타당성 검증] : 올바른 형식 확인, null 확인, 관리자 계정 생성 방지
+        MemberDto.checkValidation(data);
+        MemberDto.checkNotNull(data);
+
         if(data.getMemberType() == MemberType.ADMIN){
             log.info("관리자 권한을 가진 계정 생성을 요청할 수 없습니다.");
             return Status.failStatus("API 요청이 처리되지 않았습니다.");
         }
+
+        //로직 실행
         memberService.newMember(data);
         return Status.successStatus();
     }
 
-    public void test(){
-        log.info("테스트 실행");
-    }
 }

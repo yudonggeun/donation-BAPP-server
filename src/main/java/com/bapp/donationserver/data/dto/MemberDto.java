@@ -25,7 +25,7 @@ public class MemberDto {
     private Long pointAmount;
 
 
-    public static void checkValidation(MemberDto memberDto){
+    public static void checkValidation(MemberDto memberDto) {
 
         StringBuilder sb = new StringBuilder();
         boolean isNotValid = false;
@@ -41,25 +41,49 @@ public class MemberDto {
         String profilePhotoName = memberDto.getProfilePhotoName();
         String nickname = memberDto.getNickname();
 
-        if(email != null && !emailPattern.matcher(email).find()){
+        if (email != null && !emailPattern.matcher(email).find()) {
             isNotValid = true;
             sb.append("올바른 이메일 형식이 아닙니다.\n");
         }
-        if(phoneNumber != null && !phoneNumberPattern.matcher(phoneNumber).find()){
+        if (phoneNumber != null && !phoneNumberPattern.matcher(phoneNumber).find()) {
             isNotValid = true;
             sb.append("올바른 전화번호 형식이 아닙니다.\n");
         }
-        if(password != null && !passwordPattern.matcher(password).find()){
+        if (password != null && !passwordPattern.matcher(password).find()) {
             isNotValid = true;
             sb.append("올바른 패스워드 형식이 아닙니다. : 숫자, 문자, 특수문자 포함 8~15자리 이내로 설정해주세요.\n");
         }
-        if(profilePhotoName != null && !filePattern.matcher(profilePhotoName).find()){
+        if (profilePhotoName != null && !filePattern.matcher(profilePhotoName).find()) {
             isNotValid = true;
             sb.append("올바른 파일 형식이 아닙니다. : 프로필 파일을 다시 전송해주세요. : jpg|jpeg|png|bmp|gif 지원\n");
         }
 
-        if(isNotValid){
+        if (isNotValid) {
             throw new IllegalUserDataException(sb.toString());
+        }
+    }
+
+    public static void checkNotNull(MemberDto memberDto) {
+        if (memberDto.getName() == null) {
+            throw new IllegalUserDataException("이름을 입력하세요");
+        }
+        if (memberDto.getEmail() == null){
+            throw new IllegalUserDataException("이메일을 입력하세요");
+        }
+        if (memberDto.getPassword() == null){
+            throw new IllegalUserDataException("비밀번호를 입력하세요");
+        }
+        if (memberDto.getNickname() == null) {
+            throw new IllegalUserDataException("닉네임을 입력하세요");
+        }
+        if (memberDto.getProfilePhotoName() == null){
+            throw new IllegalUserDataException("프로필 사진을 입력하세요");
+        }
+        if (memberDto.getPhoneNumber() == null){
+            throw new IllegalUserDataException("전화번호를 입력하세요");
+        }
+        if (memberDto.getMemberType() == null){
+            throw new IllegalUserDataException("멤버 타입을 입력하세요");
         }
     }
 }

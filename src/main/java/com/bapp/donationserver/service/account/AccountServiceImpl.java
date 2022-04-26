@@ -51,7 +51,7 @@ public class AccountServiceImpl implements AccountService {
         Wallet wallet = walletRepository.createWallet();
 
         //회원 생성
-        Member newMember = new Member(data.getEmail(), wallet);
+        Member newMember = new Member(data.getEmail(), wallet, data.getMemberType());
         newMember.setDto(data);
         memberRepository.save(newMember);
     }
