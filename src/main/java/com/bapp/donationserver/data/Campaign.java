@@ -26,6 +26,8 @@ public class Campaign {
     private String campaignName;
     @Column(name = "CHARITY")
     private String charityName;
+    @Column(name = "DESCRIPTION")
+    private String description;
     @Column(name = "DEADLINE")
     private LocalDate deadline;
     @Column(name = "GOAL_AMOUNT")
@@ -56,6 +58,7 @@ public class Campaign {
         dto.setSubject(campaignName);
         dto.setCharityName(charityName);
         dto.setDeadline(deadline);
+        dto.setDescription(description);
         dto.setCurrentAmount(wallet.getAmount());
         dto.setGoalAmount(goalAmount);
         dto.setCoverImagePath(coverImagePath);
@@ -70,6 +73,7 @@ public class Campaign {
         dto.setCampaignName(campaignName);
         dto.setCharityName(charityName);
         dto.setDeadline(deadline);
+        dto.setDescription(description);
         dto.setCurrentAmount(wallet.getAmount());
         dto.setGoalAmount(goalAmount);
         dto.setCoverImagePath(coverImagePath);
@@ -89,5 +93,6 @@ public class Campaign {
         setCoverImagePath(dto.getCoverImagePath());
         setDetailImagePath(dto.getDetailImagePath());
         setReviewImagePath(dto.getReviewImagePath());
+        setDescription(dto.getDescription());
     }
 }

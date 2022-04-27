@@ -19,5 +19,5 @@ public class CampaignSimpleDto {
     private Long currentAmount;
     private Long goalAmount;
     private String coverImagePath;
-
+    private String description;
 }

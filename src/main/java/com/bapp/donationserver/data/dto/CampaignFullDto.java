@@ -11,6 +11,7 @@ public class CampaignFullDto {
     private String campaignName;
     private String charityName;
     private LocalDate deadline;
+    private String description;
     private Long currentAmount;
     private Long goalAmount;
     private List<String> categories = new ArrayList<>();
