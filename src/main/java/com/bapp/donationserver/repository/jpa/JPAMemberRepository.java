@@ -1,5 +1,6 @@
 package com.bapp.donationserver.repository.jpa;
 
+import com.bapp.donationserver.data.Campaign;
 import com.bapp.donationserver.data.DonatedCampaign;
 import com.bapp.donationserver.data.Member;
 import com.bapp.donationserver.repository.MemberRepository;
@@ -16,7 +17,7 @@ import java.util.List;
 @Slf4j
 @Primary
 @RequiredArgsConstructor
-public class JPAMemberRepositoryImpl implements MemberRepository {
+public class JPAMemberRepository implements MemberRepository {
 
     @PersistenceContext
     private final EntityManager em;
@@ -29,8 +30,13 @@ public class JPAMemberRepositoryImpl implements MemberRepository {
 
     @Override
     public void update(Member member) {
-        log.info("멤버 정보 수정 ={}",member);
+        log.info("멤버 정보 수정 ={}", member);
         em.merge(member);
+    }
+
+    @Override
+    public void addDonatedCampaign(DonatedCampaign donatedCampaign) {
+        em.merge(donatedCampaign);
     }
 
     @Override
@@ -51,8 +57,12 @@ public class JPAMemberRepositoryImpl implements MemberRepository {
 
     @Override
     public List<DonatedCampaign> getMyDonationList(Member member) {
-        em.persist(member);//수정이 필요해 보임
-        return member.getDonatedCampaigns();
+
+        String query = "select d from DonatedCampaign d join fetch d.campaign where d.member = :member_email";
+
+        return em.createQuery(query, DonatedCampaign.class)
+                .setParameter("member_email", member)
+                .getResultList();
     }
 
 }

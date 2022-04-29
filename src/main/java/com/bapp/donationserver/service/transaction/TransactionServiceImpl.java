@@ -12,7 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,7 +37,7 @@ public class TransactionServiceImpl implements TransactionService {
         transaction.setFromBalance(-1L);
         transaction.setToBalance(wallet.getAmount());
         transaction.setType(TransactionType.PAY);
-        transaction.setDate(LocalDate.now());
+        transaction.setDate(LocalDateTime.now());
         transaction.setDetail(null);
 
         transactionRepository.save(BlockChainConst.OWNER_PRIVATE_KEY, transaction, null);
@@ -58,7 +58,7 @@ public class TransactionServiceImpl implements TransactionService {
         transaction.setToBalance(-1L);
         transaction.setFromBalance(wallet.getAmount());
         transaction.setType(TransactionType.PAYBACK);
-        transaction.setDate(LocalDate.now());
+        transaction.setDate(LocalDateTime.now());
         transaction.setDetail(null);
 
         transactionRepository.save(wallet.getPrivateKey(), transaction, null);
@@ -69,14 +69,22 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Transactional(readOnly = true)
     @Override
-    public List<TransactionDto> getDonationHistory(Long campaignId) {
-        List<TransactionDto> dtoList = new ArrayList<>();
-        transactionRepository.findByCampaignId(campaignId).forEach(transaction -> dtoList.add(transaction.getDto()));
+    public List<TransactionDetailDto> getTransactionHistory(Long campaignId) {
+        List<TransactionDetailDto> dtoList = new ArrayList<>();
+        transactionRepository.findByCampaignId(campaignId).forEach(transaction -> dtoList.add(transaction.getDetailDto()));
         return dtoList;
     }
 
     @Override
-    public void withdraw(Campaign campaign, Member member, TransactionDto dto) {
+    public List<TransactionDto> getTransactionHistory(Wallet wallet) {
+        List<TransactionDto> dtoList = new ArrayList<>();
+
+        transactionRepository.findByWalletId(wallet.getId()).forEach(transaction -> dtoList.add(transaction.getDto()));
+        return dtoList;
+    }
+
+    @Override
+    public void withdraw(Campaign campaign, Member member, TransactionDetailDto dto) {
 
         //인출 가능한 금액인지 확인
         Wallet from = campaign.getWallet();

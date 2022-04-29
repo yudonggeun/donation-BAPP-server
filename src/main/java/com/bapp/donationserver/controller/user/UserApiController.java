@@ -2,9 +2,11 @@ package com.bapp.donationserver.controller.user;
 
 import com.bapp.donationserver.data.Campaign;
 import com.bapp.donationserver.data.Member;
+import com.bapp.donationserver.data.Transaction;
 import com.bapp.donationserver.data.dto.CampaignSimpleDto;
 import com.bapp.donationserver.data.dto.MemberDto;
 import com.bapp.donationserver.data.consts.SessionConst;
+import com.bapp.donationserver.data.dto.TransactionDto;
 import com.bapp.donationserver.data.status.Status;
 import com.bapp.donationserver.service.account.AccountService;
 import com.bapp.donationserver.service.transaction.TransactionService;
@@ -47,6 +49,10 @@ public class UserApiController {
         return Status.successStatus();
     }
 
+    @GetMapping("/tx")
+    public List<TransactionDto> getTransactions(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member member){
+        return transactionService.getTransactionHistory(member.getWallet());
+    }
     /**
      * 회원 탈퇴
      */
@@ -128,7 +134,8 @@ public class UserApiController {
             return Status.failStatus("기부 최소 금액은 100원 입니다.");
         }
 
-        transactionService.donate(member, campaign, amount);
+        transactionService.donate(member, campaign, amount);//기부 성공시 DonatedCampaign 도메인 데이터 추가
+        accountService.addDonatedCampaign(member, campaign);
 
         return Status.successStatus();
     }

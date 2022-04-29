@@ -12,4 +12,5 @@ public interface TransactionRepository {
 
     List<Transaction> findByCampaignId(Long campaignId);
 
+    List<Transaction> findByWalletId(String walletId);
 }

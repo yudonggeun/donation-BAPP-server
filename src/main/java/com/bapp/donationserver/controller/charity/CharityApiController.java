@@ -2,6 +2,8 @@ package com.bapp.donationserver.controller.charity;
 
 import com.bapp.donationserver.data.Campaign;
 import com.bapp.donationserver.data.Member;
+import com.bapp.donationserver.data.consts.CampaignConst;
+import com.bapp.donationserver.data.dto.TransactionDetailDto;
 import com.bapp.donationserver.data.status.Status;
 import com.bapp.donationserver.data.consts.SessionConst;
 import com.bapp.donationserver.data.dto.CampaignFullDto;
@@ -11,6 +13,7 @@ import com.bapp.donationserver.service.transaction.TransactionService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 @RequestMapping("/api/charity")
 @Slf4j
@@ -28,6 +31,18 @@ public class CharityApiController {
     @PostMapping
     public Object registerCampaign(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member member,
                                    @RequestBody CampaignFullDto dto) {
+
+        String address = ServletUriComponentsBuilder.fromCurrentContextPath().toUriString();
+
+        if (dto.getCoverImagePath() == null) {
+            dto.setCoverImagePath(address + CampaignConst.DEFAULT_IMAGE);
+        }
+        if (dto.getDetailImagePath() == null) {
+            dto.setDetailImagePath(address + CampaignConst.DEFAULT_IMAGE);
+        }
+        if (dto.getReviewImagePath() == null) {
+            dto.setReviewImagePath(address + CampaignConst.DEFAULT_IMAGE);
+        }
 
         log.info("CampaignFullDto={}", dto);
 
@@ -54,7 +69,7 @@ public class CharityApiController {
     @PostMapping("/withdraw/{campaignId}")
     public Object withdrawFromCampaign(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member member,
                                        @PathVariable Long campaignId,
-                                       @RequestBody TransactionDto dto) {
+                                       @RequestBody TransactionDetailDto dto) {
         Campaign campaign = campaignService.getDetailsOfCampaign(campaignId);
         transactionService.withdraw(campaign, member, dto);
         return Status.successStatus();

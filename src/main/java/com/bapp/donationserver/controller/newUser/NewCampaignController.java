@@ -53,7 +53,7 @@ public class NewCampaignController {
      * 존재하지 않은 켐페인 id로 조회시 빈 배열을 반환한다.
      */
     @GetMapping("/history")
-    public List<TransactionDto> getCampaignHistory(@RequestParam Long campaignId) {
-        return transactionService.getDonationHistory(campaignId);
+    public List<TransactionDetailDto> getCampaignHistory(@RequestParam Long campaignId) {
+        return transactionService.getTransactionHistory(campaignId);
     }
 }

@@ -1,13 +1,13 @@
 package com.bapp.donationserver.data;
 
+import com.bapp.donationserver.data.dto.TransactionDetailDto;
 import com.bapp.donationserver.data.dto.TransactionDto;
 import com.bapp.donationserver.data.type.TransactionType;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 
 import javax.persistence.*;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 /**
  * 기부금 사용 내역 관련 정보 클래스
@@ -30,7 +30,7 @@ public class Transaction {
     @Column(name = "AMOUNT")
     private Long amount;//거래 금액
     @Column(name = "DATE")
-    private LocalDate date;//거래 시간
+    private LocalDateTime date;//거래 시간
     @Enumerated(EnumType.STRING)
     @Column(name = "TYPE")
     private TransactionType type;
@@ -46,31 +46,36 @@ public class Transaction {
         this.fromBalance = from.getAmount();
         this.toBalance = to.getAmount();
         this.amount = amount;
-        this.date = LocalDate.now();
+        this.date = LocalDateTime.now();
         this.type = type;
         this.detail = detail;
     }
 
-    public TransactionDto getDto() {
-        TransactionDto dto = new TransactionDto();
+    public TransactionDetailDto getDetailDto() {
+        TransactionDetailDto dto = new TransactionDetailDto();
         dto.setSender(getDetail().getSender());
         dto.setReceiver(getDetail().getReceiver());
         dto.setAmount(getAmount());
-        dto.setBalance(getToBalance());
-        dto.setDate(getDate());
+        dto.setBalance(getFromBalance());
+        dto.setDate(LocalDateTime.from(getDate()));
         dto.setType(getType());
         dto.setPurpose(getDetail().getPurpose());
 
         return dto;
     }
 
-    public void setDto(TransactionDto dto) {
-        getDetail().setSender(dto.getSender());
-        getDetail().setReceiver(dto.getReceiver());
-        getDetail().setPurpose(dto.getPurpose());
-        setAmount(dto.getAmount());
-        setToBalance(dto.getBalance());
-        setType(dto.getType());
+    public TransactionDto getDto() {
+        TransactionDto dto = new TransactionDto();
 
+        dto.setId(id);
+        dto.setFrom(from);
+        dto.setTo(to);
+        dto.setFromBalance(fromBalance);
+        dto.setToBalance(toBalance);
+        dto.setAmount(amount);
+        dto.setDate(date);
+        dto.setType(type);
+
+        return dto;
     }
 }

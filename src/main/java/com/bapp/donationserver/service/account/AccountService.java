@@ -1,5 +1,6 @@
 package com.bapp.donationserver.service.account;
 
+import com.bapp.donationserver.data.Campaign;
 import com.bapp.donationserver.data.Member;
 import com.bapp.donationserver.data.dto.CampaignSimpleDto;
 import com.bapp.donationserver.data.dto.MemberDto;
@@ -12,6 +13,8 @@ public interface AccountService {
     Member getMember(String email);
     //개인 정보 수정
     void updateMember(Member member, MemberDto updateData);
+    //기부 내역 추가
+    void addDonatedCampaign(Member member, Campaign campaign);
     //자신의 기부 내역 조회
     List<CampaignSimpleDto> checkMyDonationList(Member member);
     //회원 가입

@@ -8,7 +8,6 @@ import com.bapp.donationserver.data.*;
 import com.bapp.donationserver.data.dto.MemberDto;
 import com.bapp.donationserver.service.account.AccountService;
 import com.bapp.donationserver.service.campaign.CampaignService;
-import com.bapp.donationserver.service.transaction.TransactionService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -16,7 +15,6 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor

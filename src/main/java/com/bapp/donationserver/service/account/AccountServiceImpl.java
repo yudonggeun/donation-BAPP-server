@@ -1,5 +1,7 @@
 package com.bapp.donationserver.service.account;
 
+import com.bapp.donationserver.data.Campaign;
+import com.bapp.donationserver.data.DonatedCampaign;
 import com.bapp.donationserver.data.Member;
 import com.bapp.donationserver.data.Wallet;
 import com.bapp.donationserver.data.dto.CampaignSimpleDto;
@@ -37,10 +39,18 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
+    public void addDonatedCampaign(Member member, Campaign campaign) {
+        DonatedCampaign info = new DonatedCampaign();
+        info.setMember(member);
+        info.setCampaign(campaign);
+        memberRepository.addDonatedCampaign(info);
+    }
+
+    @Override
     public List<CampaignSimpleDto> checkMyDonationList(Member member) {
         List<CampaignSimpleDto> donationList = new ArrayList<>();
         memberRepository.getMyDonationList(member)
-                .forEach(campaignInfo -> donationList.add(campaignInfo.getCampaign().getCampaignSimpleDto()));
+                .forEach(donatedCampaign -> donationList.add(donatedCampaign.getCampaign().getCampaignSimpleDto()));
         return donationList;
     }
 

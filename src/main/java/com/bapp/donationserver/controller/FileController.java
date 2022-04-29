@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.*;
@@ -24,8 +25,8 @@ public class FileController {
 
     private final FileService fileService;
 
-    @GetMapping("/download/{fileName}")
-    public ResponseEntity<?> downloadFile(@PathVariable String fileName, HttpServletRequest request)
+    @GetMapping("/download")
+    public ResponseEntity<?> downloadFile(@RequestParam String fileName, HttpServletRequest request)
             throws MalformedURLException, FileNotFoundException {
 
         Resource resource = fileService.loadFile(fileName);
@@ -56,14 +57,14 @@ public class FileController {
 
         String fileName = fileService.saveFile(file);
 
-        String downloadURI = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path("/download/")
-                .path(fileName)
-                .toUriString();
+        StringBuilder sb = new StringBuilder();
+        sb.append(ServletUriComponentsBuilder.fromCurrentContextPath().toUriString());
+        sb.append("/download?fileName=");
+        sb.append(fileName);
 
-        log.info("path : {}", downloadURI);
         log.info("파일 이름 : {}", file.getOriginalFilename());
+        log.info(sb.toString());
 
-        return new ResponseEntity<>(downloadURI, HttpStatus.OK);
+        return sb.toString();
     }
 }

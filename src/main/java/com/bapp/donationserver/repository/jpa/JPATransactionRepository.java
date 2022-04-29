@@ -52,6 +52,15 @@ public class JPATransactionRepository implements TransactionRepository {
         return em.createQuery(query, Transaction.class)
                 .setParameter("campaignId", campaignId)
                 .getResultList();
-//        return em.find(Campaign.class, campaignId).getWallet().getTransactions();
+    }
+
+    @Override
+    public List<Transaction> findByWalletId(String walletId){
+
+        String query = "select t from Transaction t where t.from = :walletId or t.to = :walletId";
+
+        return em.createQuery(query, Transaction.class)
+                .setParameter("walletId", walletId)
+                .getResultList();
     }
 }
