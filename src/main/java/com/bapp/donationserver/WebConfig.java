@@ -18,7 +18,7 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addInterceptor(new LoginInterceptor())
                 .order(1)
                 .addPathPatterns("/**")
-                .excludePathPatterns("/api/new/**", "/error");
+                .excludePathPatterns("/api/new/**", "/error", "/download", "/upload");
         /**
          * 관리자 권한을 가지고 있는 유저만이 사용가능한 api 권한 검증
          */
