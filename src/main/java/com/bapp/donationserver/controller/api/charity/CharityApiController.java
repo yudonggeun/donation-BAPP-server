@@ -1,4 +1,4 @@
-package com.bapp.donationserver.controller.charity;
+package com.bapp.donationserver.controller.api.charity;
 
 import com.bapp.donationserver.data.Campaign;
 import com.bapp.donationserver.data.Member;

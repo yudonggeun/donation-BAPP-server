@@ -1,4 +1,4 @@
-package com.bapp.donationserver.controller.newUser;
+package com.bapp.donationserver.controller.api.newUser;
 
 import com.bapp.donationserver.data.Campaign;
 import com.bapp.donationserver.data.Member;
@@ -18,7 +18,7 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-public class NewCampaignController {
+public class NewCampaignApiController {
 
     private final CampaignService campaignService;
     private final TransactionService transactionService;

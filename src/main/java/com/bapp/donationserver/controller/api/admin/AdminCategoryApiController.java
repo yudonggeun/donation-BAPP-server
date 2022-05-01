@@ -1,4 +1,4 @@
-package com.bapp.donationserver.controller.admin;
+package com.bapp.donationserver.controller.api.admin;
 
 import com.bapp.donationserver.data.Member;
 import com.bapp.donationserver.data.status.Status;

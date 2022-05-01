@@ -1,4 +1,4 @@
-package com.bapp.donationserver.controller.newUser;
+package com.bapp.donationserver.controller.api.newUser;
 
 import com.bapp.donationserver.data.Member;
 import com.bapp.donationserver.data.consts.SessionConst;
@@ -9,39 +9,31 @@ import com.bapp.donationserver.data.type.MemberType;
 import com.bapp.donationserver.service.account.AccountService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-@RequestMapping("/new")
+@RequestMapping("/api/new")
 @Slf4j
-@Controller
+@RestController
 @RequiredArgsConstructor
-public class NewAccountController {
+public class NewAccountApiController {
 
     private final AccountService memberService;
-
-    @GetMapping
-    public String loginFormPage(){
-        return "login.html";
-    }
     /**
      * 클라이언트 전송 : 이메일, 패스워드
      * 서버 응답 : 세션 아이디, fail
      */
     @PostMapping("/login")
-    public void login(@ModelAttribute LoginDto loginForm, HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public Object login(@RequestBody LoginDto loginForm, HttpServletRequest request) throws Exception {
 
         //로직 실행
         Member member = memberService.login(loginForm.getEmail(), loginForm.getPassword());
 
         HttpSession session = request.getSession();
         session.setAttribute(SessionConst.LOGIN_MEMBER, member);
-
-        response.sendRedirect("/");
+        return Status.successStatus();
     }
 
     /**

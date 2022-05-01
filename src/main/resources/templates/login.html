@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Login</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+            crossorigin="anonymous"></script>
+</head>
+<body>
+<h1>Login</h1>
+<form method="post" id="authForm" action="/new/login">
+    <div>
+        <p>
+            <label for="loginId">아이디</label>
+            <input type="email" id="loginId" name="email" placeholder="ID">
+        </p>
+        <p>
+            <label for="loginPw">비밀번호</label>
+            <input type="password" id="loginPw" name="password" placeholder="Password">
+        </p>
+    </div>
+    <button type="submit">로그인</button>
+    <div>
+        <input type="checkbox" id="keepLogin" name="keepLogin">
+        <label for="keepLogin"><span>로그인 상태 유지</span></label>
+    </div>
+</form>
+</body>
+</html>

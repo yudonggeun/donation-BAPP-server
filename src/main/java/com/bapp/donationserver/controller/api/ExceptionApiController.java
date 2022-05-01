@@ -1,4 +1,4 @@
-package com.bapp.donationserver.controller;
+package com.bapp.donationserver.controller.api;
 
 import com.bapp.donationserver.data.status.Status;
 import com.bapp.donationserver.exception.IllegalUserDataException;
@@ -12,7 +12,7 @@ import javax.persistence.NoResultException;
 
 @Slf4j
 @RestControllerAdvice
-public class ApiExceptionController {
+public class ExceptionApiController {
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(IllegalUserDataException.class)
