@@ -10,7 +10,7 @@ public interface CategoryService {
     //카테고리 등록
     void registerCategory(CategoryDto categoryDto);
     //카테고리 수정
-    void modifyCategory(String categoryName, CategoryDto categoryDto);
+    void modifyCategory(String before, CategoryDto after);
     //카테고리 삭제
     void deleteCategory(String categoryName);
 }

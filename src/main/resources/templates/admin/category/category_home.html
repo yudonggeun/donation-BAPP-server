@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>카테고리 관리 페이지</title>
+</head>
+<body>
+<table id="categoryTable">
+    <thead>
+    <tr>
+        <th>Name</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="category : ${categories}">
+        <td th:text="${category.name}">name</td>
+        <td>
+            <form action="/"
+                  th:action="@{/admin/category/delete/{category}(category=${category.name})}" method="post">
+                <input type="hidden" name="_method" value="delete">
+                <button type="submit">삭제</button>
+            </form>
+        </td>
+        <td>
+            <button onclick="location.href='/'"
+                    th:onclick="|location.href='@{/admin/category/{category}(category=${category.name})}'|">수정
+            </button>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<button onclick="location.href='/'"
+        th:onclick="|location.href='@{/admin/category/add}'|">등록
+</button>
+</body>
+</html>

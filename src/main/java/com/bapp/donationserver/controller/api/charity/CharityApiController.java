@@ -62,6 +62,11 @@ public class CharityApiController {
         return Status.successStatus();
     }
 
+    @DeleteMapping("/{campaignId}")
+    public Object deleteCampaign(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member member,
+                                 @PathVariable String campaignId){
+        return Status.successStatus();
+    }
     /**
      * 클라이언트 전송 : 출금 금액
      * 서버 응답 : success fail

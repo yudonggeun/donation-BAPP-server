@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>카테고리 수정</title>
+</head>
+<body>
+<form method="post"
+      action="/admin"
+      th:object="${category}"
+      th:action="@{/admin/category/{category}(category=${category.name})}">
+    <div>
+        <label for="name">수정할 이름</label>
+        <input type="text" id="name" th:field="*{name}">
+    </div>
+
+    <div>
+        <button type="submit">수정 완료</button>
+    </div>
+</form>
+</body>
+</html>
