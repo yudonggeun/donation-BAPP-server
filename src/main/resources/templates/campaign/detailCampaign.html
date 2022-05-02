@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>켐페인 상세</title>
+</head>
+<body>
+<form th:object="${campaign}">
+    <div>
+        <div>
+            <p><label for="campaignName">campaignName</label>
+                <input type="text" id="campaignName" th:field="*{campaignName}" class="form-control"
+                       th:errorclass="field-error"></p>
+            <p><label for="charityName">charityName</label>
+                <input type="text" id="charityName" th:field="*{charityName}" class="form-control"
+                       th:errorclass="field-error"></p>
+            <p><label for="deadline">deadline</label>
+                <input type="text" id="deadline" th:field="*{deadline}" class="form-control"
+                       th:errorclass="field-error"></p>
+            <p><label for="description">description</label>
+                <input type="text" id="description" th:field="*{description}" class="form-control"
+                       th:errorclass="field-error"></p>
+            <p><label for="currentAmount">currentAmount</label>
+                <input type="text" id="currentAmount" th:field="*{currentAmount}" class="form-control"
+                       th:errorclass="field-error"></p>
+            <p><label for="goalAmount">goalAmount</label>
+                <input type="text" id="goalAmount" th:field="*{goalAmount}" class="form-control"
+                       th:errorclass="field-error"></p>
+            <p><label for="coverImagePath">coverImagePath</label>
+                <input type="text" id="coverImagePath" th:field="*{coverImagePath}" class="form-control"
+                       th:errorclass="field-error"></p>
+            <p><label for="detailImagePath">detailImagePath</label>
+                <input type="text" id="detailImagePath" th:field="*{detailImagePath}" class="form-control"
+                       th:errorclass="field-error"></p>
+            <p><label for="reviewImagePath">reviewImagePath</label>
+                <input type="text" id="reviewImagePath" th:field="*{reviewImagePath}" class="form-control"
+                       th:errorclass="field-error"></p>
+        </div>
+    </div>
+</form>
+<form
+    method="get"
+    action="#"
+    th:action="@{/admin/limit/{id}(id = ${campaign.campaignId})}">
+    <label for="isAccept">승인</label>
+    <input id="isAccept" name="isAccept" type="radio" value="true" checked>
+    <label for="isNotAccept">거부</label>
+    <input id="isNotAccept" name="isAccept" type="radio" value="false">
+    <button type="submit">
+        승인 여부 변경
+    </button>
+
+</form>
+</body>
+</html>

@@ -69,6 +69,7 @@ public class Campaign {
 
         CampaignFullDto dto = new CampaignFullDto();
 
+        dto.setCampaignId(id);
         dto.setCampaignName(campaignName);
         dto.setCharityName(charityName);
         dto.setDeadline(deadline);

@@ -14,6 +14,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
 
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.ConcurrentSkipListMap;
+
 @RequestMapping("/admin")
 @Slf4j
 @Controller
@@ -31,10 +35,16 @@ public class AdminController {
     @GetMapping("/limit/{campaignId}")
     public String  changeLimitCampaign(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member member,
                                       @PathVariable Long campaignId,
-                                      @RequestParam("accept") Boolean isAccept){
+                                      @RequestParam Boolean isAccept, Model model){
+        Map<String, Object> stringObjectMap = model.asMap();
+        Set<String> strings = stringObjectMap.keySet();
+        for (String string : strings) {
+            Object value = stringObjectMap.get(string);
+            log.info("name = {}, value={}", string, value);
+        }
 
         campaignService.acceptCampaign(campaignId, isAccept);
-        return "admin/admin_home.html";
+        return "/new/campaign";
     }
 
     @GetMapping("/category")

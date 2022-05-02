@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>켐페인 리스트 페이지</title>
+</head>
+<body>
+<table id="campaignTable">
+    <thead>
+    <tr>
+        <th>campaignId</th>
+        <th>subject</th>
+        <th>charityName</th>
+        <th>Name</th>
+        <th>deadline</th>
+        <th>currentAmount</th>
+        <th>coverImagePath</th>
+        <th>description</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="campaign : ${campaignList}">
+        <td th:text="${campaign.campaignId}">campaignId</td>
+        <td th:text="${campaign.subject}">subject</td>
+        <td th:text="${campaign.charityName}">charityName</td>
+        <td th:text="${campaign.deadline}">deadline</td>
+        <td th:text="${campaign.currentAmount}">currentAmount</td>
+        <td th:text="${campaign.goalAmount}">goalAmount</td>
+        <td th:text="${campaign.coverImagePath}">coverImagePath</td>
+        <td th:text="${campaign.description}">description</td>
+        <td>
+            <form action="/"
+                  th:action="@{/new/campaign/{id}(id=${campaign.campaignId})}"
+                  method="get">
+                <button type="submit">상세 보기</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

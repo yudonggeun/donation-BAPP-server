@@ -16,8 +16,8 @@
         <td th:text="${category.name}">name</td>
         <td>
             <form action="/"
-                  th:action="@{/admin/category/delete/{category}(category=${category.name})}" method="post">
-                <input type="hidden" name="_method" value="delete">
+                  th:action="@{/admin/category/delete/{category}(category=${category.name})}"
+                  method="post">
                 <button type="submit">삭제</button>
             </form>
         </td>
