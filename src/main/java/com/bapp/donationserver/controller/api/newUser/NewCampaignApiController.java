@@ -32,7 +32,7 @@ public class NewCampaignApiController {
     public List<CampaignSimpleDto> userSearchCampaign(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member member,
                                                       @RequestBody CampaignSearchConditionDto searchCondition) {
 
-        MemberType type = (member != null ? member.getMemberType() : MemberType.USER); // 회원이 아니라면 일반 유저 권한 부여 검색
+        MemberType type = (member != null ? member.getMemberType() : MemberType.USER);// 회원이 아니 라면 일반 유저 권한 부여 검색
 
         return campaignService.checkCampaignList(searchCondition, type);
     }

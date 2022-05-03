@@ -30,19 +30,21 @@ public class TransactionServiceImpl implements TransactionService {
 
         Wallet wallet = member.getWallet();
 
+        Long afterAmount = wallet.getAmount() + amount;
+
         Transaction transaction = new Transaction();
         transaction.setAmount(amount);
         transaction.setFrom(BlockChainConst.OWNER_ADDRESS);
         transaction.setTo(wallet.getId());
         transaction.setFromBalance(-1L);
-        transaction.setToBalance(wallet.getAmount());
+        transaction.setToBalance(afterAmount);
         transaction.setType(TransactionType.PAY);
         transaction.setDate(LocalDateTime.now());
         transaction.setDetail(null);
 
         transactionRepository.save(BlockChainConst.OWNER_PRIVATE_KEY, transaction, null);
 
-        wallet.setAmount(wallet.getAmount() + amount);
+        wallet.setAmount(afterAmount);
         walletRepository.update(wallet);
     }
 
@@ -50,6 +52,8 @@ public class TransactionServiceImpl implements TransactionService {
     public void payback(Member member, Long amount) {
 
         Wallet wallet = member.getWallet();
+
+        Long afterAmount = wallet.getAmount() + amount;
 
         Transaction transaction = new Transaction();
         transaction.setAmount(amount);
@@ -63,7 +67,7 @@ public class TransactionServiceImpl implements TransactionService {
 
         transactionRepository.save(wallet.getPrivateKey(), transaction, null);
 
-        wallet.setAmount(wallet.getAmount() - amount);
+        wallet.setAmount(afterAmount);
         walletRepository.update(wallet);
     }
 
@@ -97,29 +101,34 @@ public class TransactionServiceImpl implements TransactionService {
         if (from.getAmount() < dto.getAmount()) {
             throw new IllegalArgumentException("인출 금액이 너무 큽니다.");
         }
+        //인출 계산
+        Long fromAfterAmount = from.getAmount() - dto.getAmount();
+        Long toAfterAmount = to.getAmount() + dto.getAmount();
 
         //인출 : 거래 내역 등록, 켐패인 갱신
         TransactionDetail detail = new TransactionDetail();
-        Transaction transaction = new Transaction(
-                from,
-                to,
-                dto.getAmount(),
-                TransactionType.WITHDRAW,
-                detail
-        );
-        detail.setTransaction(transaction);
+
+        detail.setTransaction(new Transaction());
         detail.setSender(dto.getSender());
         detail.setReceiver(dto.getReceiver());
         detail.setPurpose(dto.getPurpose());
 
+        Transaction transaction = detail.getTransaction();
+        transaction.setAmount(dto.getAmount());
+        transaction.setTo(to.getId());
+        transaction.setFrom(from.getId());
+        transaction.setToBalance(toAfterAmount);
+        transaction.setFromBalance(fromAfterAmount);
+        transaction.setType(TransactionType.WITHDRAW);
+        transaction.setDate(LocalDateTime.now());
+        transaction.setDetail(detail);
+
         //block chain 저장
         transactionRepository.save(from.getPrivateKey(), transaction, detail);
 
-        //인출 계산
-        from.setAmount(from.getAmount() - dto.getAmount());
-        to.setAmount(to.getAmount() + dto.getAmount());
-
-        //db 저장
+        //변경 사항 적용 후 db 저장
+        from.setAmount(fromAfterAmount);
+        to.setAmount(toAfterAmount);
         walletRepository.update(to);
         walletRepository.update(from);
     }
@@ -127,31 +136,34 @@ public class TransactionServiceImpl implements TransactionService {
     @Override
     public void donate(Member member, Campaign campaign, Long amount) {
 
-        Wallet memberWallet = member.getWallet();
-        Wallet campaignWallet = campaign.getWallet();
+        Wallet from = member.getWallet();
+        Wallet to = campaign.getWallet();
 
         //겁증
-        if(memberWallet.getAmount() < amount)
+        if(from.getAmount() < amount)
             throw new IllegalUserDataException("포인트가 적습니다. 충전해주세요");
 
+        //인출 계산
+        Long fromAfterAmount = from.getAmount() - amount;
+        Long toAfterAmount = to.getAmount() + amount;
 
         //거래 내역 생성
-        Transaction transaction = new Transaction(
-                memberWallet,
-                campaignWallet,
-                amount,
-                TransactionType.DONATION,
-                null
-        );
+        Transaction transaction = new Transaction();
+        transaction.setAmount(amount);
+        transaction.setTo(to.getId());
+        transaction.setFrom(from.getId());
+        transaction.setToBalance(toAfterAmount);
+        transaction.setFromBalance(fromAfterAmount);
+        transaction.setType(TransactionType.DONATION);
+        transaction.setDate(LocalDateTime.now());
 
         //block chain 저장
-        transactionRepository.save(memberWallet.getPrivateKey(), transaction, null);
+        transactionRepository.save(from.getPrivateKey(), transaction, null);
 
-        //인출 계산
-        memberWallet.setAmount(memberWallet.getAmount() - amount);
-        campaignWallet.setAmount(campaignWallet.getAmount() + amount);
-        //db 저장
-        walletRepository.update(campaignWallet);
-        walletRepository.update(memberWallet);
+        //변경 사항 적용 후 db 저장
+        from.setAmount(fromAfterAmount);
+        to.setAmount(toAfterAmount);
+        walletRepository.update(from);
+        walletRepository.update(to);
     }
 }

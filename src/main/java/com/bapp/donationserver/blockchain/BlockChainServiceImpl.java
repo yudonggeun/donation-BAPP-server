@@ -75,10 +75,10 @@ public class BlockChainServiceImpl implements BlockChainService {
                             BigInteger.valueOf(amount)
                     ), sendOptions);
 
-            log.info("txHash = {}", receipt.getSenderTxHash());
+            log.info("transaction hash = {}", receipt.getTransactionHash());
             log.info("transaction status {}", receipt.getStatus());
 
-            return receipt.getSenderTxHash();
+            return receipt.getTransactionHash();
         } catch (IOException | TransactionException | ClassNotFoundException | NoSuchMethodException | InvocationTargetException | InstantiationException | IllegalAccessException e) {
             throw new BlockChainException(e.getMessage());
         }
