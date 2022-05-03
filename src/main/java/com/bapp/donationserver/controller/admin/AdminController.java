@@ -33,7 +33,7 @@ public class AdminController {
     }
 
     @GetMapping("/limit/{campaignId}")
-    public String  changeLimitCampaign(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member member,
+    public RedirectView changeLimitCampaign(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member member,
                                       @PathVariable Long campaignId,
                                       @RequestParam Boolean isAccept, Model model){
         Map<String, Object> stringObjectMap = model.asMap();
@@ -44,7 +44,7 @@ public class AdminController {
         }
 
         campaignService.acceptCampaign(campaignId, isAccept);
-        return "/new/campaign";
+        return new RedirectView("/new/campaign");
     }
 
     @GetMapping("/category")

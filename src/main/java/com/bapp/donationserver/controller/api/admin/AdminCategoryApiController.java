@@ -10,20 +10,13 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RequestMapping("/api/admin/category")
 @Slf4j
 @RestController
 @RequiredArgsConstructor
 public class AdminCategoryApiController {
 
-    private final CategoryService adminService;
-
-    @GetMapping
-    public List<CategoryDto> getCategoryList(){
-        return adminService.getCategoryList();
-    }
+    private final CategoryService categoryService;
 
     @PostMapping
     public Object registerCategory(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member member,
@@ -33,7 +26,7 @@ public class AdminCategoryApiController {
             return Status.failStatus("API 요청이 처리되지 않았습니다.");
         }
 
-        adminService.registerCategory(categoryDto);
+        categoryService.registerCategory(categoryDto);
         return Status.successStatus();
     }
 
@@ -45,7 +38,7 @@ public class AdminCategoryApiController {
             return Status.failStatus("API 요청이 처리되지 않았습니다.");
         }
 
-        adminService.modifyCategory(categoryName, categoryDto);
+        categoryService.modifyCategory(categoryName, categoryDto);
         return Status.successStatus();
     }
 
@@ -57,7 +50,7 @@ public class AdminCategoryApiController {
             return Status.failStatus("API 요청이 처리되지 않았습니다.");
         }
 
-        adminService.deleteCategory(categoryName);
+        categoryService.deleteCategory(categoryName);
         return Status.successStatus();
     }
 

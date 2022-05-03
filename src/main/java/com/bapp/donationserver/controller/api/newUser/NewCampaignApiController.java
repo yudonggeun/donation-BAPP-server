@@ -6,6 +6,7 @@ import com.bapp.donationserver.data.consts.SessionConst;
 import com.bapp.donationserver.data.dto.*;
 import com.bapp.donationserver.data.type.MemberType;
 import com.bapp.donationserver.service.campaign.CampaignService;
+import com.bapp.donationserver.service.category.CategoryService;
 import com.bapp.donationserver.service.transaction.TransactionService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,6 +23,8 @@ public class NewCampaignApiController {
 
     private final CampaignService campaignService;
     private final TransactionService transactionService;
+    private final CategoryService categoryService;
+
     /**
      * 검색 조건 : 페이지 정보, 단채명, 제목, 카테고리 중복, 관심
      */
@@ -46,7 +49,6 @@ public class NewCampaignApiController {
         return campaign.getCampaignFullDto();
     }
 
-
     /**
      * 기부 내역(거래 내역) : 사용처, 출금(환전)액, 거래 내용, 출금 시간
      * 기부 내역 배열 전송
@@ -55,5 +57,10 @@ public class NewCampaignApiController {
     @GetMapping("/history")
     public List<TransactionDetailDto> getCampaignHistory(@RequestParam Long campaignId) {
         return transactionService.getTransactionHistory(campaignId);
+    }
+
+    @GetMapping("/category")
+    public List<CategoryDto> getCategoryList(){
+        return categoryService.getCategoryList();
     }
 }
