@@ -49,7 +49,7 @@ public class FileService {
         String type = fileName.substring(index);
 
         //랜덤한 파일 이름 생성
-        fileName = StringUtils.concat("(", LocalDate.now(), ") ", UUID.randomUUID(), type);
+        fileName = StringUtils.concat("(", LocalDate.now(), ")", UUID.randomUUID(), type);
 
         //파일 저장
         Path location = this.dirLocation.resolve(fileName);

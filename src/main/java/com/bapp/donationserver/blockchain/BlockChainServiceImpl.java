@@ -35,7 +35,8 @@ public class BlockChainServiceImpl implements BlockChainService {
     private final Caver caver = new Caver(BlockChainConst.BLOCK_CHAIN_URL);
 
     public BlockChainServiceImpl() throws IOException {
-
+        SingleKeyring executor = KeyringFactory.createFromPrivateKey(BlockChainConst.OWNER_PRIVATE_KEY);
+        addKeyringAtCaver(executor);
     }
 
     @Override

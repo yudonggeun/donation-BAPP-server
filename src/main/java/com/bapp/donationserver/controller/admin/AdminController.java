@@ -3,8 +3,8 @@ package com.bapp.donationserver.controller.admin;
 import com.bapp.donationserver.data.Member;
 import com.bapp.donationserver.data.consts.SessionConst;
 import com.bapp.donationserver.data.dto.CategoryDto;
-import com.bapp.donationserver.data.status.Status;
 import com.bapp.donationserver.data.type.MemberType;
+import com.bapp.donationserver.exception.IllegalUserDataException;
 import com.bapp.donationserver.service.campaign.CampaignService;
 import com.bapp.donationserver.service.category.CategoryService;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +16,6 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.ConcurrentSkipListMap;
 
 @RequestMapping("/admin")
 @Slf4j
@@ -69,6 +68,9 @@ public class AdminController {
 
         if(member.getMemberType() != MemberType.ADMIN){
             throw new IllegalStateException("error");
+        }
+        if(categoryDto.getName().equals("")){
+            throw new IllegalUserDataException("카테고리 이름을 입력해주세요");
         }
 
         adminService.registerCategory(categoryDto);

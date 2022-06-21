@@ -19,12 +19,12 @@
     <tbody>
     <tr th:each="category : ${categories}">
         <td th:text="${category.name}">name</td>
-        <td>
-            <button class="btn btn-primary float-end"
-                    onclick="location.href='/'"
-                    th:onclick="|location.href='@{/admin/category/{category}(category=${category.name})}'|">수정
-            </button>
-        </td>
+<!--        <td>-->
+<!--            <button class="btn btn-primary float-end"-->
+<!--                    onclick="location.href='/'"-->
+<!--                    th:onclick="|location.href='@{/admin/category/{category}(category=${category.name})}'|">수정-->
+<!--            </button>-->
+<!--        </td>-->
         <td>
             <form action="/"
                   th:action="@{/admin/category/delete/{category}(category=${category.name})}"

@@ -53,14 +53,14 @@ public class TransactionServiceImpl implements TransactionService {
 
         Wallet wallet = member.getWallet();
 
-        Long afterAmount = wallet.getAmount() + amount;
+        Long afterAmount = wallet.getAmount() - amount;
 
         Transaction transaction = new Transaction();
         transaction.setAmount(amount);
         transaction.setTo(BlockChainConst.OWNER_ADDRESS);
         transaction.setFrom(wallet.getId());
         transaction.setToBalance(-1L);
-        transaction.setFromBalance(wallet.getAmount());
+        transaction.setFromBalance(afterAmount);
         transaction.setType(TransactionType.PAYBACK);
         transaction.setDate(LocalDateTime.now());
         transaction.setDetail(null);
@@ -90,7 +90,7 @@ public class TransactionServiceImpl implements TransactionService {
     @Override
     public void withdraw(Campaign campaign, Member member, TransactionDetailDto dto) {
 
-        //인출 가능한 금액인지 확인
+        //인출 가능한 금액 인지 확인
         Wallet from = campaign.getWallet();
         Wallet to = member.getWallet();
 

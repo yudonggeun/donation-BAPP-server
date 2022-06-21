@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
 
 @RequestMapping
 @Slf4j
@@ -29,7 +30,14 @@ public class NewAccountController {
         return "index.html";
     }
 
-    @GetMapping("/new")
+    @GetMapping("/logout")
+    public void logout(HttpServletRequest request, HttpServletResponse response) throws IOException {
+
+        request.getSession().invalidate();
+
+        response.sendRedirect("/");
+    }
+    @GetMapping("/login")
     public String loginFormPage(){
         return "login.html";
     }

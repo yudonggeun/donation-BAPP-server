@@ -31,7 +31,8 @@ dependencies {
     implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.0'
 
     compileOnly 'org.projectlombok:lombok'
-    runtimeOnly 'com.h2database:h2:1.4.199'
+//    runtimeOnly 'com.h2database:h2:1.4.199' //h2
+    runtimeOnly 'mysql:mysql-connector-java' //mysql
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
