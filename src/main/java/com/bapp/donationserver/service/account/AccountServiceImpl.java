@@ -49,8 +49,12 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public List<CampaignSimpleDto> checkMyDonationList(Member member) {
         List<CampaignSimpleDto> donationList = new ArrayList<>();
+
         memberRepository.getMyDonationList(member)
-                .forEach(donatedCampaign -> donationList.add(donatedCampaign.getCampaign().getCampaignSimpleDto()));
+                .forEach(donatedCampaign -> {
+                    log.info("기부 켐페인 : {}", donatedCampaign.getId());
+                    donationList.add(donatedCampaign.getCampaign().getCampaignSimpleDto());
+                });
         return donationList;
     }
 

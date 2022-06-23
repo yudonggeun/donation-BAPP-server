@@ -5,6 +5,7 @@ import com.bapp.donationserver.data.consts.BlockChainConst;
 import com.bapp.donationserver.data.dto.*;
 import com.bapp.donationserver.data.type.TransactionType;
 import com.bapp.donationserver.exception.IllegalUserDataException;
+import com.bapp.donationserver.repository.MemberRepository;
 import com.bapp.donationserver.repository.TransactionRepository;
 import com.bapp.donationserver.repository.WalletRepository;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +23,7 @@ import java.util.List;
 @Transactional
 public class TransactionServiceImpl implements TransactionService {
 
+    private final MemberRepository memberRepository;
     private final WalletRepository walletRepository;
     private final TransactionRepository transactionRepository;
 
@@ -112,6 +114,7 @@ public class TransactionServiceImpl implements TransactionService {
         detail.setSender(dto.getSender());
         detail.setReceiver(dto.getReceiver());
         detail.setPurpose(dto.getPurpose());
+        detail.setCertificateFile(dto.getCertificateFile());
 
         Transaction transaction = detail.getTransaction();
         transaction.setAmount(dto.getAmount());
@@ -165,5 +168,9 @@ public class TransactionServiceImpl implements TransactionService {
         to.setAmount(toAfterAmount);
         walletRepository.update(from);
         walletRepository.update(to);
+
+        //DonatedCampaign update
+        memberRepository.addDonatedCampaign(DonatedCampaign.create(member, campaign));
+        memberRepository.update(member);
     }
 }

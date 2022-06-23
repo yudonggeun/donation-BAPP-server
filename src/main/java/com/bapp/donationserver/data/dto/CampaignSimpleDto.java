@@ -11,6 +11,7 @@ import java.time.LocalDate;
 @Data
 public class CampaignSimpleDto {
     private Long campaignId;
+    private String walletId;
     private String subject;
     private String charityName;
     private LocalDate deadline;

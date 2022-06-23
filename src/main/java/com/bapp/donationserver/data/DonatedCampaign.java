@@ -18,4 +18,11 @@ public class DonatedCampaign {
     @ManyToOne(fetch = FetchType.LAZY)
     private Campaign campaign;
 
+    public static DonatedCampaign create(Member member, Campaign campaign){
+        DonatedCampaign donatedCampaign = new DonatedCampaign();
+        donatedCampaign.setMember(member);
+        donatedCampaign.setCampaign(campaign);
+
+        return donatedCampaign;
+    }
 }

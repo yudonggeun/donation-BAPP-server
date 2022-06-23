@@ -14,4 +14,7 @@ public class TransactionDetailDto {
     private Long balance;//남은 금액 from balance
     private LocalDateTime date;
     private TransactionType type;
+    private String blockChainTransactionId;
+    private String certificateFile;//증명서 url
+
 }

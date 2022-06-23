@@ -9,6 +9,7 @@ import java.util.List;
 @Data
 public class CampaignFullDto {
     private Long campaignId;
+    private String walletId;
     private String campaignName;
     private String charityName;
     private LocalDate deadline;

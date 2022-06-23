@@ -15,4 +15,6 @@ public class TransactionDto {
     private Long amount;//거래 금액
     private LocalDateTime date;//거래 시간
     private TransactionType type;
+    private String blockChainTransactionId;
+    private String certificateFile;
 }

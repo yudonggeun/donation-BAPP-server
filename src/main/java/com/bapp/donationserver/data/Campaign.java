@@ -54,6 +54,7 @@ public class Campaign {
         CampaignSimpleDto dto = new CampaignSimpleDto();
 
         dto.setCampaignId(id);
+        dto.setWalletId(wallet.getId());
         dto.setSubject(campaignName);
         dto.setCharityName(charityName);
         dto.setDeadline(deadline);
@@ -70,6 +71,7 @@ public class Campaign {
         CampaignFullDto dto = new CampaignFullDto();
 
         dto.setCampaignId(id);
+        dto.setWalletId(wallet.getId());
         dto.setCampaignName(campaignName);
         dto.setCharityName(charityName);
         dto.setDeadline(deadline);

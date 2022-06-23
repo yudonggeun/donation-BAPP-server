@@ -5,6 +5,7 @@ import com.bapp.donationserver.data.dto.TransactionDto;
 import com.bapp.donationserver.data.type.TransactionType;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -15,6 +16,7 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @Setter
+@Slf4j
 public class Transaction {
     @Id
     @Column(name = "ID", nullable = false)
@@ -60,6 +62,8 @@ public class Transaction {
         dto.setDate(LocalDateTime.from(getDate()));
         dto.setType(getType());
         dto.setPurpose(getDetail().getPurpose());
+        dto.setBlockChainTransactionId(getDetail().getHashCode());
+        dto.setCertificateFile(getDetail().getCertificateFile());
 
         return dto;
     }
@@ -75,6 +79,12 @@ public class Transaction {
         dto.setAmount(amount);
         dto.setDate(date);
         dto.setType(type);
+        try {
+            dto.setBlockChainTransactionId(getDetail().getHashCode());
+            dto.setCertificateFile(getDetail().getCertificateFile());
+        } catch (NullPointerException e){
+            log.info("Transaction Simple Dto : don't research Transaction_detail information");
+        }
 
         return dto;
     }
