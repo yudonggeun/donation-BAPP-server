@@ -33,14 +33,14 @@ public class CampaignServiceImpl implements CampaignService {
         //지갑 생성 및 등록
         Wallet wallet = walletRepository.createWallet();
         campaign.setWallet(wallet);
-
+//        campaign.setCategories(campaignInfo.getCategories());
         log.info("켐페인 등록={}", campaign);
-        campaignRepository.save(campaign, campaignInfo.getCategories());
+        campaignRepository.save(campaign);
     }
 
     @Override
     public void modifyCampaign(Long campaignId, CampaignFullDto campaignInfo) {
-        Campaign campaign = campaignRepository.findById(campaignId);
+        Campaign campaign = campaignRepository.findById(campaignId).orElse(null);//TODO 수정
         campaign.setCampaignFullDto(campaignInfo);
         campaignRepository.update(campaign, campaignInfo.getCategories());
     }
@@ -65,7 +65,7 @@ public class CampaignServiceImpl implements CampaignService {
     @Transactional(readOnly = true)
     @Override
     public Campaign getDetailsOfCampaign(Long campaignId) {
-        Campaign campaign = campaignRepository.findById(campaignId);
+        Campaign campaign = campaignRepository.findById(campaignId).orElse(null);
         if(campaign == null){
             throw new IllegalUserDataException("존재하지 않은 캠패인 id를 조회했습니다.");
         }
@@ -74,7 +74,7 @@ public class CampaignServiceImpl implements CampaignService {
 
     @Override//수정 필요
     public Boolean acceptCampaign(Long campaignId, Boolean status) {
-        Campaign campaign = campaignRepository.findById(campaignId);
+        Campaign campaign = campaignRepository.findById(campaignId).orElse(null);
         campaign.setIsAccepted(status);
         campaignRepository.update(campaign, null);
 

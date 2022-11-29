@@ -10,15 +10,15 @@ import java.util.List;
 
 public interface TransactionService {
     //포인트 충전
-    void pay(Member member, Long amount);
+    void pay(String email, Long amount);
     //포인트 환불
-    void payback(Member member, Long amount);
+    void payback(String email, Long amount);
     //켐페인 거래 내역 조회
     List<TransactionDetailDto> getTransactionHistory(Long campaignId);
     //유저 거래 내역 조회
-    List<TransactionDto> getTransactionHistory(Wallet wallet);
+    List<TransactionDto> getTransactionHistory(String wallet);
     //캠패인 자금 출금
-    void withdraw(Campaign campaign, Member member, TransactionDetailDto dto);
+    void withdraw(Campaign campaign, MemberDto member, TransactionDetailDto dto);
     //기부하기
-    void donate(Member member, Campaign campaign, Long amount);
+    void donate(String email, Campaign campaign, Long amount);
 }

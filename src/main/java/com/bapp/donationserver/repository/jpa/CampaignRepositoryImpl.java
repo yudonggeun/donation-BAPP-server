@@ -5,7 +5,7 @@ import com.bapp.donationserver.data.CampaignSearchCondition;
 import com.bapp.donationserver.data.Category;
 import com.bapp.donationserver.data.CategoryInfo;
 import com.bapp.donationserver.data.type.MemberType;
-import com.bapp.donationserver.repository.CampaignRepository;
+import com.bapp.donationserver.repository.custom.CustomCampaignRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Primary;
@@ -18,26 +18,11 @@ import java.util.*;
 import java.util.stream.IntStream;
 
 @Slf4j
-@Primary
-@Repository
 @RequiredArgsConstructor
-public class JPACampaignRepository implements CampaignRepository {
+public class CampaignRepositoryImpl implements CustomCampaignRepository {
 
     @PersistenceContext
     private final EntityManager em;
-
-    @Override
-    public void save(Campaign campaign, List<String> categories) {
-        //카테고리 정보 등록
-        categories.forEach(name -> {
-            Category category = em.find(Category.class, name);
-            CategoryInfo categoryInfo = new CategoryInfo(campaign, category);
-            category.getCampaigns().add(categoryInfo);
-            campaign.getCategories().add(categoryInfo);
-            em.persist(categoryInfo);
-        });
-        em.persist(campaign);
-    }
 
     @Override
     public void update(Campaign campaign, List<String> categories) {
@@ -82,38 +67,6 @@ public class JPACampaignRepository implements CampaignRepository {
 
         //수정된 카테고리 목록 연결
         campaign.setCategories(updateCategoryList);
-    }
-
-    @Override
-    public void delete(Campaign campaign) {
-        em.merge(campaign);
-        em.remove(campaign);
-    }
-
-    @Override
-    public Campaign findById(Long campaignId) {
-
-        String query = "select i from CategoryInfo as i left join fetch i.campaign where i.campaign = " +
-                "(select c from Campaign c where c.id = :campaignId)";
-
-        List<CategoryInfo> list = em.createQuery(query, CategoryInfo.class)
-                .setParameter("campaignId", campaignId)
-                .getResultList();
-
-        if (list.size() == 0) {
-            return em.find(Campaign.class, campaignId);
-        }
-
-        Campaign campaign = list.get(0).getCampaign();
-        campaign.setCategories(list);
-
-        log.info("켐페인 조회 결과: {}", campaign);
-        return campaign;
-    }
-
-    @Override
-    public List<Campaign> findAll() {
-        return em.createQuery("select c from Campaign as c", Campaign.class).getResultList();
     }
 
     @Override

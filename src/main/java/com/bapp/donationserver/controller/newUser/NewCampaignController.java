@@ -3,10 +3,7 @@ package com.bapp.donationserver.controller.newUser;
 import com.bapp.donationserver.data.Campaign;
 import com.bapp.donationserver.data.Member;
 import com.bapp.donationserver.data.consts.SessionConst;
-import com.bapp.donationserver.data.dto.CampaignFullDto;
-import com.bapp.donationserver.data.dto.CampaignSearchConditionDto;
-import com.bapp.donationserver.data.dto.CampaignSimpleDto;
-import com.bapp.donationserver.data.dto.TransactionDetailDto;
+import com.bapp.donationserver.data.dto.*;
 import com.bapp.donationserver.data.type.MemberType;
 import com.bapp.donationserver.service.campaign.CampaignService;
 import com.bapp.donationserver.service.transaction.TransactionService;
@@ -29,7 +26,7 @@ public class NewCampaignController {
     private final TransactionService transactionService;
 
     @GetMapping
-    public String campaignListPage(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member member,
+    public String campaignListPage(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) MemberDto member,
                                    Model model) {
         MemberType type = (member != null ? member.getMemberType() : MemberType.USER); // 회원이 아니라면 일반 유저 권한 부여 검색
 
@@ -42,7 +39,7 @@ public class NewCampaignController {
      * 검색 조건 : 페이지 정보, 단채명, 제목, 카테고리 중복, 관심
      */
     @PostMapping
-    public String userSearchCampaign(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member member,
+    public String userSearchCampaign(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) MemberDto member,
                                      @ModelAttribute CampaignSearchConditionDto searchCondition,
                                      Model model) {
 

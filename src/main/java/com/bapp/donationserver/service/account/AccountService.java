@@ -12,13 +12,13 @@ public interface AccountService {
     //개인 정보 조회
     Member getMember(String email);
     //개인 정보 수정
-    void updateMember(Member member, MemberDto updateData);
+    void updateMember(String email, MemberDto updateData);
     //기부 내역 추가
-    void addDonatedCampaign(Member member, Campaign campaign);
+    void addDonatedCampaign(String email, Campaign campaign);
     //자신의 기부 내역 조회
-    List<CampaignSimpleDto> checkMyDonationList(Member member);
+    List<CampaignSimpleDto> checkMyDonationList(String email);
     //회원 가입
-    void newMember(MemberDto newMemberInfo);
+    boolean createMember(MemberDto newMemberInfo);
     //로그인
     Member login(String email, String password) throws Exception;
     //회원 탈퇴

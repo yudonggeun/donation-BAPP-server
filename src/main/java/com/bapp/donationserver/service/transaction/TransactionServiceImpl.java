@@ -5,6 +5,7 @@ import com.bapp.donationserver.data.consts.BlockChainConst;
 import com.bapp.donationserver.data.dto.*;
 import com.bapp.donationserver.data.type.TransactionType;
 import com.bapp.donationserver.exception.IllegalUserDataException;
+import com.bapp.donationserver.repository.DonatedCampaignRepository;
 import com.bapp.donationserver.repository.MemberRepository;
 import com.bapp.donationserver.repository.TransactionRepository;
 import com.bapp.donationserver.repository.WalletRepository;
@@ -26,10 +27,12 @@ public class TransactionServiceImpl implements TransactionService {
     private final MemberRepository memberRepository;
     private final WalletRepository walletRepository;
     private final TransactionRepository transactionRepository;
+    private final DonatedCampaignRepository donatedCampaignRepository;
 
     @Override
-    public void pay(Member member, Long amount) {
+    public void pay(String email, Long amount) {
 
+        Member member = memberRepository.findById(email).orElse(null);
         Wallet wallet = member.getWallet();
 
         Long afterAmount = wallet.getAmount() + amount;
@@ -51,8 +54,9 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override//추후 결제 대행사를 통한 결제 시스템 구축시에 변경사항이 생길 수도 있음
-    public void payback(Member member, Long amount) {
+    public void payback(String email, Long amount) {
 
+        Member member = memberRepository.findById(email).orElse(null);
         Wallet wallet = member.getWallet();
 
         Long afterAmount = wallet.getAmount() - amount;
@@ -82,19 +86,19 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
-    public List<TransactionDto> getTransactionHistory(Wallet wallet) {
+    public List<TransactionDto> getTransactionHistory(String walletId) {
         List<TransactionDto> dtoList = new ArrayList<>();
 
-        transactionRepository.findByWalletId(wallet.getId()).forEach(transaction -> dtoList.add(new TransactionDto(transaction)));
+        transactionRepository.findByWalletId(walletId).forEach(transaction -> dtoList.add(new TransactionDto(transaction)));
         return dtoList;
     }
 
     @Override
-    public void withdraw(Campaign campaign, Member member, TransactionDetailDto dto) {
+    public void withdraw(Campaign campaign, MemberDto member, TransactionDetailDto dto) {
 
         //인출 가능한 금액 인지 확인
         Wallet from = campaign.getWallet();
-        Wallet to = member.getWallet();
+        Wallet to = walletRepository.getWallet(member.getWalletId());
 
         log.info("temper : to={}, from={}", to, from);
         if(!campaign.getCharityName().equals(member.getName())){
@@ -137,7 +141,8 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
-    public void donate(Member member, Campaign campaign, Long amount) {
+    public void donate(String email, Campaign campaign, Long amount) {
+        Member member = memberRepository.findById(email).orElse(null);
 
         Wallet from = member.getWallet();
         Wallet to = campaign.getWallet();
@@ -170,7 +175,7 @@ public class TransactionServiceImpl implements TransactionService {
         walletRepository.update(to);
 
         //DonatedCampaign update
-        memberRepository.addDonatedCampaign(DonatedCampaign.create(member, campaign));
-        memberRepository.update(member);
+        donatedCampaignRepository.addDonatedCampaign(DonatedCampaign.create(member, campaign));
+//        memberRepository.update(member);
     }
 }

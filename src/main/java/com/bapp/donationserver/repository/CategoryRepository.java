@@ -1,18 +1,14 @@
 package com.bapp.donationserver.repository;
 
 import com.bapp.donationserver.data.Category;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
-import java.util.List;
+public interface CategoryRepository extends JpaRepository<Category, String> {
 
-public interface CategoryRepository {
+    Category findByName(String name);
 
-    void save(Category data);
-
-    Category findByName(String categoryName);
-
-    void update(String before, String after);
-
-    void delete(Category category);
-
-    List<Category> findAll();
+    @Query("update Category c set c.name = :after where c.name=:before")
+    void update(@Param("before") String before, @Param("after") String after);
 }

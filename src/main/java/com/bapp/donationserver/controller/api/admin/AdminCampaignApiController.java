@@ -17,10 +17,8 @@ public class AdminCampaignApiController {
     private final CampaignService campaignService;
 
     @GetMapping("/limit/{campaignId}")
-    public Object changeLimitCampaign(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member member,
-                                      @PathVariable Long campaignId,
-                                      @RequestParam("accept") Boolean isAccept){
-
+    public Object changeLimitCampaign(@PathVariable Long campaignId,
+                                      @RequestParam("accept") Boolean isAccept) {
         campaignService.acceptCampaign(campaignId, isAccept);
         return Status.successStatus();
     }

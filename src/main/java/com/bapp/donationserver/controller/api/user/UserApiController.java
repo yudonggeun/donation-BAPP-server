@@ -34,25 +34,23 @@ public class UserApiController {
      * 서버 응답 : 처리 결과 응답
      */
     @GetMapping
-    public MemberDto getMyPage(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member member,
-                               HttpServletRequest request) {
-        return new MemberDto(member);
+    public MemberDto getMyPage(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) MemberDto member) {
+        return new MemberDto(accountService.getMember(member.getEmail()));
     }
 
     @PostMapping
-    public Object editMyPage(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member member,
+    public Object editMyPage(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) MemberDto member,
                              @RequestBody MemberDto data) {
-
         MemberDto.checkValidation(data);
-
-        accountService.updateMember(member, data);
+        accountService.updateMember(member.getEmail(), data);
         return Status.successStatus();
     }
 
     @GetMapping("/tx")
-    public List<TransactionDto> getTransactions(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member member){
-        return transactionService.getTransactionHistory(member.getWallet());
+    public List<TransactionDto> getTransactions(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) MemberDto member) {
+        return transactionService.getTransactionHistory(member.getWalletId());
     }
+
     /**
      * 회원 탈퇴
      */
@@ -83,9 +81,9 @@ public class UserApiController {
      * 응답 정보 : 표지이미지, 켐페인 제목, 재단 이름, 마감일, 현재 모금 금액, 목표 금액
      */
     @GetMapping("/info")
-    public List<CampaignSimpleDto> myDonationList(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member member) {
+    public List<CampaignSimpleDto> myDonationList(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) MemberDto member) {
 
-        return accountService.checkMyDonationList(member);
+        return accountService.checkMyDonationList(member.getEmail());
     }
 
 
@@ -94,48 +92,48 @@ public class UserApiController {
      * 서버 응답 : success fail
      */
     @PostMapping("/pay")
-    public Object pay(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member member,
+    public Object pay(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) MemberDto member,
                       @RequestParam Long amount) {
         if (amount < 0) {
             return Status.failStatus("결제 가능 금액은 100원 이상입니다.");
         }
 
-        transactionService.pay(member, amount);
+        transactionService.pay(member.getEmail(), amount);
         return Status.successStatus();
     }
 
     @GetMapping("/payback")
-    public Object payBack(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member member,
+    public Object payBack(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) MemberDto member,
                           @RequestParam Long amount) {
-        if (member.getWallet().getAmount() < amount) {
+        if (member.getPointAmount() < amount) {
             return Status.failStatus("요청한 금액보다 포인트가 적습니다.");
         }
-        if (amount < 100){
+        if (amount < 100) {
             return Status.failStatus("환불 요청 가능한 금액은 100원 이상입니다.");
         }
 
-        transactionService.payback(member, amount);
+        transactionService.payback(member.getEmail(), amount);
 
         return Status.successStatus();
     }
 
     @GetMapping("/give")
-    public Object donate(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member member,
+    public Object donate(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) MemberDto member,
                          @SessionAttribute(name = SessionConst.LAST_CHECK_CAMPAIGN, required = false) Campaign campaign,//최근 조회한 켐페인 등록
                          @RequestParam Long amount) {
 
-        if(campaign == null) {
+        if (campaign == null) {
             return Status.failStatus("최근 조회한 켐페인이 없습니다.");
         }
-        if (member.getWallet().getAmount() < amount) {
+        if (member.getPointAmount() < amount) {
             return Status.failStatus("요청한 금액보다 포인트가 적습니다.");
         }
-        if (amount <= 100){
+        if (amount <= 100) {
             return Status.failStatus("기부 최소 금액은 100원 입니다.");
         }
 
-        transactionService.donate(member, campaign, amount);//기부 성공시 DonatedCampaign 도메인 데이터 추가
-        accountService.addDonatedCampaign(member, campaign);
+        transactionService.donate(member.getEmail(), campaign, amount);//기부 성공시 DonatedCampaign 도메인 데이터 추가
+        accountService.addDonatedCampaign(member.getEmail(), campaign);
 
         return Status.successStatus();
     }

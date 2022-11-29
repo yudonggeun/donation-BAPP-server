@@ -3,8 +3,6 @@ package com.bapp.donationserver.data;
 import com.bapp.donationserver.data.dto.MemberDto;
 import com.bapp.donationserver.data.type.MemberType;
 import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.ArrayList;

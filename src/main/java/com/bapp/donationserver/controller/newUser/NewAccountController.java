@@ -26,7 +26,7 @@ public class NewAccountController {
     private final AccountService memberService;
 
     @RequestMapping
-    public String indexPage(){
+    public String indexPage() {
         return "index.html";
     }
 
@@ -37,10 +37,12 @@ public class NewAccountController {
 
         response.sendRedirect("/");
     }
+
     @GetMapping("/login")
-    public String loginFormPage(){
+    public String loginFormPage() {
         return "login.html";
     }
+
     /**
      * 클라이언트 전송 : 이메일, 패스워드
      * 서버 응답 : 세션 아이디, fail
@@ -69,14 +71,13 @@ public class NewAccountController {
         MemberDto.checkValidation(data);
         MemberDto.checkNotNull(data);
 
-        if(data.getMemberType() == MemberType.ADMIN){
+        if (data.getMemberType() == MemberType.ADMIN) {
             log.info("관리자 권한을 가진 계정 생성을 요청할 수 없습니다.");
             return Status.failStatus("API 요청이 처리되지 않았습니다.");
         }
 
         //로직 실행
-        memberService.newMember(data);
-        return Status.successStatus();
+        return memberService.createMember(data) ? Status.successStatus() : Status.failStatus("회원 생성 실패");
     }
 
 }

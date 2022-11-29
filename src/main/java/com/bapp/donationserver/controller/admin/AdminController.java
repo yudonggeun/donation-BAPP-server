@@ -1,8 +1,8 @@
 package com.bapp.donationserver.controller.admin;
 
-import com.bapp.donationserver.data.Member;
 import com.bapp.donationserver.data.consts.SessionConst;
 import com.bapp.donationserver.data.dto.CategoryDto;
+import com.bapp.donationserver.data.dto.MemberDto;
 import com.bapp.donationserver.data.type.MemberType;
 import com.bapp.donationserver.exception.IllegalUserDataException;
 import com.bapp.donationserver.service.campaign.CampaignService;
@@ -32,7 +32,7 @@ public class AdminController {
     }
 
     @GetMapping("/limit/{campaignId}")
-    public RedirectView changeLimitCampaign(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member member,
+    public RedirectView changeLimitCampaign(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) MemberDto member,
                                       @PathVariable Long campaignId,
                                       @RequestParam Boolean isAccept, Model model){
         Map<String, Object> stringObjectMap = model.asMap();
@@ -63,7 +63,7 @@ public class AdminController {
 
 
     @PostMapping("/category")
-    public RedirectView registerCategory(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member member,
+    public RedirectView registerCategory(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) MemberDto member,
                                    @ModelAttribute CategoryDto categoryDto){
 
         if(member.getMemberType() != MemberType.ADMIN){
@@ -84,7 +84,7 @@ public class AdminController {
     }
 
     @PostMapping("/category/{categoryName}")
-    public RedirectView editCategory(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member member,
+    public RedirectView editCategory(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) MemberDto member,
                                @PathVariable String categoryName, @ModelAttribute("category") CategoryDto categoryDto){
 
         if(member.getMemberType() != MemberType.ADMIN){
@@ -96,7 +96,7 @@ public class AdminController {
     }
 
     @PostMapping("/category/delete/{categoryName}")
-    public RedirectView deleteCategory(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member member,
+    public RedirectView deleteCategory(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) MemberDto member,
                                  @PathVariable String categoryName){
 
         if(member.getMemberType() != MemberType.ADMIN){

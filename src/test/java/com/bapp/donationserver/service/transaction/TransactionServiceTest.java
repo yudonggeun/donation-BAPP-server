@@ -28,19 +28,19 @@ class TransactionServiceTest {
 
     @BeforeAll
     void addTestMember(){
-        MemberDto member = new MemberDto();
+        MemberDto member = new MemberDto(testMember);
         member.setName("테스트이름");
         member.setMemberType(MemberType.ADMIN);
         member.setNickname("닉");
         member.setEmail("test@test.com.kr");
         member.setProfilePhotoName("path");
         member.setPhoneNumber("000-0000-0001");
-        accountService.newMember(member);
+        accountService.createMember(member);
         testMember = accountService.getMember(member.getEmail());
     }
     @Test
     void pay() {
-        transactionService.pay(testMember, 1000L);
+        transactionService.pay(testMember.getEmail(), 1000L);
         Member member = accountService.getMember(testMember.getEmail());
         Assertions.assertThat(member.getWallet().getAmount()).isEqualTo(1000L);
     }

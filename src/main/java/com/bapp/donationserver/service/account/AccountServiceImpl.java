@@ -8,6 +8,7 @@ import com.bapp.donationserver.data.dto.CampaignFullDto;
 import com.bapp.donationserver.data.dto.CampaignSimpleDto;
 import com.bapp.donationserver.data.dto.MemberDto;
 import com.bapp.donationserver.exception.IllegalUserDataException;
+import com.bapp.donationserver.repository.DonatedCampaignRepository;
 import com.bapp.donationserver.repository.MemberRepository;
 import com.bapp.donationserver.repository.WalletRepository;
 import lombok.RequiredArgsConstructor;
@@ -26,32 +27,35 @@ public class AccountServiceImpl implements AccountService {
 
     private final MemberRepository memberRepository;
     private final WalletRepository walletRepository;
+    private final DonatedCampaignRepository donatedCampaignRepository;
 
     @Override
     public Member getMember(String email) {
-        return memberRepository.findByEmail(email);
+        return memberRepository.findById(email).orElse(null);//TODO
     }
 
     @Override
     @Transactional
-    public void updateMember(Member member, MemberDto updateMemberInformation) {
+    public void updateMember(String email, MemberDto updateMemberInformation) {
+        Member member = memberRepository.findById(email).orElse(null);//TODO
         member.setDto(updateMemberInformation);
-        memberRepository.update(member);
     }
 
     @Override
-    public void addDonatedCampaign(Member member, Campaign campaign) {
+    public void addDonatedCampaign(String email, Campaign campaign) {
+        Member member = memberRepository.findById(email).orElse(null);
         DonatedCampaign info = new DonatedCampaign();
         info.setMember(member);
         info.setCampaign(campaign);
-        memberRepository.addDonatedCampaign(info);
+        donatedCampaignRepository.addDonatedCampaign(info);
     }
 
     @Override
-    public List<CampaignSimpleDto> checkMyDonationList(Member member) {
+    public List<CampaignSimpleDto> checkMyDonationList(String email) {
         List<CampaignSimpleDto> donationList = new ArrayList<>();
 
-        memberRepository.getMyDonationList(member)
+        Member member = memberRepository.findById(email).orElse(null);//TODO
+        donatedCampaignRepository.getMyDonationList(member)
                 .forEach(donatedCampaign -> {
                     log.info("기부 켐페인 : {}", donatedCampaign.getId());
                     donationList.add(new CampaignFullDto(donatedCampaign.getCampaign()));
@@ -61,19 +65,25 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     @Transactional
-    public void newMember(MemberDto data) {
-        //지갑 생성
-        Wallet wallet = walletRepository.createWallet();
-
-        //회원 생성
-        Member newMember = new Member(data.getEmail(), wallet, data.getMemberType());
-        newMember.setDto(data);
-        memberRepository.save(newMember);
+    public boolean createMember(MemberDto data) {
+        try {
+            //지갑 생성
+            Wallet wallet = walletRepository.createWallet();
+            //회원 생성
+            Member newMember = new Member(data.getEmail(), wallet, data.getMemberType());
+            newMember.setDto(data);
+            memberRepository.save(newMember);
+        } catch (Exception e){
+            e.printStackTrace();
+            log.info("[message:회원 정보 생성 실패], [회원 정보, " + data + "]");
+            return false;
+        }
+        return true;
     }
 
     @Override
     public Member login(String email, String password) {
-        Member member = memberRepository.findByEmail(email);
+        Member member = memberRepository.findById(email).orElse(null);//TODO
         if(!member.getPassword().equals(password)){
             throw new IllegalUserDataException("로그인에 실패했습니다.");
         }

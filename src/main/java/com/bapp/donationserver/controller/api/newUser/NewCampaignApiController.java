@@ -29,10 +29,10 @@ public class NewCampaignApiController {
      * 검색 조건 : 페이지 정보, 단채명, 제목, 카테고리 중복, 관심
      */
     @PostMapping
-    public List<CampaignSimpleDto> userSearchCampaign(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member member,
+    public List<CampaignSimpleDto> userSearchCampaign(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) MemberDto memberDto,
                                                       @RequestBody CampaignSearchConditionDto searchCondition) {
 
-        MemberType type = (member != null ? member.getMemberType() : MemberType.USER);// 회원이 아니 라면 일반 유저 권한 부여 검색
+        MemberType type = (memberDto != null ? memberDto.getMemberType() : MemberType.USER);// 회원이 아니 라면 일반 유저 권한 부여 검색
 
         return campaignService.checkCampaignList(searchCondition, type);
     }
@@ -41,11 +41,8 @@ public class NewCampaignApiController {
      * 서버 전송 : 표지이미지, 상세이미지, 캠페인 제목, 재단 이름, 마감일, 현재 모금 금액, 목표 금액, 카테고리, 계획
      */
     @GetMapping("/{campaignId}")
-    public CampaignFullDto getCampaignDetail(@PathVariable Long campaignId, HttpServletRequest request) {
+    public CampaignFullDto getCampaignDetail(@PathVariable Long campaignId) {
         Campaign campaign = campaignService.getDetailsOfCampaign(campaignId);
-
-        request.getSession().setAttribute(SessionConst.LAST_CHECK_CAMPAIGN, campaign);
-
         return new CampaignFullDto(campaign);
     }
 

@@ -32,7 +32,7 @@ public class NewAccountApiController {
         Member member = memberService.login(loginForm.getEmail(), loginForm.getPassword());
 
         HttpSession session = request.getSession();
-        session.setAttribute(SessionConst.LOGIN_MEMBER, member);
+        session.setAttribute(SessionConst.LOGIN_MEMBER, new MemberDto(member));
         return Status.successStatus();
     }
 
@@ -54,7 +54,7 @@ public class NewAccountApiController {
         }
 
         //로직 실행
-        memberService.newMember(data);
+        memberService.createMember(data);
         return Status.successStatus();
     }
 
