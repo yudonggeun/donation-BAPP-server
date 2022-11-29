@@ -1,23 +1,23 @@
 package com.bapp.donationserver.data.dto;
 
-import lombok.Data;
+import com.bapp.donationserver.data.Campaign;
+import lombok.*;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
-@Data
-public class CampaignFullDto {
-    private Long campaignId;
-    private String walletId;
-    private String campaignName;
-    private String charityName;
-    private LocalDate deadline;
-    private String description;
-    private Long currentAmount;
-    private Long goalAmount;
-    private List<String> categories = new ArrayList<>();
-    private String coverImagePath;
+import static java.util.stream.Collectors.*;
+
+@Getter @Setter
+@ToString @EqualsAndHashCode
+public class CampaignFullDto extends CampaignSimpleDto{
+    private List<String> categories;
     private String detailImagePath;
     private String reviewImagePath;
+
+    public CampaignFullDto(Campaign entity) {
+        super(entity);
+        this.categories = entity.getCategories().stream().map(info -> info.getCategory().getName()).collect(toList());
+        this.detailImagePath = entity.getDetailImagePath();
+        this.reviewImagePath = entity.getReviewImagePath();
+    }
 }

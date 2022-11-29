@@ -1,5 +1,6 @@
 package com.bapp.donationserver.data.dto;
 
+import com.bapp.donationserver.data.Member;
 import com.bapp.donationserver.data.type.MemberType;
 import com.bapp.donationserver.exception.IllegalUserDataException;
 import lombok.Data;
@@ -24,6 +25,17 @@ public class MemberDto {
     private String walletId;
     private Long pointAmount;
 
+    public MemberDto(Member entity) {
+        this.setMemberType(entity.getMemberType());
+        this.setName(entity.getName());
+        this.setPhoneNumber(entity.getPhoneNumber());
+        this.setEmail(entity.getEmail());
+        this.setPassword(entity.getPassword());
+        this.setNickname(entity.getNickname());
+        this.setProfilePhotoName(entity.getProfilePhotoName());
+        this.setWalletId(entity.getWallet().getId());
+        this.setPointAmount(entity.getWallet().getAmount());
+    }
 
     public static void checkValidation(MemberDto memberDto) {
 

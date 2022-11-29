@@ -56,7 +56,7 @@ public class CampaignServiceImpl implements CampaignService {
         //db 조회 및 dto 변환
         List<CampaignSimpleDto> dtoList = new ArrayList<>();
         campaignRepository.findCampaignListByCondition(condition)
-                .forEach(campaign -> dtoList.add(campaign.getCampaignSimpleDto()));
+                .forEach(campaign -> dtoList.add(new CampaignFullDto(campaign)));
 
         log.info("정상 반환 ={}", dtoList);
         return dtoList;

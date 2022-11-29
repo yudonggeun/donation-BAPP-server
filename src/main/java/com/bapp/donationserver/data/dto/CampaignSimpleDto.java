@@ -1,5 +1,6 @@
 package com.bapp.donationserver.data.dto;
 
+import com.bapp.donationserver.data.Campaign;
 import lombok.Data;
 
 import java.time.LocalDate;
@@ -19,4 +20,16 @@ public class CampaignSimpleDto {
     private Long goalAmount;
     private String coverImagePath;
     private String description;
+
+    public CampaignSimpleDto(Campaign entity) {
+        this.campaignId = entity.getId();
+        this.walletId = entity.getWallet().getId();
+        this.subject = entity.getCampaignName();
+        this.charityName = entity.getCharityName();
+        this.deadline = entity.getDeadline();
+        this.description = entity.getDescription();
+        this.currentAmount = entity.getWallet().getAmount();
+        this.goalAmount = entity.getGoalAmount();
+        this.coverImagePath = entity.getCoverImagePath();
+    }
 }

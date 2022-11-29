@@ -61,7 +61,7 @@ public class NewCampaignController {
         Campaign campaign = campaignService.getDetailsOfCampaign(campaignId);
 
         request.getSession().setAttribute(SessionConst.LAST_CHECK_CAMPAIGN, campaign);
-        model.addAttribute("campaign", campaign.getCampaignFullDto());
+        model.addAttribute("campaign", new CampaignFullDto(campaign));
         return "/campaign/detailCampaign.html";
     }
 

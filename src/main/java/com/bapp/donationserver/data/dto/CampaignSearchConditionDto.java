@@ -1,5 +1,6 @@
 package com.bapp.donationserver.data.dto;
 
+import com.bapp.donationserver.data.CampaignSearchCondition;
 import lombok.Data;
 
 import java.util.List;
@@ -21,5 +22,13 @@ public class CampaignSearchConditionDto {
     public CampaignSearchConditionDto() {
         this.startIndex = 0;
         this.endIndex = 100;
+    }
+
+    public CampaignSearchConditionDto(CampaignSearchCondition entity) {
+        startIndex = entity.getStartIndex();
+        endIndex = entity.getMaxResult();
+        charityName = entity.getCharityName();
+        subject = entity.getSubject();
+        categories = entity.getCategories();
     }
 }

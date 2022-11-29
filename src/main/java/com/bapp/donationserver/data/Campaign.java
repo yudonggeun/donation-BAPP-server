@@ -49,46 +49,8 @@ public class Campaign {
         this.isAccepted = false;
     }
 
-    public CampaignSimpleDto getCampaignSimpleDto() {
-
-        CampaignSimpleDto dto = new CampaignSimpleDto();
-
-        dto.setCampaignId(id);
-        dto.setWalletId(wallet.getId());
-        dto.setSubject(campaignName);
-        dto.setCharityName(charityName);
-        dto.setDeadline(deadline);
-        dto.setDescription(description);
-        dto.setCurrentAmount(wallet.getAmount());
-        dto.setGoalAmount(goalAmount);
-        dto.setCoverImagePath(coverImagePath);
-
-        return dto;
-    }
-
-    public CampaignFullDto getCampaignFullDto() {
-
-        CampaignFullDto dto = new CampaignFullDto();
-
-        dto.setCampaignId(id);
-        dto.setWalletId(wallet.getId());
-        dto.setCampaignName(campaignName);
-        dto.setCharityName(charityName);
-        dto.setDeadline(deadline);
-        dto.setDescription(description);
-        dto.setCurrentAmount(wallet.getAmount());
-        dto.setGoalAmount(goalAmount);
-        dto.setCoverImagePath(coverImagePath);
-        dto.setDetailImagePath(detailImagePath);
-        dto.setReviewImagePath(reviewImagePath);
-        List<String> categoryNames = new ArrayList<>();
-        this.categories.forEach(info -> categoryNames.add(info.getCategory().getName()));
-        dto.setCategories(categoryNames);
-        return dto;
-    }
-
-    public void setCampaignFullDto(CampaignFullDto dto){
-        setCampaignName(dto.getCampaignName());
+    public void setCampaignFullDto(CampaignFullDto dto) {
+        setCampaignName(dto.getSubject());
         setCharityName(dto.getCharityName());
         setDeadline(dto.getDeadline());
         setGoalAmount(dto.getGoalAmount());

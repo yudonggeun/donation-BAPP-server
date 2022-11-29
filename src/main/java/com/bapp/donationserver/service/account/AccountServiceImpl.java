@@ -4,6 +4,7 @@ import com.bapp.donationserver.data.Campaign;
 import com.bapp.donationserver.data.DonatedCampaign;
 import com.bapp.donationserver.data.Member;
 import com.bapp.donationserver.data.Wallet;
+import com.bapp.donationserver.data.dto.CampaignFullDto;
 import com.bapp.donationserver.data.dto.CampaignSimpleDto;
 import com.bapp.donationserver.data.dto.MemberDto;
 import com.bapp.donationserver.exception.IllegalUserDataException;
@@ -53,7 +54,7 @@ public class AccountServiceImpl implements AccountService {
         memberRepository.getMyDonationList(member)
                 .forEach(donatedCampaign -> {
                     log.info("기부 켐페인 : {}", donatedCampaign.getId());
-                    donationList.add(donatedCampaign.getCampaign().getCampaignSimpleDto());
+                    donationList.add(new CampaignFullDto(donatedCampaign.getCampaign()));
                 });
         return donationList;
     }

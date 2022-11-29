@@ -67,25 +67,4 @@ public class Transaction {
 
         return dto;
     }
-
-    public TransactionDto getDto() {
-        TransactionDto dto = new TransactionDto();
-
-        dto.setId(id);
-        dto.setFrom(from);
-        dto.setTo(to);
-        dto.setFromBalance(fromBalance);
-        dto.setToBalance(toBalance);
-        dto.setAmount(amount);
-        dto.setDate(date);
-        dto.setType(type);
-        try {
-            dto.setBlockChainTransactionId(getDetail().getHashCode());
-            dto.setCertificateFile(getDetail().getCertificateFile());
-        } catch (NullPointerException e){
-            log.info("Transaction Simple Dto : don't research Transaction_detail information");
-        }
-
-        return dto;
-    }
 }

@@ -106,5 +106,4 @@ public class AdminController {
         adminService.deleteCategory(categoryName);
         return new RedirectView("/admin/category");
     }
-
 }

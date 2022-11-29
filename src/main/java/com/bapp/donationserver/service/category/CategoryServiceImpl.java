@@ -23,7 +23,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Transactional(readOnly = true)
     public List<CategoryDto> getCategoryList() {
         List<CategoryDto> dtoList = new ArrayList<>();
-        categoryRepository.findAll().forEach(category -> dtoList.add(category.getDto()));
+        categoryRepository.findAll().forEach(category -> dtoList.add(new CategoryDto(category.getName())));
         return dtoList;
     }
 

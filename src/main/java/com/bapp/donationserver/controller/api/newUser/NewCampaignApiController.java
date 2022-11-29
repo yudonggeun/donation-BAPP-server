@@ -46,7 +46,7 @@ public class NewCampaignApiController {
 
         request.getSession().setAttribute(SessionConst.LAST_CHECK_CAMPAIGN, campaign);
 
-        return campaign.getCampaignFullDto();
+        return new CampaignFullDto(campaign);
     }
 
     /**

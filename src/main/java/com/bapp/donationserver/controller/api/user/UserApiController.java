@@ -36,7 +36,7 @@ public class UserApiController {
     @GetMapping
     public MemberDto getMyPage(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member member,
                                HttpServletRequest request) {
-        return member.getDto();
+        return new MemberDto(member);
     }
 
     @PostMapping

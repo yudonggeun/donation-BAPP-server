@@ -72,19 +72,4 @@ public class Member {
         if(data.getNickname() != null) setNickname(data.getNickname());
         if(data.getProfilePhotoName() != null) setProfilePhotoName(data.getProfilePhotoName());
     }
-
-    public MemberDto getDto() {
-        MemberDto myPageDto = new MemberDto();
-        myPageDto.setMemberType(getMemberType());
-        myPageDto.setName(getName());
-        myPageDto.setPhoneNumber(getPhoneNumber());
-        myPageDto.setEmail(getEmail());
-        myPageDto.setPassword(getPassword());
-        myPageDto.setNickname(getNickname());
-        myPageDto.setProfilePhotoName(getProfilePhotoName());
-        myPageDto.setWalletId(getWallet().getId());
-        myPageDto.setPointAmount(getWallet().getAmount());
-
-        return myPageDto;
-    }
 }

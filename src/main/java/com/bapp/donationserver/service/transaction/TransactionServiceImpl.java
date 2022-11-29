@@ -85,7 +85,7 @@ public class TransactionServiceImpl implements TransactionService {
     public List<TransactionDto> getTransactionHistory(Wallet wallet) {
         List<TransactionDto> dtoList = new ArrayList<>();
 
-        transactionRepository.findByWalletId(wallet.getId()).forEach(transaction -> dtoList.add(transaction.getDto()));
+        transactionRepository.findByWalletId(wallet.getId()).forEach(transaction -> dtoList.add(new TransactionDto(transaction)));
         return dtoList;
     }
 

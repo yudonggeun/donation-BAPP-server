@@ -1,6 +1,7 @@
 package com.bapp.donationserver.exception;
 
 import com.bapp.donationserver.data.dto.CampaignFullDto;
+import com.bapp.donationserver.data.dto.CategoryDto;
 import com.bapp.donationserver.data.type.MemberType;
 import com.bapp.donationserver.repository.WalletRepository;
 import com.bapp.donationserver.service.category.CategoryService;
@@ -33,16 +34,16 @@ public class InitData {
     }
 
     public void initMember(){
-        MemberDto myPageDto = new MemberDto();
-        myPageDto.setEmail("ydong98@gmail.com");
-        myPageDto.setName("유동근");
-        myPageDto.setPassword("qwerasdf2@");
-        myPageDto.setNickname("test_admin");
-        myPageDto.setPhoneNumber("010-0000-0000");
-        myPageDto.setMemberType(MemberType.ADMIN);
-        myPageDto.setProfilePhotoName("profile-path");
-
-        memberService.newMember(myPageDto);
+//        MemberDto myPageDto = new Member();
+//        myPageDto.setEmail("ydong98@gmail.com");
+//        myPageDto.setName("유동근");
+//        myPageDto.setPassword("qwerasdf2@");
+//        myPageDto.setNickname("test_admin");
+//        myPageDto.setPhoneNumber("010-0000-0000");
+//        myPageDto.setMemberType(MemberType.ADMIN);
+//        myPageDto.setProfilePhotoName("profile-path");
+//
+//        memberService.newMember(myPageDto);
     }
 
     public void initCampaign(){
@@ -52,26 +53,22 @@ public class InitData {
     }
 
     private void addSampleCampaign(String subject) {
-        CampaignFullDto campaignInfo = new CampaignFullDto();
+        Campaign campaign = new Campaign();
 
-        campaignInfo.setCampaignName(subject);
-        campaignInfo.setCharityName("몬스터주식회사");
-        campaignInfo.setDeadline(LocalDate.now());
-        campaignInfo.setGoalAmount(1000000L);
-        ArrayList<String> test = new ArrayList<>();
-        test.add("아동");
-        test.add("청년");
-        campaignInfo.setCategories(test);
-        campaignInfo.setCoverImagePath("/path/child");
-        campaignInfo.setDetailImagePath("/path/detail/child");
-        log.info("켐패인 추가 ={}", campaignInfo);
-        campaignService.registerCampaign(campaignInfo);
+        campaign.setCampaignName(subject);
+        campaign.setCharityName("몬스터주식회사");
+        campaign.setDeadline(LocalDate.now());
+        campaign.setGoalAmount(1000000L);
+        campaign.setCoverImagePath("/path/child");
+        campaign.setDetailImagePath("/path/detail/child");
+        log.info("켐패인 추가 ={}", campaign);
+        campaignService.registerCampaign(new CampaignFullDto(campaign));
     }
 
     private void initCategory(String name){
         Category category = new Category();
         category.setName(name);
-        adminService.registerCategory(category.getDto());
+        adminService.registerCategory(new CategoryDto(category.getName()));
     }
 
 }

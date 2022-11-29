@@ -25,18 +25,6 @@ public class CampaignSearchCondition {
         this.maxResult = 100;
     }
 
-    public CampaignSearchConditionDto getDto() {
-        CampaignSearchConditionDto dto = new CampaignSearchConditionDto();
-
-        dto.setStartIndex(startIndex);
-        dto.setEndIndex(maxResult);
-        dto.setCharityName(charityName);
-        dto.setSubject(subject);
-        dto.setCategories(categories);
-
-        return dto;
-    }
-
     public void setDto(CampaignSearchConditionDto dto) {
         if(dto == null)
             return;

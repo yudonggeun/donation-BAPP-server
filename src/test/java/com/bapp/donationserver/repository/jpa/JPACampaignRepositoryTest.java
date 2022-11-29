@@ -70,7 +70,7 @@ class JPACampaignRepositoryTest {
         campaignRepository.update(campaign, dto.getCategories());
         Campaign findCampaign = campaignRepository.findById(campaign.getId());
 
-        assertThat(findCampaign.getCampaignFullDto()).isEqualTo(dto);
+        assertThat(new CampaignFullDto(findCampaign)).isEqualTo(dto);
     }
 
     @Test
@@ -87,16 +87,15 @@ class JPACampaignRepositoryTest {
     }
 
     private CampaignFullDto sampleCampaignData() {
-        CampaignFullDto dto = new CampaignFullDto();
-        dto.setCampaignName("변경");
-        dto.setCharityName("변경단체");
-        dto.setDeadline(LocalDate.of(2000, 1, 1));
-        dto.setGoalAmount(0L);
-        dto.setCoverImagePath("change path by a");
-        dto.setDetailImagePath("detail Iamge path");
-        List<String> changeCategories = new ArrayList<>();
-        dto.setCategories(changeCategories);
-        return dto;
+        Campaign campaign = new Campaign();
+        campaign.setCampaignName("변경");
+        campaign.setCharityName("변경단체");
+        campaign.setDeadline(LocalDate.of(2000, 1, 1));
+        campaign.setGoalAmount(0L);
+        campaign.setCoverImagePath("change path by a");
+        campaign.setDetailImagePath("detail Iamge path");
+
+        return new CampaignFullDto(campaign);
     }
 
 }

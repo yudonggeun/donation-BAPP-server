@@ -17,10 +17,6 @@ public class Category {
     @OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
     private List<CategoryInfo> campaigns;
 
-    public CategoryDto getDto() {
-        return new CategoryDto(name);
-    }
-
     public void setDto(CategoryDto dto) {
         setName(dto.getName());
     }
