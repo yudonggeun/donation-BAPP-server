@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -33,7 +32,7 @@ public class TransactionServiceImpl implements TransactionService {
     @Override
     public void pay(String email, Long amount) {
 
-        Member member = memberRepository.findWithWalletById(email).orElseThrow(() -> new IllegalUserDataException("고객 조회 실패"));
+        Member member = memberRepository.findWithWalletByEmail(email).orElseThrow(() -> new IllegalUserDataException("고객 조회 실패"));
         Wallet wallet = member.getWallet();
 
         Long afterAmount = wallet.getAmount() + amount;
@@ -56,7 +55,7 @@ public class TransactionServiceImpl implements TransactionService {
     @Override//추후 결제 대행사를 통한 결제 시스템 구축시에 변경사항이 생길 수도 있음
     public void payback(String email, Long amount) {
 
-        Member member = memberRepository.findWithWalletById(email).orElseThrow(() -> new IllegalUserDataException("고객 조회 실패"));
+        Member member = memberRepository.findWithWalletByEmail(email).orElseThrow(() -> new IllegalUserDataException("고객 조회 실패"));
         Wallet wallet = member.getWallet();
 
         Long afterAmount = wallet.getAmount() - amount;
@@ -96,7 +95,7 @@ public class TransactionServiceImpl implements TransactionService {
     public void withdraw(Campaign campaign, MemberDto member, TransactionDetailDto dto) {
         //인출 가능한 금액 인지 확인
         Wallet from = campaign.getWallet();
-        Wallet to = walletRepository.getWallet(member.getWalletId());
+        Wallet to = walletRepository.findById(member.getWalletId()).orElseThrow(() -> new IllegalUserDataException("지갑 조회 실패"));
 
         log.info("temper : to={}, from={}", to, from);
         if(!campaign.getCharityName().equals(member.getName())){
@@ -173,7 +172,7 @@ public class TransactionServiceImpl implements TransactionService {
         walletRepository.update(to);
 
         //DonatedCampaign update
-        donatedCampaignRepository.addDonatedCampaign(DonatedCampaign.create(member, campaign));
+        donatedCampaignRepository.save(DonatedCampaign.create(member, campaign));
 //        memberRepository.update(member);
     }
 }

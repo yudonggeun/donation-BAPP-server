@@ -47,7 +47,7 @@ public class AccountServiceImpl implements AccountService {
         DonatedCampaign info = new DonatedCampaign();
         info.setMember(member);
         info.setCampaign(campaign);
-        donatedCampaignRepository.addDonatedCampaign(info);
+        donatedCampaignRepository.save(info);
     }
 
     @Override
@@ -89,6 +89,6 @@ public class AccountServiceImpl implements AccountService {
     @Transactional
     public void deleteMember(Member member) {
         memberRepository.delete(member);
-        walletRepository.deleteWallet(member.getWallet());
+        walletRepository.deleteById(member.getWallet().getId());
     }
 }
