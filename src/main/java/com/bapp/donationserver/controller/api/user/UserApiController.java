@@ -2,10 +2,8 @@ package com.bapp.donationserver.controller.api.user;
 
 import com.bapp.donationserver.data.Campaign;
 import com.bapp.donationserver.data.Member;
-import com.bapp.donationserver.data.dto.CampaignSimpleDto;
 import com.bapp.donationserver.data.dto.MemberDto;
 import com.bapp.donationserver.data.consts.SessionConst;
-import com.bapp.donationserver.data.dto.TransactionDto;
 import com.bapp.donationserver.data.status.Return;
 import com.bapp.donationserver.service.account.AccountService;
 import com.bapp.donationserver.service.transaction.TransactionService;
@@ -15,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.List;
 
 @RequestMapping("/api/user")
 @Slf4j
@@ -49,7 +46,7 @@ public class UserApiController {
     @GetMapping("/tx")
     public Return getTransactions(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) MemberDto member) {
         return Return.successStatusWithData(
-                transactionService.getTransactionHistory(member.getWalletId()));
+                transactionService.getSimpleHistories(member.getWalletId()));
     }
 
     /**
@@ -59,7 +56,7 @@ public class UserApiController {
     public Return quitService(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
         Member member = (Member) session.getAttribute(SessionConst.LOGIN_MEMBER);
-        accountService.dropMember(member);
+        accountService.deleteMember(member);
 
         return Return.successStatus();
     }
@@ -84,7 +81,7 @@ public class UserApiController {
     @GetMapping("/info")
     public Return myDonationList(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) MemberDto member) {
         return Return.successStatusWithData(
-                accountService.checkMyDonationList(member.getEmail()));
+                accountService.getDonationListByEmail(member.getEmail()));
     }
 
 

@@ -77,7 +77,7 @@ public class NewAccountController {
         }
 
         //로직 실행
-        return memberService.createMember(data) ? Return.successStatus() : Return.failStatus("회원 생성 실패");
+        return memberService.createNewMember(data) ? Return.successStatus() : Return.failStatus("회원 생성 실패");
     }
 
 }

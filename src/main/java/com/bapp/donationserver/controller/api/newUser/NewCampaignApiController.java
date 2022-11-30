@@ -1,7 +1,6 @@
 package com.bapp.donationserver.controller.api.newUser;
 
 import com.bapp.donationserver.data.Campaign;
-import com.bapp.donationserver.data.Member;
 import com.bapp.donationserver.data.consts.SessionConst;
 import com.bapp.donationserver.data.dto.*;
 import com.bapp.donationserver.data.status.Return;
@@ -32,7 +31,7 @@ public class NewCampaignApiController {
     public Return userSearchCampaign(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) MemberDto memberDto,
                                                                 @RequestBody CampaignSearchConditionDto searchCondition) {
         MemberType type = (memberDto != null ? memberDto.getMemberType() : MemberType.USER);// 회원이 아니 라면 일반 유저 권한 부여 검색
-        List<CampaignSimpleDto> dtoList = campaignService.checkCampaignList(searchCondition, type);
+        List<CampaignSimpleDto> dtoList = campaignService.getCampaignList(searchCondition, type);
         return Return.successStatusWithData(dtoList);
     }
 
@@ -41,7 +40,7 @@ public class NewCampaignApiController {
      */
     @GetMapping("/{campaignId}")
     public Return getCampaignDetail(@PathVariable Long campaignId) {
-        Campaign campaign = campaignService.getDetailsOfCampaign(campaignId);
+        Campaign campaign = campaignService.getCampaign(campaignId);
         return Return.successStatusWithData(new CampaignFullDto(campaign));
     }
 
@@ -52,7 +51,7 @@ public class NewCampaignApiController {
      */
     @GetMapping("/history")
     public Return getCampaignHistory(@RequestParam Long campaignId) {
-        return Return.successStatusWithData(transactionService.getTransactionHistory(campaignId));
+        return Return.successStatusWithData(transactionService.getHistories(campaignId));
     }
 
     @GetMapping("/category")

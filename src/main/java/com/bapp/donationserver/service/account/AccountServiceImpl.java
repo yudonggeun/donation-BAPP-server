@@ -31,19 +31,19 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public Member getMember(String email) {
-        return memberRepository.findById(email).orElse(null);//TODO
+        return memberRepository.findById(email).orElseThrow(() -> new IllegalUserDataException("멤버 조회 실패"));
     }
 
     @Override
     @Transactional
     public void updateMember(String email, MemberDto updateMemberInformation) {
-        Member member = memberRepository.findById(email).orElse(null);//TODO
+        Member member = getMember(email);
         member.setDto(updateMemberInformation);
     }
 
     @Override
     public void addDonatedCampaign(String email, Campaign campaign) {
-        Member member = memberRepository.findById(email).orElse(null);
+        Member member = getMember(email);
         DonatedCampaign info = new DonatedCampaign();
         info.setMember(member);
         info.setCampaign(campaign);
@@ -51,25 +51,20 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public List<CampaignSimpleDto> checkMyDonationList(String email) {
+    public List<CampaignSimpleDto> getDonationListByEmail(String email) {
         List<CampaignSimpleDto> donationList = new ArrayList<>();
 
-        Member member = memberRepository.findById(email).orElse(null);//TODO
+        Member member = getMember(email);
         donatedCampaignRepository.getMyDonationList(member)
-                .forEach(donatedCampaign -> {
-                    log.info("기부 켐페인 : {}", donatedCampaign.getId());
-                    donationList.add(new CampaignFullDto(donatedCampaign.getCampaign()));
-                });
+                .forEach(donate -> donationList.add(new CampaignFullDto(donate.getCampaign())));
         return donationList;
     }
 
     @Override
     @Transactional
-    public boolean createMember(MemberDto data) {
+    public boolean createNewMember(MemberDto data) {
         try {
-            //지갑 생성
             Wallet wallet = walletRepository.createWallet();
-            //회원 생성
             Member newMember = new Member(data.getEmail(), wallet, data.getMemberType());
             newMember.setDto(data);
             memberRepository.save(newMember);
@@ -83,7 +78,7 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public Member login(String email, String password) {
-        Member member = memberRepository.findById(email).orElse(null);//TODO
+        Member member = getMember(email);
         if(!member.getPassword().equals(password)){
             throw new IllegalUserDataException("로그인에 실패했습니다.");
         }
@@ -92,12 +87,8 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     @Transactional
-    public void dropMember(Member member) {
-
-        //db 에서 해당 멤버의 기록 삭제
+    public void deleteMember(Member member) {
         memberRepository.delete(member);
-        //지갑 삭제
-        log.info("지갑 삭제");
         walletRepository.deleteWallet(member.getWallet());
     }
 }

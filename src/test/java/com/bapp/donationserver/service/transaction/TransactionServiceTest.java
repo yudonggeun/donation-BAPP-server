@@ -35,7 +35,7 @@ class TransactionServiceTest {
         member.setEmail("test@test.com.kr");
         member.setProfilePhotoName("path");
         member.setPhoneNumber("000-0000-0001");
-        accountService.createMember(member);
+        accountService.createNewMember(member);
         testMember = accountService.getMember(member.getEmail());
     }
     @Test

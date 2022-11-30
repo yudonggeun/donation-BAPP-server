@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -32,7 +33,7 @@ public class TransactionServiceImpl implements TransactionService {
     @Override
     public void pay(String email, Long amount) {
 
-        Member member = memberRepository.findById(email).orElse(null);
+        Member member = memberRepository.findWithWalletById(email).orElseThrow(() -> new IllegalUserDataException("고객 조회 실패"));
         Wallet wallet = member.getWallet();
 
         Long afterAmount = wallet.getAmount() + amount;
@@ -45,7 +46,6 @@ public class TransactionServiceImpl implements TransactionService {
         transaction.setToBalance(afterAmount);
         transaction.setType(TransactionType.PAY);
         transaction.setDate(LocalDateTime.now());
-        transaction.setDetail(null);
 
         transactionRepository.save(BlockChainConst.OWNER_PRIVATE_KEY, transaction, null);
 
@@ -56,7 +56,7 @@ public class TransactionServiceImpl implements TransactionService {
     @Override//추후 결제 대행사를 통한 결제 시스템 구축시에 변경사항이 생길 수도 있음
     public void payback(String email, Long amount) {
 
-        Member member = memberRepository.findById(email).orElse(null);
+        Member member = memberRepository.findWithWalletById(email).orElseThrow(() -> new IllegalUserDataException("고객 조회 실패"));
         Wallet wallet = member.getWallet();
 
         Long afterAmount = wallet.getAmount() - amount;
@@ -79,23 +79,21 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Transactional(readOnly = true)
     @Override
-    public List<TransactionDetailDto> getTransactionHistory(Long campaignId) {
-        List<TransactionDetailDto> dtoList = new ArrayList<>();
-        transactionRepository.findByCampaignId(campaignId).forEach(transaction -> dtoList.add(transaction.getDetailDto()));
-        return dtoList;
+    public List<TransactionDetailDto> getHistories(Long campaignId) {
+        return transactionRepository.findByCampaignId(campaignId).stream()
+                .map(transaction -> transaction.getDetailDto())
+                .collect(Collectors.toList());
     }
 
     @Override
-    public List<TransactionDto> getTransactionHistory(String walletId) {
-        List<TransactionDto> dtoList = new ArrayList<>();
-
-        transactionRepository.findByWalletId(walletId).forEach(transaction -> dtoList.add(new TransactionDto(transaction)));
-        return dtoList;
+    public List<TransactionDto> getSimpleHistories(String walletId) {
+        return transactionRepository.findByWalletId(walletId).stream()
+                .map(transaction -> new TransactionDto(transaction))
+                .collect(Collectors.toList());
     }
 
     @Override
     public void withdraw(Campaign campaign, MemberDto member, TransactionDetailDto dto) {
-
         //인출 가능한 금액 인지 확인
         Wallet from = campaign.getWallet();
         Wallet to = walletRepository.getWallet(member.getWalletId());

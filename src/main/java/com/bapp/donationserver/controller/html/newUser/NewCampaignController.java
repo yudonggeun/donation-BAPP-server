@@ -1,7 +1,6 @@
 package com.bapp.donationserver.controller.html.newUser;
 
 import com.bapp.donationserver.data.Campaign;
-import com.bapp.donationserver.data.Member;
 import com.bapp.donationserver.data.consts.SessionConst;
 import com.bapp.donationserver.data.dto.*;
 import com.bapp.donationserver.data.type.MemberType;
@@ -30,7 +29,7 @@ public class NewCampaignController {
                                    Model model) {
         MemberType type = (member != null ? member.getMemberType() : MemberType.USER); // 회원이 아니라면 일반 유저 권한 부여 검색
 
-        List<CampaignSimpleDto> dtoList = campaignService.checkCampaignList(new CampaignSearchConditionDto(), type);
+        List<CampaignSimpleDto> dtoList = campaignService.getCampaignList(new CampaignSearchConditionDto(), type);
         model.addAttribute("campaignList", dtoList);
         return "/campaign/campaignList.html";
     }
@@ -45,7 +44,7 @@ public class NewCampaignController {
 
         MemberType type = (member != null ? member.getMemberType() : MemberType.USER); // 회원이 아니라면 일반 유저 권한 부여 검색
 
-        List<CampaignSimpleDto> dtoList = campaignService.checkCampaignList(searchCondition, type);
+        List<CampaignSimpleDto> dtoList = campaignService.getCampaignList(searchCondition, type);
         model.addAttribute("campaignList", dtoList);
         return "/campaign/campaignList.html";
     }
@@ -55,7 +54,7 @@ public class NewCampaignController {
      */
     @GetMapping("/{campaignId}")
     public String getCampaignDetail(@PathVariable Long campaignId, HttpServletRequest request, Model model) {
-        Campaign campaign = campaignService.getDetailsOfCampaign(campaignId);
+        Campaign campaign = campaignService.getCampaign(campaignId);
 
         request.getSession().setAttribute(SessionConst.LAST_CHECK_CAMPAIGN, campaign);
         model.addAttribute("campaign", new CampaignFullDto(campaign));
@@ -70,6 +69,6 @@ public class NewCampaignController {
      */
     @GetMapping("/history")
     public List<TransactionDetailDto> getCampaignHistory(@RequestParam Long campaignId) {
-        return transactionService.getTransactionHistory(campaignId);
+        return transactionService.getHistories(campaignId);
     }
 }

@@ -40,14 +40,14 @@ public class CampaignServiceImpl implements CampaignService {
 
     @Override
     public void modifyCampaign(Long campaignId, CampaignFullDto campaignInfo) {
-        Campaign campaign = campaignRepository.findById(campaignId).orElse(null);//TODO 수정
+        Campaign campaign = getCampaign(campaignId);
         campaign.setCampaignFullDto(campaignInfo);
         campaignRepository.update(campaign, campaignInfo.getCategories());
     }
 
     @Transactional(readOnly = true)
     @Override
-    public List<CampaignSimpleDto> checkCampaignList(CampaignSearchConditionDto dto, MemberType memberType) {
+    public List<CampaignSimpleDto> getCampaignList(CampaignSearchConditionDto dto, MemberType memberType) {
         //조건 설정
         CampaignSearchCondition condition = new CampaignSearchCondition();
         condition.setDto(dto);
@@ -64,12 +64,10 @@ public class CampaignServiceImpl implements CampaignService {
 
     @Transactional(readOnly = true)
     @Override
-    public Campaign getDetailsOfCampaign(Long campaignId) {
-        Campaign campaign = campaignRepository.findById(campaignId).orElse(null);
-        if(campaign == null){
-            throw new IllegalUserDataException("존재하지 않은 캠패인 id를 조회했습니다.");
-        }
-        return campaign;
+    public Campaign getCampaign(Long campaignId) {
+        return campaignRepository
+                .findById(campaignId)
+                .orElseThrow(() -> new IllegalUserDataException("존재하지 않은 캠패인 id를 조회했습니다."));
     }
 
     @Override//수정 필요

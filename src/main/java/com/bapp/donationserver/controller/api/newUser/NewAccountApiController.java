@@ -54,7 +54,7 @@ public class NewAccountApiController {
         }
 
         //로직 실행
-        memberService.createMember(data);
+        memberService.createNewMember(data);
         return Return.successStatus();
     }
 

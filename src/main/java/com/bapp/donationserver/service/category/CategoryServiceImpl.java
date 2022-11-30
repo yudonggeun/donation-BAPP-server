@@ -1,5 +1,6 @@
 package com.bapp.donationserver.service.category;
 
+import com.bapp.donationserver.exception.IllegalUserDataException;
 import com.bapp.donationserver.repository.CategoryRepository;
 import com.bapp.donationserver.data.Category;
 import com.bapp.donationserver.data.dto.CategoryDto;
@@ -22,9 +23,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     @Transactional(readOnly = true)
     public List<CategoryDto> getCategoryList() {
-        List<CategoryDto> dtoList = new ArrayList<>();
-        categoryRepository.findAll().forEach(category -> dtoList.add(new CategoryDto(category.getName())));
-        return dtoList;
+        return (List<CategoryDto>) categoryRepository.findAll().stream().map(category -> new CategoryDto(category.getName()));
     }
 
     @Override
@@ -41,8 +40,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public void deleteCategory(String categoryName) {
-        Category category = categoryRepository.findByName(categoryName);
-        categoryRepository.delete(category);
+        categoryRepository.deleteById(categoryName);
     }
 
 }

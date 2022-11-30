@@ -55,7 +55,7 @@ public class CharityApiController {
     public Return withdrawFromCampaign(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) MemberDto memberDto,
                                        @PathVariable Long campaignId,
                                        @RequestBody TransactionDetailDto dto) {
-        Campaign campaign = campaignService.getDetailsOfCampaign(campaignId);
+        Campaign campaign = campaignService.getCampaign(campaignId);
         transactionService.withdraw(campaign, memberDto, dto);
         return Return.successStatus();
     }

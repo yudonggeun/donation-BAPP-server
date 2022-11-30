@@ -16,11 +16,11 @@ public interface AccountService {
     //기부 내역 추가
     void addDonatedCampaign(String email, Campaign campaign);
     //자신의 기부 내역 조회
-    List<CampaignSimpleDto> checkMyDonationList(String email);
+    List<CampaignSimpleDto> getDonationListByEmail(String email);
     //회원 가입
-    boolean createMember(MemberDto newMemberInfo);
+    boolean createNewMember(MemberDto newMemberInfo);
     //로그인
     Member login(String email, String password) throws Exception;
     //회원 탈퇴
-    void dropMember(Member member);
+    void deleteMember(Member member);
 }
