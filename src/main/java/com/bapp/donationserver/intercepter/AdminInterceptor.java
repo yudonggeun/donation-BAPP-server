@@ -1,6 +1,5 @@
 package com.bapp.donationserver.intercepter;
 
-import com.bapp.donationserver.data.Member;
 import com.bapp.donationserver.data.type.MemberType;
 import com.bapp.donationserver.data.consts.SessionConst;
 import com.bapp.donationserver.data.dto.MemberDto;
@@ -19,7 +18,7 @@ public class AdminInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 
-        Member member = (Member) request.getSession(false).getAttribute(SessionConst.LOGIN_MEMBER);
+        MemberDto member = (MemberDto) request.getSession(false).getAttribute(SessionConst.LOGIN_MEMBER);
         boolean isAdmin = member.getMemberType() == MemberType.ADMIN;
 
         if(!isAdmin){

@@ -1,6 +1,6 @@
 package com.bapp.donationserver.controller.api.admin;
 
-import com.bapp.donationserver.data.status.Status;
+import com.bapp.donationserver.data.status.Return;
 import com.bapp.donationserver.service.category.CategoryService;
 import com.bapp.donationserver.data.dto.CategoryDto;
 import lombok.RequiredArgsConstructor;
@@ -16,22 +16,22 @@ public class AdminCategoryApiController {
     private final CategoryService categoryService;
 
     @PostMapping
-    public Status registerCategory(@RequestBody CategoryDto categoryDto) {
+    public Return registerCategory(@RequestBody CategoryDto categoryDto) {
         categoryService.registerCategory(categoryDto);
-        return Status.successStatus();
+        return Return.successStatus();
     }
 
     @PostMapping("/{categoryName}")
-    public Status editCategory(@PathVariable String categoryName,
+    public Return editCategory(@PathVariable String categoryName,
                                @RequestBody CategoryDto categoryDto) {
         categoryService.modifyCategory(categoryName, categoryDto);
-        return Status.successStatus();
+        return Return.successStatus();
     }
 
     @DeleteMapping("/{categoryName}")
-    public Status deleteCategory(@PathVariable String categoryName) {
+    public Return deleteCategory(@PathVariable String categoryName) {
         categoryService.deleteCategory(categoryName);
-        return Status.successStatus();
+        return Return.successStatus();
     }
 
 }

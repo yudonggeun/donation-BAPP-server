@@ -1,18 +1,16 @@
 package com.bapp.donationserver.controller;
 
-import com.bapp.donationserver.data.status.Status;
+import com.bapp.donationserver.data.status.Return;
 import com.bapp.donationserver.service.FileService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.*;
@@ -52,7 +50,7 @@ public class FileController {
     public Object upload(MultipartFile file) throws IOException {
 
         if(file.isEmpty()){
-            return Status.failStatus("파일을 전송해주세요");
+            return Return.failStatus("파일을 전송해주세요");
         }
 
         String fileName = fileService.saveFile(file);

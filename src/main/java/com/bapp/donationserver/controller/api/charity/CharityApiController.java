@@ -1,20 +1,16 @@
 package com.bapp.donationserver.controller.api.charity;
 
 import com.bapp.donationserver.data.Campaign;
-import com.bapp.donationserver.data.Member;
-import com.bapp.donationserver.data.consts.CampaignConst;
 import com.bapp.donationserver.data.dto.MemberDto;
 import com.bapp.donationserver.data.dto.TransactionDetailDto;
-import com.bapp.donationserver.data.status.Status;
+import com.bapp.donationserver.data.status.Return;
 import com.bapp.donationserver.data.consts.SessionConst;
 import com.bapp.donationserver.data.dto.CampaignFullDto;
-import com.bapp.donationserver.data.dto.TransactionDto;
 import com.bapp.donationserver.service.campaign.CampaignService;
 import com.bapp.donationserver.service.transaction.TransactionService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 @RequestMapping("/api/charity")
 @Slf4j
@@ -30,9 +26,9 @@ public class CharityApiController {
      * 서버 응답 : success fail
      */
     @PostMapping
-    public Status registerCampaign(@RequestBody CampaignFullDto dto) {
+    public Return registerCampaign(@RequestBody CampaignFullDto dto) {
         campaignService.registerCampaign(dto);
-        return Status.successStatus();
+        return Return.successStatus();
     }
 
     /**
@@ -40,15 +36,15 @@ public class CharityApiController {
      * 서버 응답 : success fail
      */
     @PostMapping("/{campaignId}")
-    public Object modifyCampaign(@PathVariable Long campaignId, @RequestBody CampaignFullDto dto) {
+    public Return modifyCampaign(@PathVariable Long campaignId, @RequestBody CampaignFullDto dto) {
         campaignService.modifyCampaign(campaignId, dto);
-        return Status.successStatus();
+        return Return.successStatus();
     }
 
     //TODO
     @DeleteMapping("/{campaignId}")
-    public Object deleteCampaign(@PathVariable String campaignId) {
-        return Status.successStatus();
+    public Return deleteCampaign(@PathVariable String campaignId) {
+        return Return.successStatus();
     }
 
     /**
@@ -56,11 +52,11 @@ public class CharityApiController {
      * 서버 응답 : success fail
      */
     @PostMapping("/withdraw/{campaignId}")
-    public Object withdrawFromCampaign(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) MemberDto memberDto,
+    public Return withdrawFromCampaign(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) MemberDto memberDto,
                                        @PathVariable Long campaignId,
                                        @RequestBody TransactionDetailDto dto) {
         Campaign campaign = campaignService.getDetailsOfCampaign(campaignId);
         transactionService.withdraw(campaign, memberDto, dto);
-        return Status.successStatus();
+        return Return.successStatus();
     }
 }

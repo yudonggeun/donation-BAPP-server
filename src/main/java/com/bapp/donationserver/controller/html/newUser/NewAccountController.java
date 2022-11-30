@@ -1,10 +1,10 @@
-package com.bapp.donationserver.controller.newUser;
+package com.bapp.donationserver.controller.html.newUser;
 
 import com.bapp.donationserver.data.Member;
 import com.bapp.donationserver.data.consts.SessionConst;
 import com.bapp.donationserver.data.dto.LoginDto;
 import com.bapp.donationserver.data.dto.MemberDto;
-import com.bapp.donationserver.data.status.Status;
+import com.bapp.donationserver.data.status.Return;
 import com.bapp.donationserver.data.type.MemberType;
 import com.bapp.donationserver.service.account.AccountService;
 import lombok.RequiredArgsConstructor;
@@ -73,11 +73,11 @@ public class NewAccountController {
 
         if (data.getMemberType() == MemberType.ADMIN) {
             log.info("관리자 권한을 가진 계정 생성을 요청할 수 없습니다.");
-            return Status.failStatus("API 요청이 처리되지 않았습니다.");
+            return Return.failStatus("API 요청이 처리되지 않았습니다.");
         }
 
         //로직 실행
-        return memberService.createMember(data) ? Status.successStatus() : Status.failStatus("회원 생성 실패");
+        return memberService.createMember(data) ? Return.successStatus() : Return.failStatus("회원 생성 실패");
     }
 
 }

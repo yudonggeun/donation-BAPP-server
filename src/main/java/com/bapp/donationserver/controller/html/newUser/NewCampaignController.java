@@ -1,4 +1,4 @@
-package com.bapp.donationserver.controller.newUser;
+package com.bapp.donationserver.controller.html.newUser;
 
 import com.bapp.donationserver.data.Campaign;
 import com.bapp.donationserver.data.Member;

@@ -1,4 +1,4 @@
-package com.bapp.donationserver.controller.admin;
+package com.bapp.donationserver.controller.html.admin;
 
 import com.bapp.donationserver.data.consts.SessionConst;
 import com.bapp.donationserver.data.dto.CategoryDto;
