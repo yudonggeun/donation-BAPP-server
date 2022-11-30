@@ -6,6 +6,7 @@ import com.bapp.donationserver.data.consts.BlockChainConst;
 import com.bapp.donationserver.exception.BlockChainException;
 import com.bapp.donationserver.repository.TransactionRepository;
 import com.bapp.donationserver.blockchain.BlockChainService;
+import com.bapp.donationserver.repository.custom.CustomTransactionRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Primary;
@@ -14,13 +15,12 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.math.BigInteger;
-import java.util.*;
 
 @Repository
 @Slf4j
 @Primary
 @RequiredArgsConstructor
-public class JPATransactionRepository implements TransactionRepository {
+public class TransactionRepositoryImpl implements CustomTransactionRepository {
 
     @PersistenceContext
     private final EntityManager em;
@@ -42,25 +42,5 @@ public class JPATransactionRepository implements TransactionRepository {
             detail.setHashCode(id);
             em.persist(detail);
         }
-    }
-
-    @Override
-    public List<Transaction> findByCampaignId(Long campaignId) {
-        String query = "select t from Transaction t join fetch t.detail where t.from = " +
-                "(select c.wallet.id from Campaign c left join c.wallet where c.id = :campaignId)";
-
-        return em.createQuery(query, Transaction.class)
-                .setParameter("campaignId", campaignId)
-                .getResultList();
-    }
-
-    @Override
-    public List<Transaction> findByWalletId(String walletId){
-
-        String query = "select t from Transaction t where t.from = :walletId or t.to = :walletId";
-
-        return em.createQuery(query, Transaction.class)
-                .setParameter("walletId", walletId)
-                .getResultList();
     }
 }
