@@ -1,6 +1,6 @@
-package com.bapp.donationserver.blockchain;
+package com.bapp.donationserver.blockchain.repository;
 
-import com.bapp.donationserver.data.Wallet;
+import com.bapp.donationserver.entity.Wallet;
 import com.bapp.donationserver.data.consts.BlockChainConst;
 import com.bapp.donationserver.exception.BlockChainException;
 import com.klaytn.caver.Caver;
@@ -15,7 +15,7 @@ import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import org.web3j.protocol.exceptions.TransactionException;
 
 import java.io.IOException;
@@ -27,20 +27,20 @@ import java.util.Arrays;
 import java.util.List;
 
 @Slf4j
-@Service
-public class BlockChainServiceImpl implements BlockChainService {
+@Component
+public class KlaytnBlockChainImpl implements KlaytnBlockChain {
 
     private final String ABI = StringUtils.join(Files.readAllLines(Path.of(BlockChainConst.ABI_PATH)), "\n");
 
     private final Caver caver = new Caver(BlockChainConst.BLOCK_CHAIN_URL);
 
-    public BlockChainServiceImpl() throws IOException {
+    public KlaytnBlockChainImpl() throws IOException {
         SingleKeyring executor = KeyringFactory.createFromPrivateKey(BlockChainConst.OWNER_PRIVATE_KEY);
         addKeyringAtCaver(executor);
     }
 
     @Override
-    public Wallet makeWallet() {
+    public Wallet createBlockchainWallet() {
 
         SingleKeyring generate = caver.wallet.keyring.generate();
 
@@ -56,7 +56,7 @@ public class BlockChainServiceImpl implements BlockChainService {
         return wallet;
     }
 
-    public String transferOwner(String toAddress, long amount){
+    public String transferToOwner(String toAddress, long amount){
         return transfer(BlockChainConst.OWNER_PRIVATE_KEY, toAddress, amount);
     }
 

@@ -1,4 +1,4 @@
-package com.bapp.donationserver.data;
+package com.bapp.donationserver.entity;
 
 import com.bapp.donationserver.data.dto.CategoryDto;
 import lombok.Getter;

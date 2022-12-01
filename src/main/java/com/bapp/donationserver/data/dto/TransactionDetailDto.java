@@ -1,6 +1,8 @@
 package com.bapp.donationserver.data.dto;
 
 import com.bapp.donationserver.data.type.TransactionType;
+import com.bapp.donationserver.entity.Transaction;
+import com.bapp.donationserver.entity.TransactionDetail;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -17,4 +19,18 @@ public class TransactionDetailDto {
     private String blockChainTransactionId;
     private String certificateFile;//증명서 url
 
+    public TransactionDetailDto(Transaction transaction) {
+        this.amount = getAmount();
+        this.balance = transaction.getFromBalance();
+        this.date = LocalDateTime.from(getDate());
+        this.type = getType();
+        this.blockChainTransactionId = transaction.getId();
+
+        if(transaction.getDetail() != null) {
+            this.sender = transaction.getDetail().getSender();
+            this.receiver = transaction.getDetail().getReceiver();
+            this.purpose = transaction.getDetail().getPurpose();
+            this.certificateFile = transaction.getDetail().getCertificateFile();
+        }
+    }
 }

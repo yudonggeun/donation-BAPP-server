@@ -1,7 +1,7 @@
 package com.bapp.donationserver.controller.api.user;
 
-import com.bapp.donationserver.data.Campaign;
-import com.bapp.donationserver.data.Member;
+import com.bapp.donationserver.entity.Campaign;
+import com.bapp.donationserver.entity.Member;
 import com.bapp.donationserver.data.dto.MemberDto;
 import com.bapp.donationserver.data.consts.SessionConst;
 import com.bapp.donationserver.data.status.Return;

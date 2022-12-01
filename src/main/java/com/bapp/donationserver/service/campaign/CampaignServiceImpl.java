@@ -1,10 +1,13 @@
 package com.bapp.donationserver.service.campaign;
 
+import com.bapp.donationserver.blockchain.repository.KlaytnBlockChain;
 import com.bapp.donationserver.data.*;
 import com.bapp.donationserver.data.type.MemberType;
 import com.bapp.donationserver.data.dto.CampaignFullDto;
 import com.bapp.donationserver.data.dto.CampaignSearchConditionDto;
 import com.bapp.donationserver.data.dto.CampaignSimpleDto;
+import com.bapp.donationserver.entity.Campaign;
+import com.bapp.donationserver.entity.Wallet;
 import com.bapp.donationserver.exception.IllegalUserDataException;
 import com.bapp.donationserver.repository.CampaignRepository;
 import com.bapp.donationserver.repository.WalletRepository;
@@ -24,6 +27,7 @@ public class CampaignServiceImpl implements CampaignService {
 
     private final CampaignRepository campaignRepository;
     private final WalletRepository walletRepository;
+    private final KlaytnBlockChain blockChain;
 
     @Override
     public void registerCampaign(CampaignFullDto campaignInfo) {
@@ -31,7 +35,8 @@ public class CampaignServiceImpl implements CampaignService {
         campaign.setCampaignFullDto(campaignInfo);
 
         //지갑 생성 및 등록
-        Wallet wallet = walletRepository.createWallet();
+        Wallet wallet = walletRepository.save(blockChain.createBlockchainWallet());
+
         campaign.setWallet(wallet);
 //        campaign.setCategories(campaignInfo.getCategories());
         log.info("켐페인 등록={}", campaign);

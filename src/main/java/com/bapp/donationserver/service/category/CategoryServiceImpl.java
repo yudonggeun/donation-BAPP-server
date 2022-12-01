@@ -1,15 +1,13 @@
 package com.bapp.donationserver.service.category;
 
-import com.bapp.donationserver.exception.IllegalUserDataException;
 import com.bapp.donationserver.repository.CategoryRepository;
-import com.bapp.donationserver.data.Category;
+import com.bapp.donationserver.entity.Category;
 import com.bapp.donationserver.data.dto.CategoryDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service

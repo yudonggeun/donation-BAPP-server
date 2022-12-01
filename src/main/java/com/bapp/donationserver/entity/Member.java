@@ -1,8 +1,11 @@
-package com.bapp.donationserver.data;
+package com.bapp.donationserver.entity;
 
 import com.bapp.donationserver.data.dto.MemberDto;
 import com.bapp.donationserver.data.type.MemberType;
+import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -10,6 +13,7 @@ import java.util.List;
 
 @Entity
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Member {
 
     @Id
@@ -35,8 +39,7 @@ public class Member {
     @JoinColumn(name = "WALLET_ID")
     private Wallet wallet;
 
-    public Member(){}
-
+    @Builder
     public Member(String email, Wallet wallet, MemberType memberType) {
         this.email = email;
         this.wallet = wallet;

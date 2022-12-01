@@ -1,8 +1,7 @@
-package com.bapp.donationserver.data;
+package com.bapp.donationserver.entity;
 
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 
 import javax.persistence.*;
 
@@ -22,5 +21,4 @@ public class TransactionDetail {
     private Transaction transaction;
     @Column(name = "CERTIFICATE_FILE")
     private String certificateFile;
-    private String hashCode;//블록체인 TX 해쉬 값
 }

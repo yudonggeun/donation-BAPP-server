@@ -1,6 +1,6 @@
 package com.bapp.donationserver.repository.custom;
 
-import com.bapp.donationserver.data.Campaign;
+import com.bapp.donationserver.entity.Campaign;
 import com.bapp.donationserver.data.CampaignSearchCondition;
 
 import java.util.List;

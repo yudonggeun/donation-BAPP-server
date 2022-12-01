@@ -1,6 +1,6 @@
 package com.bapp.donationserver.intercepter;
 
-import com.bapp.donationserver.data.Member;
+import com.bapp.donationserver.entity.Member;
 import com.bapp.donationserver.data.type.MemberType;
 import com.bapp.donationserver.data.consts.SessionConst;
 import com.bapp.donationserver.exception.IllegalUserDataException;

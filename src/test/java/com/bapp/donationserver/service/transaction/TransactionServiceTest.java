@@ -1,6 +1,6 @@
 package com.bapp.donationserver.service.transaction;
 
-import com.bapp.donationserver.data.Member;
+import com.bapp.donationserver.entity.Member;
 import com.bapp.donationserver.data.dto.MemberDto;
 import com.bapp.donationserver.data.type.MemberType;
 import com.bapp.donationserver.service.account.AccountService;

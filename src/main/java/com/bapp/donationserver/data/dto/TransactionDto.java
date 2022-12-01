@@ -1,6 +1,6 @@
 package com.bapp.donationserver.data.dto;
 
-import com.bapp.donationserver.data.Transaction;
+import com.bapp.donationserver.entity.Transaction;
 import com.bapp.donationserver.data.type.TransactionType;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
@@ -31,7 +31,7 @@ public class TransactionDto {
         this.setDate(entity.getDate());
         this.setType(entity.getType());
         try {
-            this.setBlockChainTransactionId(entity.getDetail().getHashCode());
+            this.setBlockChainTransactionId(entity.getId());
             this.setCertificateFile(entity.getDetail().getCertificateFile());
         } catch (NullPointerException e){
             log.info("Transaction Simple Dto : don't research Transaction_detail information");

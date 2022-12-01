@@ -1,6 +1,6 @@
 package com.bapp.donationserver.data.dto;
 
-import com.bapp.donationserver.data.Campaign;
+import com.bapp.donationserver.entity.Campaign;
 import lombok.Data;
 
 import java.time.LocalDate;

@@ -1,7 +1,7 @@
 package com.bapp.donationserver.service.account;
 
-import com.bapp.donationserver.data.Campaign;
-import com.bapp.donationserver.data.Member;
+import com.bapp.donationserver.entity.Campaign;
+import com.bapp.donationserver.entity.Member;
 import com.bapp.donationserver.data.dto.CampaignSimpleDto;
 import com.bapp.donationserver.data.dto.MemberDto;
 

@@ -1,6 +1,6 @@
 package com.bapp.donationserver.data.dto;
 
-import com.bapp.donationserver.data.Member;
+import com.bapp.donationserver.entity.Member;
 import com.bapp.donationserver.data.type.MemberType;
 import com.bapp.donationserver.exception.IllegalUserDataException;
 import lombok.Data;

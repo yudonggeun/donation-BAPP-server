@@ -1,9 +1,10 @@
 package com.bapp.donationserver.service.transaction;
 
-import com.bapp.donationserver.data.*;
+import com.bapp.donationserver.blockchain.service.BlockChainService;
 import com.bapp.donationserver.data.consts.BlockChainConst;
 import com.bapp.donationserver.data.dto.*;
 import com.bapp.donationserver.data.type.TransactionType;
+import com.bapp.donationserver.entity.*;
 import com.bapp.donationserver.exception.IllegalUserDataException;
 import com.bapp.donationserver.repository.DonatedCampaignRepository;
 import com.bapp.donationserver.repository.MemberRepository;
@@ -28,6 +29,7 @@ public class TransactionServiceImpl implements TransactionService {
     private final WalletRepository walletRepository;
     private final TransactionRepository transactionRepository;
     private final DonatedCampaignRepository donatedCampaignRepository;
+    private final BlockChainService blockChainService;
 
     @Override
     public void pay(String email, Long amount) {
@@ -46,10 +48,12 @@ public class TransactionServiceImpl implements TransactionService {
         transaction.setType(TransactionType.PAY);
         transaction.setDate(LocalDateTime.now());
 
-        transactionRepository.save(BlockChainConst.OWNER_PRIVATE_KEY, transaction, null);
+        String transactionId = blockChainService.sendMoney(BlockChainConst.OWNER_PRIVATE_KEY, transaction.getTo(), transaction.getAmount());
+        transaction.setId(transactionId);
+        transactionRepository.save(transaction);
 
         wallet.setAmount(afterAmount);
-        walletRepository.update(wallet);
+        walletRepository.save(wallet);
     }
 
     @Override//추후 결제 대행사를 통한 결제 시스템 구축시에 변경사항이 생길 수도 있음
@@ -70,24 +74,26 @@ public class TransactionServiceImpl implements TransactionService {
         transaction.setDate(LocalDateTime.now());
         transaction.setDetail(null);
 
-        transactionRepository.save(wallet.getPrivateKey(), transaction, null);
+        String transactionId = blockChainService.sendMoney(wallet.getPrivateKey(), transaction.getTo(), transaction.getAmount());
+        transaction.setId(transactionId);
+        transactionRepository.save(transaction);
 
         wallet.setAmount(afterAmount);
-        walletRepository.update(wallet);
+        walletRepository.save(wallet);
     }
 
     @Transactional(readOnly = true)
     @Override
     public List<TransactionDetailDto> getHistories(Long campaignId) {
-        return transactionRepository.findByCampaignId(campaignId).stream()
-                .map(transaction -> transaction.getDetailDto())
+        return transactionRepository.findWithdrawListByCampaignId(campaignId).stream()
+                .map(TransactionDetailDto::new)
                 .collect(Collectors.toList());
     }
 
     @Override
     public List<TransactionDto> getSimpleHistories(String walletId) {
         return transactionRepository.findByWalletId(walletId).stream()
-                .map(transaction -> new TransactionDto(transaction))
+                .map(TransactionDto::new)
                 .collect(Collectors.toList());
     }
 
@@ -128,13 +134,15 @@ public class TransactionServiceImpl implements TransactionService {
         transaction.setDetail(detail);
 
         //block chain 저장
-        transactionRepository.save(from.getPrivateKey(), transaction, detail);
+        String transactionId = blockChainService.sendMoney(from.getPrivateKey(), transaction.getTo(), transaction.getAmount());
+        transaction.setId(transactionId);
+        transactionRepository.save(transaction);
 
         //변경 사항 적용 후 db 저장
         from.setAmount(fromAfterAmount);
         to.setAmount(toAfterAmount);
-        walletRepository.update(to);
-        walletRepository.update(from);
+        walletRepository.save(to);
+        walletRepository.save(from);
     }
 
     @Override
@@ -163,16 +171,18 @@ public class TransactionServiceImpl implements TransactionService {
         transaction.setDate(LocalDateTime.now());
 
         //block chain 저장
-        transactionRepository.save(from.getPrivateKey(), transaction, null);
+        String transactionId = blockChainService.sendMoney(from.getPrivateKey(), transaction.getTo(), transaction.getAmount());
+        transaction.setId(transactionId);
+        transactionRepository.save(transaction);
 
         //변경 사항 적용 후 db 저장
         from.setAmount(fromAfterAmount);
         to.setAmount(toAfterAmount);
-        walletRepository.update(from);
-        walletRepository.update(to);
+        walletRepository.save(from);
+        walletRepository.save(to);
 
         //DonatedCampaign update
         donatedCampaignRepository.save(DonatedCampaign.create(member, campaign));
-//        memberRepository.update(member);
+        memberRepository.save(member);
     }
 }

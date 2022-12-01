@@ -1,15 +1,13 @@
 package com.bapp.donationserver.repository.jpa;
 
-import com.bapp.donationserver.data.Campaign;
+import com.bapp.donationserver.entity.Campaign;
 import com.bapp.donationserver.data.CampaignSearchCondition;
-import com.bapp.donationserver.data.Category;
-import com.bapp.donationserver.data.CategoryInfo;
+import com.bapp.donationserver.entity.Category;
+import com.bapp.donationserver.entity.CategoryInfo;
 import com.bapp.donationserver.data.type.MemberType;
 import com.bapp.donationserver.repository.custom.CustomCampaignRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.annotation.Primary;
-import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -52,7 +50,6 @@ public class CampaignRepositoryImpl implements CustomCampaignRepository {
                 categories.remove(target);
             }
         });
-
         //수정시 추가하는 카테고리 추가
         categories.forEach(stringCategory -> allCategories.forEach(category -> {
             if (category.getName().equals(stringCategory)) {

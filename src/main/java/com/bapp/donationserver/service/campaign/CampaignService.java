@@ -1,6 +1,6 @@
 package com.bapp.donationserver.service.campaign;
 
-import com.bapp.donationserver.data.Campaign;
+import com.bapp.donationserver.entity.Campaign;
 import com.bapp.donationserver.data.type.MemberType;
 import com.bapp.donationserver.data.dto.CampaignFullDto;
 import com.bapp.donationserver.data.dto.CampaignSearchConditionDto;

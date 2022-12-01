@@ -1,12 +1,12 @@
-package com.bapp.donationserver.blockchain;
+package com.bapp.donationserver.blockchain.repository;
 
-import com.bapp.donationserver.data.Wallet;
+import com.bapp.donationserver.entity.Wallet;
 
 import java.math.BigInteger;
 
-public interface BlockChainService {
+public interface KlaytnBlockChain {
 
-    Wallet makeWallet();
+    Wallet createBlockchainWallet();
 
     String transfer(String fromPk, String toAddress, long amount);
 

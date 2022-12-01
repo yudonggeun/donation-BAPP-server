@@ -1,6 +1,6 @@
 package com.bapp.donationserver.controller.api.charity;
 
-import com.bapp.donationserver.data.Campaign;
+import com.bapp.donationserver.entity.Campaign;
 import com.bapp.donationserver.data.dto.MemberDto;
 import com.bapp.donationserver.data.dto.TransactionDetailDto;
 import com.bapp.donationserver.data.status.Return;

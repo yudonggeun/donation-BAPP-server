@@ -1,6 +1,6 @@
 package com.bapp.donationserver.controller.html.newUser;
 
-import com.bapp.donationserver.data.Member;
+import com.bapp.donationserver.entity.Member;
 import com.bapp.donationserver.data.consts.SessionConst;
 import com.bapp.donationserver.data.dto.LoginDto;
 import com.bapp.donationserver.data.dto.MemberDto;

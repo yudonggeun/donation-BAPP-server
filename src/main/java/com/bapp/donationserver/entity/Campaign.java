@@ -1,7 +1,6 @@
-package com.bapp.donationserver.data;
+package com.bapp.donationserver.entity;
 
 import com.bapp.donationserver.data.dto.CampaignFullDto;
-import com.bapp.donationserver.data.dto.CampaignSimpleDto;
 import lombok.Getter;
 import lombok.Setter;
 

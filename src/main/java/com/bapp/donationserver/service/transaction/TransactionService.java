@@ -1,6 +1,6 @@
 package com.bapp.donationserver.service.transaction;
 
-import com.bapp.donationserver.data.Campaign;
+import com.bapp.donationserver.entity.Campaign;
 import com.bapp.donationserver.data.dto.*;
 
 import java.util.List;

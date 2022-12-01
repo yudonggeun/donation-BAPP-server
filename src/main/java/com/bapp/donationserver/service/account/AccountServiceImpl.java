@@ -1,9 +1,10 @@
 package com.bapp.donationserver.service.account;
 
-import com.bapp.donationserver.data.Campaign;
-import com.bapp.donationserver.data.DonatedCampaign;
-import com.bapp.donationserver.data.Member;
-import com.bapp.donationserver.data.Wallet;
+import com.bapp.donationserver.blockchain.repository.KlaytnBlockChain;
+import com.bapp.donationserver.entity.Campaign;
+import com.bapp.donationserver.entity.DonatedCampaign;
+import com.bapp.donationserver.entity.Member;
+import com.bapp.donationserver.entity.Wallet;
 import com.bapp.donationserver.data.dto.CampaignFullDto;
 import com.bapp.donationserver.data.dto.CampaignSimpleDto;
 import com.bapp.donationserver.data.dto.MemberDto;
@@ -28,6 +29,8 @@ public class AccountServiceImpl implements AccountService {
     private final MemberRepository memberRepository;
     private final WalletRepository walletRepository;
     private final DonatedCampaignRepository donatedCampaignRepository;
+
+    private final KlaytnBlockChain blockChain;
 
     @Override
     public Member getMember(String email) {
@@ -64,7 +67,8 @@ public class AccountServiceImpl implements AccountService {
     @Transactional
     public boolean createNewMember(MemberDto data) {
         try {
-            Wallet wallet = walletRepository.createWallet();
+            Wallet wallet = walletRepository.save(blockChain.createBlockchainWallet());
+
             Member newMember = new Member(data.getEmail(), wallet, data.getMemberType());
             newMember.setDto(data);
             memberRepository.save(newMember);

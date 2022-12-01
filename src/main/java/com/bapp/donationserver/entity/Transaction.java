@@ -1,7 +1,6 @@
-package com.bapp.donationserver.data;
+package com.bapp.donationserver.entity;
 
 import com.bapp.donationserver.data.dto.TransactionDetailDto;
-import com.bapp.donationserver.data.dto.TransactionDto;
 import com.bapp.donationserver.data.type.TransactionType;
 import lombok.Getter;
 import lombok.Setter;
@@ -51,20 +50,5 @@ public class Transaction {
         this.date = LocalDateTime.now();
         this.type = type;
         this.detail = detail;
-    }
-
-    public TransactionDetailDto getDetailDto() {
-        TransactionDetailDto dto = new TransactionDetailDto();
-        dto.setSender(getDetail().getSender());
-        dto.setReceiver(getDetail().getReceiver());
-        dto.setAmount(getAmount());
-        dto.setBalance(getFromBalance());
-        dto.setDate(LocalDateTime.from(getDate()));
-        dto.setType(getType());
-        dto.setPurpose(getDetail().getPurpose());
-        dto.setBlockChainTransactionId(getDetail().getHashCode());
-        dto.setCertificateFile(getDetail().getCertificateFile());
-
-        return dto;
     }
 }
